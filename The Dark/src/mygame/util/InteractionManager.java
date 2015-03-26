@@ -13,6 +13,8 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
 import mygame.GameManager;
+import mygame.entity.ai.Finder;
+import mygame.entity.monster.Monster;
 
 /**
  *
@@ -22,7 +24,7 @@ public class InteractionManager implements ActionListener {
     
     private InputManager      inputManager;
     private SimpleApplication app;
-    private boolean           up = false, down = false, left = false, right = false, click = false;
+    private boolean           up = false, down = false, left = false, right = false, click = false, cursor = false;
     private boolean           up1 = false, down1 = false, left1 = false, right1 = false;
     private Vector2f          touchSpot;
     
@@ -75,17 +77,7 @@ public class InteractionManager implements ActionListener {
         }
         
         else if (binding .equals("Cursor")) {
-            
-            if(isPressed) {
-                inputManager.setCursorVisible(true);
-                app.getStateManager().getState(GameManager.class).getPlayer().getChaseControl().getCameraManager().getChaseCam().setDragToRotate(true);
-            }
-            
-            else {
-                inputManager.setCursorVisible(false);
-                app.getStateManager().getState(GameManager.class).getPlayer().getChaseControl().getCameraManager().getChaseCam().setDragToRotate(false);
-            }
-                
+            cursor = isPressed;
         }        
         
         else if (binding.equals("Click")) {
@@ -96,8 +88,6 @@ public class InteractionManager implements ActionListener {
         
         if (binding.equals("Up1")) {
             up1 = isPressed;
-            if(isPressed)
-            app.getStateManager().getState(GameManager.class).getZombie().getFinderControl().findTarget(app.getStateManager().getState(GameManager.class).getPlayer());
         }
         
         else if (binding.equals("Down1")) {
@@ -175,7 +165,10 @@ public class InteractionManager implements ActionListener {
         else if (triggerName.equals("Click"))
             return click;
         
-        if (triggerName.equals("Left1"))
+        else if (triggerName.equals("Cursor"))
+            return cursor;
+        
+        else if (triggerName.equals("Left1"))
             return left1;
         
         else if (triggerName.equals("Right1"))

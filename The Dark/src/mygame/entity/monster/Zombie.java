@@ -7,21 +7,26 @@ package mygame.entity.monster;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.scene.Spatial;
+import mygame.GameManager;
 import mygame.entity.Humanoid;
 import mygame.entity.PhysicalEntity;
 import mygame.entity.ai.Finder;
 import mygame.entity.ai.FinderControl;
+import mygame.entity.player.Player;
 
 /**
  *
  * @author Bawb
  */
-public class Zombie extends Humanoid implements PhysicalEntity, Finder {
+public class Zombie extends Humanoid implements PhysicalEntity, Finder, Monster {
 
     private BetterCharacterControl phys;
     private FinderControl          fc;
+    private AppStateManager        stateManager;
+    private int                    moveSpeed;
     
     public Zombie(AppStateManager stateManager) {
+        this.stateManager = stateManager;
         setModel(null, stateManager);
         createAnimControl();
         getModel().setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Priest.j3m"));
@@ -57,11 +62,46 @@ public class Zombie extends Humanoid implements PhysicalEntity, Finder {
         
         };
         
+        addControl(fc);
+        
     }
 
     @Override
     public FinderControl getFinderControl() {
         return fc;
+    }
+    
+    @Override
+    public void attack() {
+    
+    }
+
+    @Override
+    public void behave() {
+        
+        Player player = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer();
+        float  dist   = player.getWorldTranslation().distance(getWorldTranslation());
+        
+        if (getFinderControl().atGoal()) {
+            attack();
+        }
+        
+        else if (dist < 5 && !getFinderControl().isFinding()) {
+            getFinderControl().findTarget(player);
+        }
+        
+        else if (dist > 10) {
+            getFinderControl().stopFinding();
+        }
+        
+    }
+
+    public void setMoveSpeed() {
+        moveSpeed = 5;
+    }
+
+    public int getMoveSpeed() {
+        return moveSpeed;
     }
     
 }

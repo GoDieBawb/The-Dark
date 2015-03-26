@@ -4,7 +4,6 @@
  */
 package mygame.control;
 
-import mygame.entity.player.Player;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
@@ -18,7 +17,7 @@ import mygame.util.InteractionManager;
  */
 public class ChaseControl extends InteractionControl {
     
-    private boolean            left, right, up, down;
+    private boolean            left, right, up, down, cursor;
     private AppStateManager    stateManager;
     private Player             player;
     private SimpleApplication  app;
@@ -38,11 +37,12 @@ public class ChaseControl extends InteractionControl {
     }
     
     private void updateKeys() {
-        InteractionManager im = stateManager.getState(GameManager.class).getInteractionManager();
-        up    = im.getIsPressed("Up");
-        down  = im.getIsPressed("Down");
-        left  = im.getIsPressed("Left");
-        right = im.getIsPressed("Right");
+        InteractionManager im = stateManager.getState(GameManager.class).getUtilityManager().getInteractionManager();
+        up     = im.getIsPressed("Up");
+        down   = im.getIsPressed("Down");
+        left   = im.getIsPressed("Left");
+        right  = im.getIsPressed("Right");
+        cursor = im.getIsPressed("Cursor");
     }
     
     private void chaseMove(float tpf){
@@ -91,10 +91,25 @@ public class ChaseControl extends InteractionControl {
         cameraManager.setEnabled(newVal);
     }
     
+    private void checkCursor() {
+        
+        if(cursor) {
+            app.getInputManager().setCursorVisible(true);
+            cameraManager.getChaseCam().setDragToRotate(true);
+        }
+            
+        else {
+            app.getInputManager().setCursorVisible(false);
+            cameraManager.getChaseCam().setDragToRotate(false);
+        }
+        
+    }
+    
     @Override
     public void update(float tpf) {
         chaseMove(tpf);
         updateKeys();
+        checkCursor();
         cameraManager.update(tpf);
     }
     
