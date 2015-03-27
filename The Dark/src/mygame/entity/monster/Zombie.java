@@ -29,12 +29,12 @@ public class Zombie extends Humanoid implements PhysicalEntity, Finder, Monster 
         this.stateManager = stateManager;
         setModel(null, stateManager);
         createAnimControl();
-        getModel().setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Priest.j3m"));
+        getModel().setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Zombie.j3m"));
     }
     
     @Override
     public void createPhys() {
-        phys = new BetterCharacterControl(.3f, .7f, 150);
+        phys = new BetterCharacterControl(.35f, 1.1f, 150);
         addControl(phys);
     }
 

@@ -6,6 +6,7 @@ package mygame.entity.player;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
 import mygame.GameManager;
 
 /**
@@ -42,6 +43,8 @@ public class PlayerManager {
     
     public void update(float tpf) {
         player.getChaseControl().update(tpf);
+        player.getModel().setCullHint(Spatial.CullHint.Never);
+        player.getModel().updateModelBound();
     }
     
 }

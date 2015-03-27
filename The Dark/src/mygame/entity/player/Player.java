@@ -33,7 +33,7 @@ public class Player extends Humanoid implements PhysicalEntity {
     
     @Override
     public void createPhys() {
-        phys = new BetterCharacterControl(.3f, 1.1f, 100);
+        phys = new BetterCharacterControl(.35f, 1.1f, 100);
         addControl(phys);
     }
     

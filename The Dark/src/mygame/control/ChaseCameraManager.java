@@ -4,13 +4,9 @@
 */
 package mygame.control;
 
-import mygame.entity.player.Player;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.input.ChaseCamera;
-import com.jme3.input.KeyInput;
-import com.jme3.input.controls.KeyTrigger;
 import mygame.entity.player.Player;
 
 /**
@@ -20,15 +16,13 @@ import mygame.entity.player.Player;
 public class ChaseCameraManager {
 
     private SimpleApplication app;
-    private AppStateManager   stateManager;
     private Player            player;
     private ChaseCamera       cam;
     private boolean           enabled;
-    private boolean           isHunt;
+    private boolean           isClose;
   
     public ChaseCameraManager(Application app, Player player){
         this.app           = (SimpleApplication) app;
-        this.stateManager  = this.app.getStateManager();
         this.player        = player;
         initCamera();
     }
@@ -36,25 +30,24 @@ public class ChaseCameraManager {
     //Creates camera
      private void initCamera(){
         //Creates a new chase cam and attached it to the player.model for the game
-        cam = new ChaseCamera(this.app.getCamera(), player.getModel(), this.app.getInputManager());
+        cam = new ChaseCamera(this.app.getCamera(), player, this.app.getInputManager());
         cam.setMinDistance(0.5f);
         cam.setMaxDistance(3);
         cam.setDefaultDistance(3);
         cam.setDragToRotate(false);
         cam.setDownRotateOnCloseViewOnly(false);
         cam.setRotationSpeed(5f);
-        cam.setLookAtOffset(player.getLocalTranslation().add(0, .5f, 0));
+        cam.setLookAtOffset(player.getLocalTranslation().add(0, .8f, 0));
         cam.setDefaultVerticalRotation(.145f);
         cam.setMaxVerticalRotation(.145f);
         cam.setMinVerticalRotation(.145f);
         app.getInputManager().setCursorVisible(false);
-        cam.setZoomInTrigger(new KeyTrigger(KeyInput.KEY_X));
-        cam.setZoomOutTrigger(new KeyTrigger(KeyInput.KEY_C));
+        app.getCamera().setFrustumNear(.75f);
     }
 
     private void chaseCamMove() {
         
-        if (cam.getDistanceToTarget() < 1){
+        if (cam.getDistanceToTarget() < 1) {
             cam.setMinVerticalRotation(0f);
             cam.setMaxVerticalRotation(5f);
         }
@@ -79,38 +72,24 @@ public class ChaseCameraManager {
         return enabled;
     }
     
-    public void setHuntCam(boolean hunt) {
-        
-        isHunt = hunt;
-        
-        if(isHunt) {
-            
-            cam.setEnabled(false);
-            app.getFlyByCamera().setEnabled(true);
-            app.getFlyByCamera().setDragToRotate(true);
-            
-            if ("Dalvik".equals(System.getProperty("java.vm.name"))) 
-                app.getFlyByCamera().setDragToRotate(true);
-            
-            app.getFlyByCamera().setMoveSpeed(0);
-            app.getFlyByCamera().setRotationSpeed(2f);
-            
-        }
-        
-        else {
-            
-            cam.setEnabled(true);
-            cam.setDragToRotate(false);
-            app.getFlyByCamera().setEnabled(false);
-            
-        }
-        
-    }    
-    
     public void update(float tpf) {
         
         chaseCamMove();
+        
+        if(cam.getDistanceToTarget() < 1) {
+            
+            if(isClose)
+                return;
+            
+            player.getModel().removeFromParent();
+            isClose = true;
+        }
     
+        else if(isClose) {
+            player.attachChild(player.getModel());
+            isClose = false;
+        }
+        
     }
   
   }

@@ -21,6 +21,7 @@ public class PhysicsManager {
     public PhysicsManager(AppStateManager stateManager) {
         physics = new BulletAppState();
         stateManager.attach(physics);
+        physics.setDebugEnabled(true);
     }
     
     public void rePhys(AppStateManager stateManager, Node node) {
@@ -39,7 +40,6 @@ public class PhysicsManager {
     public void addToPhysics(Node node) {
         RigidBodyControl rbc = new RigidBodyControl(0f);
         node.addControl(rbc);
-        physics.getPhysicsSpace().add(node);
     }
     
     public BulletAppState getPhysics() {

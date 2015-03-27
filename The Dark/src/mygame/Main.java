@@ -16,6 +16,7 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        getFlyByCamera().setEnabled(false);
         getStateManager().attach(new GameManager());
     }
 

@@ -7,10 +7,9 @@ package mygame.scene;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
-import com.jme3.material.Material;
+import com.jme3.light.PointLight;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
 import com.jme3.scene.Node;
 import mygame.GameManager;
 import mygame.util.PhysicsManager;
@@ -30,33 +29,51 @@ public class SceneManager {
         physicsManager = gm.getUtilityManager().getPhysicsManager();
     }
     
-    public void initScene() {
+    public void initScene(String path) {
         
-        scene = (Node) app.getAssetManager().loadModel("Scenes/Town.j3o");
+        scene = (Node) app.getAssetManager().loadModel(path);
         RigidBodyControl rbc  = new RigidBodyControl(0f);
         scene.getChild(0).addControl(rbc);
         physicsManager.getPhysics().getPhysicsSpace().add(rbc);
         app.getRootNode().attachChild(scene);
-        app.getFlyByCamera().setEnabled(false);
-        Material mat = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Blue);
-        addLight();
+        initLights();
+        initFog();
+        
+    }
+    
+    private void initFog() {
+        FilterPostProcessor ppf = app.getAssetManager().loadFilter("Effects/Fog.j3f");
+        app.getViewPort().addProcessor(ppf);
+    }    
+    
+    private void initLights() {
+    
+        AmbientLight al = new AmbientLight();
+        al.setColor(ColorRGBA.White.mult(.1f));
+        app.getRootNode().addLight(al);
+        
+        Node lightNode = (Node) scene.getChild("Lights");
+        
+        for (int i = 0; i < lightNode.getQuantity(); i++) {
+        
+            if (lightNode.getChild(i).getName().equals("Point")) {
+            
+                PointLight pl = new PointLight();
+                pl.setColor(ColorRGBA.White.mult(1f));
+                pl.setRadius(5);
+                pl.setPosition(lightNode.getChild(i).getWorldTranslation());
+                app.getRootNode().addLight(pl);
+            
+            }
+            
+        }
+        
+        lightNode.removeFromParent();
         
     }
     
     public Node getScene() {
         return scene;
     }
-    
-    private void addLight() {
-        AmbientLight al     = new AmbientLight();
-        DirectionalLight dl = new DirectionalLight();
-        app.getRootNode().addLight(al);
-        app.getRootNode().addLight(dl);
-        al.setColor(ColorRGBA.White.mult(.1f));
-        
-        dl.setDirection(new Vector3f(-0.1f, -0.7f, -1.0f));
-        
-    }    
     
 }
