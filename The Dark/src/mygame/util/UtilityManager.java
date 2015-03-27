@@ -5,6 +5,8 @@
 package mygame.util;
 
 import com.jme3.app.SimpleApplication;
+import mygame.util.script.ScriptManager;
+import mygame.util.yaml.YamlManager;
 
 /**
  *
@@ -14,12 +16,18 @@ public class UtilityManager {
     
     private PhysicsManager     physicsManager;
     private InteractionManager interactionManager;
-    private SimpleApplication app;
+    private YamlManager        yamlManager;
+    private GuiManager         guiManager;
+    private ScriptManager      scriptManager;
+    private SimpleApplication  app;
     
     public UtilityManager(SimpleApplication app) {
         this.app = app;
         createPhysicsManager();
         createInteractionManager();
+        createYamlManager();
+        createGuiManager();
+        createScriptManager();
     }
     
     private void createPhysicsManager() {
@@ -36,6 +44,30 @@ public class UtilityManager {
     
     public InteractionManager getInteractionManager() {
         return interactionManager;
+    }
+    
+    private void createYamlManager() {
+        yamlManager = new YamlManager(app.getStateManager());
+    }
+    
+    public YamlManager getYamlManager() {
+        return yamlManager;
+    }
+    
+    private void createGuiManager() {
+        guiManager = new GuiManager(app);
+    }
+    
+    public GuiManager getGuiManager() {
+        return guiManager;
+    }
+    
+    private void createScriptManager() {
+        scriptManager = new ScriptManager(app.getStateManager());
+    }
+    
+    public ScriptManager getScriptManager() {
+        return scriptManager;
     }
     
 }

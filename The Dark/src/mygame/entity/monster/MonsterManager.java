@@ -9,6 +9,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
 import mygame.GameManager;
+import mygame.entity.EntityManager;
 import mygame.util.PhysicsManager;
 
 /**
@@ -17,29 +18,20 @@ import mygame.util.PhysicsManager;
  */
 public class MonsterManager {
     
-    private Node                monsterNode;
     private SimpleApplication   app;
     private PhysicsManager      physicsManager;
     private ArrayList<Monster>  monsters;
+    private EntityManager       em;
     
-    public MonsterManager(SimpleApplication app) {
-        this.app       = app;
-        physicsManager = app.getStateManager().getState(GameManager.class).getUtilityManager().getPhysicsManager();
-        monsters       = new ArrayList();
-        createMonsterNode();
+    public MonsterManager(SimpleApplication app, EntityManager em) {
+        this.app        = app;
+        physicsManager  = app.getStateManager().getState(GameManager.class).getUtilityManager().getPhysicsManager();
+        monsters        = new ArrayList();
+        this.em         = em;
     }
     
     public ArrayList<Monster> getMonsters() {
         return monsters;
-    }
-    
-    private void createMonsterNode() {
-        monsterNode = new Node();
-        app.getRootNode().attachChild(monsterNode);
-    }
-    
-    public Node getMonsterNode() {
-        return monsterNode;
     }
     
     public void createZombie() {
@@ -47,20 +39,13 @@ public class MonsterManager {
         zombie = new Zombie(app.getStateManager());
         zombie.createPhys();
         zombie.createFinderControl(app.getStateManager());
-        monsterNode.attachChild(zombie);
+        em.getEntityNode().attachChild(zombie);
         physicsManager.getPhysics().getPhysicsSpace().add(zombie.getPhys());
         zombie.getPhys().warp(new Vector3f(5,1,5));
         monsters.add(zombie);
     }    
     
     public void update(float tpf) {
-    
-        for(int i  = 0; i < monsters.size(); i++) {
-            
-            Monster currentMonster = monsters.get(i);
-            currentMonster.behave();
-                    
-        }
         
     }
     

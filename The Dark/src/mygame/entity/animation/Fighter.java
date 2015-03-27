@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package mygame.entity;
+package mygame.entity.animation;
 
 /**
  *
  * @author Bawb
  */
-public interface Npc {
+public interface Fighter extends Living {
     
-    public void behave();
+    public void attack();
     
 }

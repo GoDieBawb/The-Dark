@@ -77,7 +77,7 @@ public class Zombie extends Humanoid implements PhysicalEntity, Finder, Monster 
     }
 
     @Override
-    public void behave() {
+    public void act() {
         
         Player player = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer();
         float  dist   = player.getWorldTranslation().distance(getWorldTranslation());

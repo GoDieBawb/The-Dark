@@ -4,13 +4,11 @@
  */
 package mygame;
 
-import mygame.entity.player.Player;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import mygame.entity.EntityManager;
-import mygame.entity.monster.Zombie;
 import mygame.scene.SceneManager;
 import mygame.util.UtilityManager;
 
@@ -20,8 +18,6 @@ import mygame.util.UtilityManager;
  */
 public class GameManager extends AbstractAppState {
     
-    private Player             player;
-    private Zombie             zombie;
     private SimpleApplication  app;
     private UtilityManager     utilityManager;
     private EntityManager      entityManager;
@@ -31,8 +27,8 @@ public class GameManager extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         this.app = (SimpleApplication) app;
         createUtilityManager();
-        createEntityManager();
         createSceneManager();
+        createEntityManager();
         loadGame();
     }
     

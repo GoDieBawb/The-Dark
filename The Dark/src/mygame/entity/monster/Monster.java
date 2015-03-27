@@ -4,13 +4,13 @@
  */
 package mygame.entity.monster;
 
-import mygame.entity.Npc;
+import mygame.entity.Actor;
 
 /**
  *
  * @author Bawb
  */
-public interface Monster extends Npc {
+public interface Monster extends Actor {
     
     public void attack();
     

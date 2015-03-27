@@ -36,6 +36,7 @@ public class SceneManager {
         scene.getChild(0).addControl(rbc);
         physicsManager.getPhysics().getPhysicsSpace().add(rbc);
         app.getRootNode().attachChild(scene);
+        app.getStateManager().getState(GameManager.class).getEntityManager().initEntities(scene);
         initLights();
         initFog();
         

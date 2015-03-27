@@ -4,6 +4,7 @@
  */
 package mygame.entity;
 
+import mygame.entity.animation.Living;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.app.state.AppStateManager;
@@ -12,7 +13,7 @@ import com.jme3.app.state.AppStateManager;
  *
  * @author Bawb
  */
-public abstract class Humanoid extends Entity {
+public abstract class Humanoid extends Entity implements Living {
     
     private AnimControl     animControl;
     private AnimChannel     armChannel, legChannel;
@@ -25,6 +26,11 @@ public abstract class Humanoid extends Entity {
         legChannel.addFromRootBone("BottomSpine");
         armChannel.setAnim("ArmIdle");
         legChannel.setAnim("LegsIdle");
+    }
+    
+    @Override
+    public AnimControl getAnimControl() {
+        return animControl;
     }
     
     @Override
@@ -57,6 +63,10 @@ public abstract class Humanoid extends Entity {
             legChannel.setAnim("LegsIdle");
         }
         
+    }
+    
+    public void die() {
+    
     }
     
 }
