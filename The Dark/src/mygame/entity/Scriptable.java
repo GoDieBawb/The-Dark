@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.entity;
 
 import mygame.util.script.Script;
@@ -17,8 +13,6 @@ public interface Scriptable {
     public Script getScript();
     
     public void setProximity();
-    
-    public void setinProx(boolean newVal);
     
     public boolean inProx();
     

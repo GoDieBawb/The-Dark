@@ -55,12 +55,8 @@ public class Entity extends Node implements Scriptable {
             return;
     }
     
-    public void setinProx(boolean newVal) {
-        inProx = newVal;
-    }
-    
     public boolean inProx() {
-        return inProx;
+        return script.InProx();
     }
     
 }

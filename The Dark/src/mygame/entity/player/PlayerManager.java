@@ -6,7 +6,6 @@ package mygame.entity.player;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import mygame.GameManager;
 
 /**
@@ -31,10 +30,15 @@ public class PlayerManager {
     
     public void placePlayer() {
         GameManager gm = app.getStateManager().getState(GameManager.class);
-        app.getRootNode().attachChild(player);
+        gm.getSceneManager().getScene().attachChild(player);
         gm.getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().add(player.getPhys());
         gm.getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().setGravity(new Vector3f(0,-50,0));
-        player.getPhys().warp(gm.getSceneManager().getScene().getChild("StartSpot").getWorldTranslation());
+        
+        if(gm.getSceneManager().getScene().getChild("StartSpot") != null)
+            player.getPhys().warp(gm.getSceneManager().getScene().getChild("StartSpot").getWorldTranslation());
+        
+        else
+            player.getPhys().warp(new Vector3f(0,0,0));
     }
     
     public Player getPlayer() {
@@ -43,8 +47,7 @@ public class PlayerManager {
     
     public void update(float tpf) {
         player.getChaseControl().update(tpf);
-        player.getModel().setCullHint(Spatial.CullHint.Never);
-        player.getModel().updateModelBound();
+        player.getControlListener().update();
     }
     
 }

@@ -88,6 +88,7 @@ public class EntityManager {
                 entity.setLocalTranslation(model.getWorldTranslation());
                 entity.attachChild(model);
                 model.setLocalTranslation(0,0,0);
+                entityNode.attachChild(entity);
         
             }
             
@@ -102,6 +103,7 @@ public class EntityManager {
     }
     
     public void update(float tpf) {
+        
         monsterManager.update(tpf);
         playerManager.update(tpf);
         
@@ -112,8 +114,14 @@ public class EntityManager {
             if (currentEntity instanceof Actor)
                 ((Actor) currentEntity).act();
             
-            if (currentEntity.getScript() != null)
+            if (currentEntity.getScript() != null) {
                 currentEntity.getScript().checkForTriggers();
+            }
+            
+            if (playerManager.getPlayer().hasChecked() && entityNode.getQuantity()-1 == i) {
+                playerManager.getPlayer().setHasChecked(false);
+                playerManager.getPlayer().getHud().showAlert("Nothing", "There doesn't seem to be anything here.");
+            }
             
         }
         

@@ -34,7 +34,6 @@ public class GameManager extends AbstractAppState {
     
     private void loadGame() {
         sceneManager.initScene("Scenes/Town.j3o");
-        entityManager.getPlayerManager().placePlayer();
         entityManager.getMonsterManager().createZombie();
     }
     

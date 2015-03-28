@@ -11,7 +11,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.PointLight;
 import com.jme3.math.ColorRGBA;
-import com.jme3.post.FilterPostProcessor;
 import com.jme3.scene.Node;
 
 /**
@@ -37,6 +36,9 @@ public class SceneComposer extends AbstractAppState {
         Node scene     = (Node) app.getRootNode().getChild("Scene");
         Node lightNode = (Node) scene.getChild("Lights");
         
+        if(lightNode == null)
+            return;
+            
         for (int i = 0; i < lightNode.getQuantity(); i++) {
         
             if (lightNode.getChild(i).getName().equals("Point")) {
@@ -50,8 +52,6 @@ public class SceneComposer extends AbstractAppState {
             }
             
         }
-        
-        lightNode.removeFromParent();
         
     }    
     

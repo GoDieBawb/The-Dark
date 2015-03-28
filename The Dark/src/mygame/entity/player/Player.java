@@ -22,6 +22,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private float               speedMult;
     private float               strafeMult;
     private ChaseControl        chaseControl;
+    private ControlListener     controlListener;
     private AppStateManager     stateManager;
     private boolean             isDead;
     private int                 maxHealth;
@@ -41,6 +42,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         setStrafeMult(.5f);
         setName("Player");
         createInventory();
+        createControlListener();
     }
     
     @Override
@@ -126,6 +128,14 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     
     public boolean hasChecked() {
         return hasChecked;
+    }
+    
+    private void createControlListener() {
+        controlListener = new ControlListener(stateManager, this);
+    }
+    
+    public ControlListener getControlListener() {
+        return controlListener;
     }
     
 }

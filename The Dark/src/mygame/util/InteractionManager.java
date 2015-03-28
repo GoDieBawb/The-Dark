@@ -12,9 +12,6 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
-import mygame.GameManager;
-import mygame.entity.ai.Finder;
-import mygame.entity.monster.Monster;
 
 /**
  *
@@ -24,7 +21,7 @@ public class InteractionManager implements ActionListener {
     
     private InputManager      inputManager;
     private SimpleApplication app;
-    private boolean           up = false, down = false, left = false, right = false, click = false, cursor = false;
+    private boolean           up = false, down = false, left = false, right = false, click = false, interact = false, cursor = false;
     private boolean           up1 = false, down1 = false, left1 = false, right1 = false;
     private Vector2f          touchSpot;
     
@@ -41,12 +38,14 @@ public class InteractionManager implements ActionListener {
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Cursor", new KeyTrigger(KeyInput.KEY_E));
+        inputManager.addMapping("Interact", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(this, "Up");
         inputManager.addListener(this, "Down");
         inputManager.addListener(this, "Left");
         inputManager.addListener(this, "Right");
         inputManager.addListener(this, "Cursor");
+        inputManager.addListener(this, "Interact");
         inputManager.addListener(this, "Click");
         inputManager.addMapping("Up1", new KeyTrigger(KeyInput.KEY_UP));
         inputManager.addMapping("Down1", new KeyTrigger(KeyInput.KEY_DOWN));
@@ -72,21 +71,23 @@ public class InteractionManager implements ActionListener {
             left = isPressed;
         }
         
-        else if (binding .equals("Right")) {
+        else if (binding.equals("Right")) {
             right = isPressed;
         }
         
-        else if (binding .equals("Cursor")) {
+        else if (binding.equals("Cursor")) {
             cursor = isPressed;
         }        
         
-        else if (binding.equals("Click")) {
-            
-            click = isPressed;
-            
+        else if (binding.equals("Interact")) {
+            interact = isPressed;
         }
         
-        if (binding.equals("Up1")) {
+        else if (binding.equals("Click")) {
+            click = isPressed;
+        }
+        
+        else if (binding.equals("Up1")) {
             up1 = isPressed;
         }
         
@@ -164,6 +165,9 @@ public class InteractionManager implements ActionListener {
         
         else if (triggerName.equals("Click"))
             return click;
+        
+        else if (triggerName.equals("Interact"))
+            return interact;
         
         else if (triggerName.equals("Cursor"))
             return cursor;

@@ -1,4 +1,0 @@
-Start:
-  Script:
-    - chat "Hi there"
-    - debug "Howdy"

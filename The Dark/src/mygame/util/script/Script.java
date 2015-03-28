@@ -65,7 +65,7 @@ public class Script {
         }
         
         catch (Exception e) {
-            e.printStackTrace();
+            
         }
 
     }
@@ -87,12 +87,14 @@ public class Script {
         float distance  = player.getLocalTranslation().distance(entity.getLocalTranslation());
         Map<Object, Object> pm = (Map<Object, Object>)  map.get("Proximity");
 
-        if (proximity > distance) 
+        if (proximity > distance) {
             inProx = true;
-
-        if (proximity < distance)  
+        }
+            
+        if (proximity < distance) {
             inProx = false;
-
+            player.getHud().getInfoText().hide();
+        }
 
         if (inProx && !enteredProx) {
 
@@ -112,10 +114,11 @@ public class Script {
 
     }
   
+    public boolean InProx() {
+        return inProx;
+    }
+    
     private void checkAction() {
-
-        if (entity.getParent().getChild(entity.getParent().getQuantity()-1) == entity)
-        player.setHasChecked(false);
 
         if (inProx) {
 
@@ -124,7 +127,7 @@ public class Script {
             scriptManager.getScriptParser().parse(interactScript, entity);
 
         }
-
+        
     }
   
     private void loopAction() {
@@ -132,6 +135,7 @@ public class Script {
         Map<Object, Object> wm          = (Map<Object, Object>)  map.get("While");
         ArrayList whileScript           = (ArrayList) wm.get("Script");
         scriptManager.getScriptParser().parse(whileScript, entity);
+        
 
     }    
     
@@ -141,8 +145,14 @@ public class Script {
             checkAction();
         }
         
-        proximityAction();
-        loopAction();
+        try {
+            proximityAction();
+            loopAction();
+        }
+        
+        catch(Exception e) {
+        
+        }
         
     }    
     
