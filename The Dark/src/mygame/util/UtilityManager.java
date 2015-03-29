@@ -19,6 +19,7 @@ public class UtilityManager {
     private YamlManager        yamlManager;
     private GuiManager         guiManager;
     private ScriptManager      scriptManager;
+    private AudioManager       audioManager;
     private SimpleApplication  app;
     
     public UtilityManager(SimpleApplication app) {
@@ -28,6 +29,7 @@ public class UtilityManager {
         createYamlManager();
         createGuiManager();
         createScriptManager();
+        createAudioManager();
     }
     
     private void createPhysicsManager() {
@@ -68,6 +70,14 @@ public class UtilityManager {
     
     public ScriptManager getScriptManager() {
         return scriptManager;
+    }
+    
+    private void createAudioManager() {
+        audioManager = new AudioManager(app.getStateManager());
+    }
+    
+    public AudioManager getAudioManager() {
+        return audioManager;
     }
     
 }

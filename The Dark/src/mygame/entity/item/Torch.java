@@ -20,17 +20,19 @@ public class Torch  extends Entity {
     private TorchLight   torchLight;
     
     public Torch(SimpleApplication app, Node scene) {
-        torchControl = new TorchControl();
+        torchControl = new TorchControl(app.getStateManager(), this);
         torchLight   = new TorchLight();
         addControl(torchControl);
         torchLight.setPosition(getWorldTranslation());
         scene.addLight(torchLight);
         torchLight.setIsLit(true);
+        torchControl.setFirstLit();
     }
     
     public void Light() {
         ((ParticleEmitter) getModel().getChild("Flame")).setEnabled(true);
         torchLight.setIsLit(true);
+        torchControl.setFirstLit();
     }
     
     public void Extinguish() {
@@ -39,6 +41,7 @@ public class Torch  extends Entity {
         torchLight.setIsLit(false);
         torchLight.setRadius(0);
         torchLight.setColor(ColorRGBA.Black);
+        torchControl.stopLight();
     }
     
     public ParticleEmitter getFlame() {

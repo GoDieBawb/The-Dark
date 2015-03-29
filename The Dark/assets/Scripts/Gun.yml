@@ -1,0 +1,26 @@
+Proximity:
+  Distance: 1
+  Enter:
+    - if player.inventory.contains#Gun
+    - chat "Just one gun"
+    
+    - else
+    - chat "The weapon sat here"
+    
+Interact:
+  Script:
+    - if player.inventory.contains#Gun
+    - chat "An empty table"
+    
+    - else
+    - chat "You pick up the gun"
+    - equipright
+    - clearrotation
+    - setrotation 0 179 0
+    - scale 1
+    - give Gun
+
+Start:
+  Script:
+    - if player.inventory.contains#Gun
+    - hide

@@ -51,6 +51,8 @@ public class SceneManager {
         if (scene.getUserData("Interior") == null)
             app.getViewPort().addProcessor(ppf);
         
+        System.out.println(scene.getName());
+        
     }
     
     public void removeScene() {

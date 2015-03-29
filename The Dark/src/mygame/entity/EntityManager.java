@@ -9,6 +9,7 @@ import com.jme3.scene.Node;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import mygame.GameManager;
+import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.entity.monster.MonsterManager;
 import mygame.entity.player.PlayerManager;
@@ -73,6 +74,13 @@ public class EntityManager {
                     if (model.getUserData("Type").equals("Torch"))
                         entity = new Torch(app, scene);
                     
+                    else if (model.getUserData("Type").equals("Gun"))
+                        entity = new Gun(app.getStateManager()
+                                        .getState(GameManager.class)
+                                            .getUtilityManager()
+                                                .getAudioManager()
+                                                    .getSound("Gunshot"));
+                    
                 }
                 
                 if (model.getUserData("Script") != null) {
@@ -118,6 +126,10 @@ public class EntityManager {
                e.getModel().setLocalTranslation(0,0,0);
                entityNode.attachChild(e);
                e.getScript().initialize();
+               
+               if(e instanceof Gun)
+                   ((Gun)e).initModel();
+               
            }
            
            else {

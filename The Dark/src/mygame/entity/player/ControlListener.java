@@ -6,6 +6,7 @@ package mygame.entity.player;
 
 import com.jme3.app.state.AppStateManager;
 import mygame.GameManager;
+import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.util.InteractionManager;
 
@@ -17,7 +18,7 @@ public class ControlListener {
     
     private InteractionManager im;
     private Player             player;
-    private boolean            interact, torch;
+    private boolean            interact, torch, shoot;
     
     public ControlListener(AppStateManager stateManager, Player player) {
         im          = stateManager.getState(GameManager.class).getUtilityManager().getInteractionManager();
@@ -31,8 +32,15 @@ public class ControlListener {
             }
             
             else if (interact) {
-                player.setHasChecked(interact);
+                
+                if(player.getHud().getInfoText().getIsVisible())
+                    player.getHud().getInfoText().hide();
+                
+                else
+                    player.setHasChecked(interact);
+                
                 interact      = false;
+                
             }
             
             if (im.getIsPressed("Torch")) {
@@ -51,6 +59,21 @@ public class ControlListener {
                     t.Extinguish();
                 else
                     t.Light();
+                    
+            }
+            
+            if (im.getIsPressed("Click")) {
+                shoot = true;
+            }
+            
+            else if (shoot) {
+                
+                shoot  = false;
+                if (player.getChild("Gun") == null)
+                    return;
+                
+                Gun g = ((Gun) player.getChild("Gun"));
+                g.fire();
                     
             }
             

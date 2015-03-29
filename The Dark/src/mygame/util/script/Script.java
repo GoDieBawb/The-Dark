@@ -21,7 +21,7 @@ public class Script {
     
     private Entity          entity;
     private ScriptManager   scriptManager;
-    private int             proximity;
+    private float           proximity;
     private boolean         inProx;
     private boolean         enteredProx;
     private Player          player;

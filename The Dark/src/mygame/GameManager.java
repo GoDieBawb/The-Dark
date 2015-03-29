@@ -29,7 +29,20 @@ public class GameManager extends AbstractAppState {
         createUtilityManager();
         createSceneManager();
         createEntityManager();
+        initSounds();
         loadGame();
+    }
+    
+    private void initSounds() {
+    
+        utilityManager.getAudioManager().loadSound("Ambience" , "Sounds/Organ.ogg", true);
+        utilityManager.getAudioManager().loadSound("Gunshot", "Sounds/Gunshot.ogg", false);
+        utilityManager.getAudioManager().loadSound("Empty", "Sounds/Empty.ogg", false);
+        utilityManager.getAudioManager().loadSound("Footsteps", "Sounds/Footsteps.wav", true);
+        utilityManager.getAudioManager().loadSound("Door", "Sounds/Door.ogg", false);
+        utilityManager.getAudioManager().getSound("Ambience").setVolume(.8f);
+        utilityManager.getAudioManager().getSound("Ambience").play();
+        
     }
     
     private void loadGame() {

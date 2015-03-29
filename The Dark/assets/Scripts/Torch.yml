@@ -19,5 +19,9 @@ Interact:
 
 Start:
   Script:
-    - if player.inventory.contains#Torch
-    - hide
+    - if player.inventory.contains#Start.!
+    - give Start
+    - chat "You've left the torch burning... How could you have forgotten?"
+
+    - elseif player.inventory.contains#Torch
+    - remove

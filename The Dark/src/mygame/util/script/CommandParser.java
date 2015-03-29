@@ -16,6 +16,8 @@ import mygame.entity.Entity;
 import mygame.entity.animation.Living;
 import mygame.entity.Scriptable;
 import mygame.entity.animation.Fighter;
+import mygame.entity.item.Gun;
+import mygame.entity.item.Torch;
 import mygame.entity.player.Player;
 
 /**
@@ -178,7 +180,8 @@ public class CommandParser {
                 float xRot = Float.valueOf(args[1]);
                 float yRot = Float.valueOf(args[2]);
                 float zRot = Float.valueOf(args[3]);
-                ((Entity) entity).getModel().rotate(xRot,yRot,zRot);
+                ((Entity) entity).setLocalRotation(new Quaternion(0,0,0,1));
+                ((Entity) entity).rotate(xRot,yRot,zRot);
                 
             }            
             
@@ -186,6 +189,11 @@ public class CommandParser {
                 
                 ((Entity) entity).getModel().setLocalRotation(new Quaternion(0,0,0,1));
                 
+            }
+            
+            else if (command.equals("scale")) {
+                float scale = Float.valueOf(args[1]);
+                entity.scale(scale);
             }
             
             else if (command.equals("drop")) {
@@ -283,12 +291,26 @@ public class CommandParser {
             }              
             
             else if (command.equals("remove")) {
-                entity.getModel().removeFromParent();
+                entity.setLocalTranslation(0,-15,0);
+                entity.removeFromParent();
+                
+                if(entity instanceof Torch)
+                    ((Torch) entity).Extinguish();
+                
             }
             
             else if (command.equals("equipleft")) {
                 player.attachChild(entity);
-                entity.setLocalTranslation(.5f,.6f,.7f);
+                entity.setLocalTranslation(.25f,.6f,.1f);
+            }
+            
+            else if (command.equals("equipright")) {
+                player.attachChild(entity);
+                entity.setLocalTranslation(-.25f,.6f,.1f);
+                
+                if(entity instanceof Gun)
+                    ((Gun) entity).setEquipped(true);
+                
             }
             
             else if (command.equals("show")) {
