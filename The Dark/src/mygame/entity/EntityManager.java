@@ -78,20 +78,19 @@ public class EntityManager {
                         entity = new Gun(app.getStateManager()
                                         .getState(GameManager.class)
                                             .getUtilityManager()
-                                                .getAudioManager()
-                                                    .getSound("Gunshot"));
+                                                .getAudioManager());
                     
                 }
                 
                 if (model.getUserData("Script") != null) {
 
-                    String filePath = "Assets/Scripts/" + model
+                    String filePath = "Scripts/" + model
                                         .getUserData("Script") + ".yml";
                     
                     LinkedHashMap map   = (LinkedHashMap) app.getStateManager()
                                         .getState(GameManager.class)
                                             .getUtilityManager().getYamlManager()
-                                                .loadYaml(filePath);
+                                                .loadYamlAsset(filePath, app.getStateManager());
                     
                     Script script = new Script(entity, app.getStateManager(), map);
                     

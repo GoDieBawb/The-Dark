@@ -4,11 +4,11 @@
  */
 package mygame.entity.player;
 
+import com.jme3.app.SimpleApplication;
 import mygame.control.ChaseControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
 import java.util.ArrayList;
-import java.util.HashMap;
 import mygame.entity.Humanoid;
 import mygame.entity.Vulnerable;
 import mygame.entity.PhysicalEntity;
@@ -135,6 +135,15 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     
     public ControlListener getControlListener() {
         return controlListener;
+    }
+    
+    @Override
+    public void die() {
+        super.die();
+        ((SimpleApplication)stateManager.getApplication()).getRootNode().detachAllChildren();
+        inventory = new ArrayList();
+        detachAllChildren();
+        attachChild(getModel());
     }
     
 }

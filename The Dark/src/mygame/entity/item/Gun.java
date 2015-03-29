@@ -6,6 +6,7 @@ package mygame.entity.item;
 
 import com.jme3.audio.AudioNode;
 import mygame.entity.Entity;
+import mygame.util.AudioManager;
 
 /**
  *
@@ -15,11 +16,13 @@ public class Gun extends Entity {
     
     private GunControl gunControl;
     private boolean    equipped;
-    private AudioNode  audioNode;
+    private AudioNode  gunShot;
+    private AudioNode  reload;
     
-    public Gun(AudioNode audioNode) {
-        this.audioNode = audioNode;
-        gunControl     = new GunControl(this);
+    public Gun(AudioManager am) {
+        gunShot    = am.getSound("Gunshot");
+        reload     = am.getSound("Reloading");
+        gunControl = new GunControl(this);
         addControl(gunControl);
     }
     
@@ -35,14 +38,19 @@ public class Gun extends Entity {
         gunControl.initSmoke();
     }
     
+    public void startReloading() {
+        reload.setTimeOffset(1);
+        reload.play();
+    }
+    
     public void fire() {
     
-        if(gunControl.isReloading()) {
+        if(gunControl.hasShot()) {
         
         }
         
         else {
-            audioNode.playInstance();
+            gunShot.playInstance();
             gunControl.shootGun();
         }
         

@@ -40,7 +40,9 @@ public class GameManager extends AbstractAppState {
         utilityManager.getAudioManager().loadSound("Empty", "Sounds/Empty.ogg", false);
         utilityManager.getAudioManager().loadSound("Footsteps", "Sounds/Footsteps.wav", true);
         utilityManager.getAudioManager().loadSound("Door", "Sounds/Door.ogg", false);
-        utilityManager.getAudioManager().getSound("Ambience").setVolume(.8f);
+        utilityManager.getAudioManager().loadSound("Scream", "Sounds/Scream.wav", false);
+        utilityManager.getAudioManager().loadSound("Reloading", "Sounds/Reloading.wav", false);
+        utilityManager.getAudioManager().getSound("Ambience").setVolume(.6f);
         utilityManager.getAudioManager().getSound("Ambience").play();
         
     }

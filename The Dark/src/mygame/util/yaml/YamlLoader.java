@@ -18,7 +18,6 @@ public class YamlLoader implements AssetLoader {
         Yaml yaml              = new Yaml();
         InputStream openStream = assetInfo.openStream();
         Object obj             = yaml.load(openStream);
-        openStream.close();
         return obj;
     }
     

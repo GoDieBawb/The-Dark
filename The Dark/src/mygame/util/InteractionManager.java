@@ -22,7 +22,7 @@ public class InteractionManager implements ActionListener {
     private InputManager      inputManager;
     private SimpleApplication app;
     private boolean           up = false, down = false, left = false, right = false, click = false, interact = false, cursor = false;
-    private boolean           up1 = false, down1 = false, left1 = false, right1 = false, torch = false;
+    private boolean           up1 = false, down1 = false, left1 = false, right1 = false, torch = false, debugLight;
     private Vector2f          touchSpot;
     
     public InteractionManager(SimpleApplication app) {
@@ -52,11 +52,14 @@ public class InteractionManager implements ActionListener {
         inputManager.addMapping("Left1", new KeyTrigger(KeyInput.KEY_LEFT));
         inputManager.addMapping("Right1", new KeyTrigger(KeyInput.KEY_RIGHT));
         inputManager.addMapping("Torch", new KeyTrigger(KeyInput.KEY_F));
+        inputManager.addMapping("DebugLight", new KeyTrigger(KeyInput.KEY_L));
         inputManager.addListener(this, "Up1");
         inputManager.addListener(this, "Down1");
         inputManager.addListener(this, "Left1");
         inputManager.addListener(this, "Right1");
         inputManager.addListener(this, "Torch");
+        inputManager.addListener(this, "DebugLight");
+        
     }
     
     public void onAction(String binding, boolean isPressed, float tpf) {
@@ -108,6 +111,10 @@ public class InteractionManager implements ActionListener {
         else if (binding .equals("Torch")) {
             torch = isPressed;
         }      
+        
+        else if (binding .equals("DebugLight")) {
+            debugLight = isPressed;
+        }     
         
     }
     
@@ -192,6 +199,9 @@ public class InteractionManager implements ActionListener {
         
         else if (triggerName.equals("Torch"))
             return torch;
+        
+        else if (triggerName.equals("DebugLight"))
+            return debugLight;
         
         else
             return false;

@@ -12,6 +12,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import mygame.GameManager;
 import mygame.entity.player.Player;
+import mygame.util.AudioManager;
 
 /**
  *
@@ -37,16 +38,25 @@ public class TorchControl extends AbstractControl {
             return;
         }
         
-        Long litTime    = System.currentTimeMillis()/1000 - firstLit/1000;
-        Node      scene = stateManager.getState(GameManager.class).getSceneManager().getScene();
-        AudioNode steps = stateManager.getState(GameManager.class).getUtilityManager().getAudioManager().getSound("Footsteps");
-        AudioNode door  = stateManager.getState(GameManager.class).getUtilityManager().getAudioManager().getSound("Door"); 
+        Long litTime      = System.currentTimeMillis()/1000 - firstLit/1000;
+        AudioManager am   = stateManager.getState(GameManager.class).getUtilityManager().getAudioManager();
+        Node      scene   = stateManager.getState(GameManager.class).getSceneManager().getScene();
+        AudioNode steps   = am.getSound("Footsteps");
+        AudioNode door    = am.getSound("Door"); 
+        AudioNode scream  = am.getSound("Scream"); 
         
         if(scene.getName().equals("Town")) {
             
             steps.stop();
             
-            if (litTime > 50 && step==4) {
+            if (litTime > 60 && step ==5) {
+                scream.setVolume(100f);
+                scream.play();
+                player.die();
+                steps.stop();
+            }
+            
+            else if (litTime > 50 && step==4) {
                 player.getHud().showAlert("", "It's Behind You");
                 step = 5;
             }        
@@ -76,7 +86,15 @@ public class TorchControl extends AbstractControl {
             
         }
 
-        if (litTime > 50 && step==4) {
+        if (litTime > 60 && step ==5) {
+            player.getHud().showAlert("", "It Kills");
+            scream.setVolume(100f);
+            scream.playInstance();
+            steps.stop();
+            player.die();
+        }
+        
+        else if (litTime > 50 && step==4) {
             player.getHud().showAlert("", "It's Behind You");
             steps.play();
             steps.setVolume(4f);

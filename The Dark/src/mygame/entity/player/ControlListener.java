@@ -4,7 +4,10 @@
  */
 package mygame.entity.player;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.light.AmbientLight;
+import com.jme3.math.ColorRGBA;
 import mygame.GameManager;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
@@ -18,11 +21,17 @@ public class ControlListener {
     
     private InteractionManager im;
     private Player             player;
-    private boolean            interact, torch, shoot;
+    private boolean            interact, torch, shoot, debugLight;
+    private AmbientLight       light;
+    private boolean            isLit;
+    private AppStateManager    stateManager;
     
     public ControlListener(AppStateManager stateManager, Player player) {
+        this.stateManager = stateManager;
         im          = stateManager.getState(GameManager.class).getUtilityManager().getInteractionManager();
         this.player = player;
+        light       =  new AmbientLight();
+        light.setColor(ColorRGBA.White.mult(3));
     }
     
     private void updateKeys() {
@@ -55,10 +64,14 @@ public class ControlListener {
                 
                 Torch t = ((Torch) player.getChild("Torch"));
                 
-                if(t.isLit())
+                if(t.isLit()) {
                     t.Extinguish();
-                else
+                }
+                
+                else {
+                    player.getHud().showAlert("Light", "You light the torch...");
                     t.Light();
+                }    
                     
             }
             
@@ -74,6 +87,27 @@ public class ControlListener {
                 
                 Gun g = ((Gun) player.getChild("Gun"));
                 g.fire();
+                    
+            }
+            
+            if (im.getIsPressed("DebugLight")) {
+                debugLight = true;
+            }
+            
+            else if (debugLight) {
+                
+                debugLight  = false;
+
+                if (isLit) {
+                    ((SimpleApplication) stateManager.getApplication()).getRootNode().removeLight(light);
+                    isLit = false;
+                }
+                
+                else {
+                    ((SimpleApplication) stateManager.getApplication()).getRootNode().addLight(light);
+                    isLit = true;
+                }
+                
                     
             }
             

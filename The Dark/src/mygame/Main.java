@@ -2,6 +2,7 @@ package mygame;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
+import com.jme3.system.AppSettings;
 
 /**
  * test
@@ -11,13 +12,16 @@ public class Main extends SimpleApplication {
 
     public static void main(String[] args) {
         Main app = new Main();
+        //AppSettings settings = new AppSettings(true);
+        //settings.setFullscreen(true);
+        //app.setSettings(settings);
         app.start();
     }
 
     @Override
     public void simpleInitApp() {
         setDisplayStatView(false);
-        setShowSettings(false);
+        //setShowSettings(false);
         setDisplayFps(false);
         getFlyByCamera().setEnabled(false);
         getStateManager().attach(new GameManager());

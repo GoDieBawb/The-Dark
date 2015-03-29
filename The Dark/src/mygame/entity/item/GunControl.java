@@ -89,8 +89,8 @@ public class GunControl extends AbstractControl {
         
     }
     
-    public boolean isReloading() {
-        return reloading;
+    public boolean hasShot() {
+        return hasShot;
     }
     
     @Override
@@ -103,6 +103,7 @@ public class GunControl extends AbstractControl {
         
             if (!reloading) {
                 reloading = true;
+                gun.startReloading();
                 smoke.setParticlesPerSec(0);
             }
             
