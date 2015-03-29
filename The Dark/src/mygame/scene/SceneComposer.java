@@ -4,6 +4,7 @@
  */
 package mygame.scene;
 
+import mygame.entity.item.TorchLight;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -12,6 +13,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.PointLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,6 +22,7 @@ import com.jme3.scene.Node;
 public class SceneComposer extends AbstractAppState {
     
     private SimpleApplication app;
+    private ArrayList<TorchLight> lights;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -38,7 +41,9 @@ public class SceneComposer extends AbstractAppState {
         
         if(lightNode == null)
             return;
-            
+        
+        lights       = new ArrayList();
+        
         for (int i = 0; i < lightNode.getQuantity(); i++) {
         
             if (lightNode.getChild(i).getName().equals("Point")) {
@@ -51,12 +56,28 @@ public class SceneComposer extends AbstractAppState {
             
             }
             
+            else if (lightNode.getChild(i).getName().equals("Torch")) {
+            
+                TorchLight tl = new TorchLight();
+                scene.addLight(tl);
+                tl.setColor(ColorRGBA.White.mult(1f));
+                tl.setRadius(5);
+                tl.setPosition(lightNode.getChild(i).getWorldTranslation());
+                lights.add(tl);
+                
+            }
+            
         }
         
     }    
     
     @Override
     public void update(float tpf) {
+        
+        for(int i = 0;  i < lights.size(); i++) {
+            lights.get(i).update(tpf);
+        }        
+        
     }
     
     @Override

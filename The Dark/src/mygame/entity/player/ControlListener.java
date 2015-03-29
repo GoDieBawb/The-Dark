@@ -6,6 +6,7 @@ package mygame.entity.player;
 
 import com.jme3.app.state.AppStateManager;
 import mygame.GameManager;
+import mygame.entity.item.Torch;
 import mygame.util.InteractionManager;
 
 /**
@@ -16,32 +17,42 @@ public class ControlListener {
     
     private InteractionManager im;
     private Player             player;
-    private Long               lastChecked;
-    private boolean            isDown;
+    private boolean            interact, torch;
     
     public ControlListener(AppStateManager stateManager, Player player) {
         im          = stateManager.getState(GameManager.class).getUtilityManager().getInteractionManager();
         this.player = player;
-        lastChecked = 0L;
     }
     
     private void updateKeys() {
     
-        Long cooldown = System.currentTimeMillis() / 1000 - lastChecked / 1000;
-        
-        if(cooldown > 2) {
-            
             if (im.getIsPressed("Interact")) {
-                isDown = true;
+                interact = true;
             }
             
-            else if (isDown) {
-                player.setHasChecked(isDown);
-                lastChecked = System.currentTimeMillis();
-                isDown      = false;
+            else if (interact) {
+                player.setHasChecked(interact);
+                interact      = false;
             }
             
-        }
+            if (im.getIsPressed("Torch")) {
+                torch = true;
+            }
+            
+            else if (torch) {
+                
+                torch         = false;
+                if (player.getChild("Torch") == null)
+                    return;
+                
+                Torch t = ((Torch) player.getChild("Torch"));
+                
+                if(t.isLit())
+                    t.Extinguish();
+                else
+                    t.Light();
+                    
+            }
             
     }
     

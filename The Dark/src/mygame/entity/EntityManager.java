@@ -6,10 +6,13 @@ package mygame.entity;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.scene.Node;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import mygame.GameManager;
+import mygame.entity.item.Torch;
 import mygame.entity.monster.MonsterManager;
 import mygame.entity.player.PlayerManager;
+import mygame.scene.SceneManager;
 import mygame.util.script.Script;
 
 /**
@@ -22,6 +25,7 @@ public class EntityManager {
     private MonsterManager    monsterManager;
     private Node              entityNode;
     private SimpleApplication app;
+    private ArrayList<Entity> sceneEntities;
     
     public EntityManager(SimpleApplication app) {
         this.app = app;
@@ -45,8 +49,10 @@ public class EntityManager {
         return monsterManager;
     }
     
-    public void initEntities(Node scene) {
+    public void initEntities(SceneManager sceneManager) {
 
+        Node scene = sceneManager.getScene();
+        
         entityNode = (Node) scene.getChild("Entity Node");
         
         if(entityNode == null) {
@@ -55,6 +61,8 @@ public class EntityManager {
         
         else {
             
+            sceneEntities = new ArrayList();
+            
             for (int i = 0; i < entityNode.getQuantity(); i++) {
                 
                 Entity entity = new Entity();
@@ -62,10 +70,9 @@ public class EntityManager {
                        
                 if (model.getUserData("Type") != null) {
                     
-                }
-                
-                else {
-                    entity = new Entity();
+                    if (model.getUserData("Type").equals("Torch"))
+                        entity = new Torch(app, scene);
+                    
                 }
                 
                 if (model.getUserData("Script") != null) {
@@ -85,17 +92,42 @@ public class EntityManager {
                     
                 }
                 
-                entity.setLocalTranslation(model.getWorldTranslation());
-                entity.attachChild(model);
-                model.setLocalTranslation(0,0,0);
-                entityNode.attachChild(entity);
-        
+                entity.setModel(model);
+                entity.setName(model.getName());
+                sceneEntities.add(entity);
+
             }
+            
+            cleanEntityNode();
             
         }
         
         scene.attachChild(entityNode);
+        sceneManager.initLights();
         
+    }
+    
+    private void cleanEntityNode() {
+        
+        for (int i = 0; i < sceneEntities.size(); i++) {
+            
+           if(sceneEntities.get(i) instanceof Entity) {
+               Entity e = (Entity) sceneEntities.get(i);
+               e.setLocalTranslation(e.getModel().getWorldTranslation());
+               e.attachChild(e.getModel());
+               e.getModel().setLocalTranslation(0,0,0);
+               entityNode.attachChild(e);
+               e.getScript().initialize();
+           }
+           
+           else {
+               entityNode.getChild(i).removeFromParent();
+           }
+           
+        }
+        
+        sceneEntities = null;
+    
     }
     
     public Node getEntityNode() {
@@ -109,8 +141,13 @@ public class EntityManager {
         
         for (int i = 0; i < entityNode.getQuantity(); i++) {
         
-            Entity currentEntity = (Entity) entityNode.getChild(i);
+            if (!(entityNode.getChild(i) instanceof Entity)) {
+                cleanEntityNode();
+                return;
+            }
             
+            Entity currentEntity = (Entity) entityNode.getChild(i);
+                
             if (currentEntity instanceof Actor)
                 ((Actor) currentEntity).act();
             
@@ -119,8 +156,8 @@ public class EntityManager {
             }
             
             if (playerManager.getPlayer().hasChecked() && entityNode.getQuantity()-1 == i) {
-                playerManager.getPlayer().setHasChecked(false);
                 playerManager.getPlayer().getHud().showAlert("Nothing", "There doesn't seem to be anything here.");
+                playerManager.getPlayer().setHasChecked(false);
             }
             
         }

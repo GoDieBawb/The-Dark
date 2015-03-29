@@ -1,0 +1,23 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - if player.inventory.contains#Torch
+    - chat "An Empty Table"
+
+    - else
+    - chat "A single torch lights the world"
+
+Interact:
+  Script:
+    - if player.inventory.contains#Torch
+    - chat "This Table is Empty"
+
+    - else
+    - equipleft
+    - give Torch
+    - chat "You remove the torch from the table"
+
+Start:
+  Script:
+    - if player.inventory.contains#Torch
+    - hide

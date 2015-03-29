@@ -33,8 +33,7 @@ public class GameManager extends AbstractAppState {
     }
     
     private void loadGame() {
-        sceneManager.initScene("Scenes/Town.j3o");
-        entityManager.getMonsterManager().createZombie();
+        sceneManager.initScene("Scenes/DarkHouse.j3o");
     }
     
     private void createEntityManager() {
@@ -64,6 +63,7 @@ public class GameManager extends AbstractAppState {
     @Override
     public void update(float tpf) {
         entityManager.update(tpf);
+        sceneManager.update(tpf);
     }
     
 }

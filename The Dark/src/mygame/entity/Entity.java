@@ -24,18 +24,26 @@ public class Entity extends Node implements Scriptable {
         attachChild(model);
     }
     
+    public void setModel(Node model) {
+        this.model = model;
+    }
+    
     public Node getModel() {
         return model;
     }
     
     public void hide() {
         isHid =  true;
-        model.setLocalTranslation(0, 0, 0);    
+        model.setLocalTranslation(0, -15, 0);
+    }
+    
+    public void setIsHid(boolean newVal) {
+        isHid = newVal;
     }
     
     public void show() {
         isHid =  false;
-        model.setLocalTranslation(0, -15, 0);
+        model.setLocalTranslation(0, 0, 0);
     }
     
     public boolean isHid() {

@@ -76,7 +76,7 @@ public class Hud {
     public AlertBox getInfoText() {
         return infoText;
     }
-
+    
     public void update(float tpf) {
         
         if (hasAlert) {

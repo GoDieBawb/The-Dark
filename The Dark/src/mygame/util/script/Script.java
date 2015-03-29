@@ -32,10 +32,9 @@ public class Script {
         this.map      = map;     
         player        = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer();
         scriptManager =  stateManager.getState(GameManager.class).getUtilityManager().getScriptManager();
-        initialize();
     }
     
-    private void initialize() {
+    public void initialize() {
         setProximity();
         startAction();
     }
@@ -93,7 +92,6 @@ public class Script {
             
         if (proximity < distance) {
             inProx = false;
-            player.getHud().getInfoText().hide();
         }
 
         if (inProx && !enteredProx) {
@@ -106,6 +104,7 @@ public class Script {
 
         if (!inProx && enteredProx) {
 
+            player.getHud().getInfoText().hide();
             enteredProx          = false;
             ArrayList exitScript = (ArrayList) pm.get("Exit");
             scriptManager.getScriptParser().parse(exitScript, entity);
@@ -120,12 +119,22 @@ public class Script {
     
     private void checkAction() {
 
-        if (inProx) {
+        try {
+            
+            if (inProx) {
 
-            Map<Object, Object> im   = (Map<Object, Object>)  map.get("Interact");
-            ArrayList interactScript = (ArrayList) im.get("Script");
-            scriptManager.getScriptParser().parse(interactScript, entity);
+                Map<Object, Object> im   = (Map<Object, Object>)  map.get("Interact");
+                ArrayList interactScript = (ArrayList) im.get("Script");
+                scriptManager.getScriptParser().parse(interactScript, entity);
+                player.setHasChecked(false);
+                player.getHud().getInfoText().hide();
 
+            }
+            
+        }
+                
+        catch(Exception e) {
+        
         }
         
     }

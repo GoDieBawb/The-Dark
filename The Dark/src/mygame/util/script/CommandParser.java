@@ -36,7 +36,7 @@ public class CommandParser {
     
     }
     
-    public void parse(ArrayList commands, Scriptable entity) {
+    public void parse(ArrayList commands, Entity entity) {
         Player  player  = gm.getEntityManager().getPlayerManager().getPlayer();
         boolean go      = true;
         boolean met     = false;
@@ -99,8 +99,9 @@ public class CommandParser {
             
             }
             
-            if( !go)
+            else if(!go) {
                 continue;
+            }
             
             else if (command.equals("debug")) {
                 
@@ -195,14 +196,13 @@ public class CommandParser {
             
             else if (command.equals("give")) {
                 
-                player.getInventory().put(args[1], 1);
+                player.getInventory().add(args[1]);
             
             }
             
             else if (command.equals("take")) {
                 
                 player.getInventory().remove(args[1]);
-                System.out.println(player.getInventory());
             
             }
             
@@ -267,7 +267,6 @@ public class CommandParser {
                     }
                     
                     else {
-                        
                         Entity ent = (Entity) parser.parseTag(stateManager, args[1], entity);
                         ent.hide();
                         //stateManager.getState(SceneManager.class).addPhys();
@@ -277,14 +276,20 @@ public class CommandParser {
                 }    
                
                 catch (Exception e) {
-                    
-                    ((Entity) entity).hide();
-                    //entity.behavior.setIsHid(true);
-                    //stateManager.getState(SceneManager.class).addPhys();
-                
+                    entity.setIsHid(true);
+                    entity.getChild(0).setLocalTranslation(0,-15,0);
                 }      
                 
             }              
+            
+            else if (command.equals("remove")) {
+                entity.getModel().removeFromParent();
+            }
+            
+            else if (command.equals("equipleft")) {
+                player.attachChild(entity);
+                entity.setLocalTranslation(.5f,.6f,.7f);
+            }
             
             else if (command.equals("show")) {
             

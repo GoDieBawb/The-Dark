@@ -7,11 +7,11 @@ package mygame.entity.player;
 import mygame.control.ChaseControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
+import java.util.ArrayList;
 import java.util.HashMap;
 import mygame.entity.Humanoid;
 import mygame.entity.Vulnerable;
 import mygame.entity.PhysicalEntity;
-import mygame.entity.item.Item;
 
 /**
  *
@@ -27,9 +27,8 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private boolean             isDead;
     private int                 maxHealth;
     private int                 currentHealth;
-    private HashMap             inventory;
+    private ArrayList<String>   inventory;
     private Hud                 hud;
-    private Item                selectedItem;
     private boolean             hasChecked;
     private BetterCharacterControl phys;
     
@@ -104,10 +103,10 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     }
     
     private void createInventory() {
-        inventory = new HashMap();
+        inventory = new ArrayList();
     }
     
-    public HashMap getInventory() {
+    public ArrayList<String> getInventory() {
         return inventory;
     }
     

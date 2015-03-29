@@ -32,24 +32,30 @@ public class ChaseCameraManager {
         //Creates a new chase cam and attached it to the player.model for the game
         cam = new ChaseCamera(this.app.getCamera(), player, this.app.getInputManager());
         cam.setMinDistance(0.5f);
-        cam.setMaxDistance(3);
-        cam.setDefaultDistance(3);
+        cam.setMaxDistance(.5f);
+        cam.setDefaultDistance(.5f);
         cam.setDragToRotate(false);
         cam.setDownRotateOnCloseViewOnly(false);
-        cam.setRotationSpeed(5f);
-        cam.setLookAtOffset(player.getLocalTranslation().add(0, .8f, 0));
-        cam.setDefaultVerticalRotation(.145f);
-        cam.setMaxVerticalRotation(.145f);
-        cam.setMinVerticalRotation(.145f);
+        cam.setRotationSpeed(2f);
+        cam.setLookAtOffset(player.getLocalTranslation().add(0, .85f, 0));
+        cam.setDefaultVerticalRotation(3f);
+        cam.setMaxVerticalRotation(4f);
+        cam.setMinVerticalRotation(2f);
         app.getInputManager().setCursorVisible(false);
-        app.getCamera().setFrustumNear(.75f);
+        float scale = .5f;
+        app.getCamera().setFrustumNear(app.getCamera().getFrustumNear()*scale);
+        app.getCamera().setFrustumLeft(app.getCamera().getFrustumLeft()*scale);
+        app.getCamera().setFrustumRight(app.getCamera().getFrustumRight()*scale);
+        app.getCamera().setFrustumTop(app.getCamera().getFrustumTop()*scale);
+        app.getCamera().setFrustumBottom(app.getCamera().getFrustumBottom()*scale);
+        
     }
 
     private void chaseCamMove() {
         
         if (cam.getDistanceToTarget() < 1) {
-            cam.setMinVerticalRotation(0f);
-            cam.setMaxVerticalRotation(5f);
+            cam.setMinVerticalRotation(2f);
+            cam.setMaxVerticalRotation(4f);
         }
         
         else {
