@@ -5,4 +5,8 @@ Proximity:
 
 Interact:
   Script:
+    - if player.inventory.contains#Torch
     - changescene Town
+    
+    - else
+    - chat "Dont go outside... The torch is burning"

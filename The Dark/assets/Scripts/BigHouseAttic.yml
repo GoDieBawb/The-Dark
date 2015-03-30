@@ -2,3 +2,7 @@ Proximity:
   Distance: 2
   Enter:
     - chat "The Attic"
+
+Interact:
+  Script:
+    - changescene Attic

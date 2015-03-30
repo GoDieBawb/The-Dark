@@ -1,0 +1,15 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - if player.inventory.contains#Dank.!
+    - chat "To Hall of Dank"
+
+Interact:
+  Script:
+    - if player.inventory.contains#Dank.!
+    - changescene Dank
+
+Start:
+  Script:
+    - if player.inventory.contains#Dank
+    - hide
