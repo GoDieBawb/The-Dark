@@ -8,7 +8,10 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import mygame.entity.EntityManager;
+import mygame.menu.MenuManager;
 import mygame.scene.SceneManager;
 import mygame.util.UtilityManager;
 
@@ -22,6 +25,7 @@ public class GameManager extends AbstractAppState {
     private UtilityManager     utilityManager;
     private EntityManager      entityManager;
     private SceneManager       sceneManager;
+    private MenuManager        menuManager;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -29,8 +33,10 @@ public class GameManager extends AbstractAppState {
         createUtilityManager();
         createSceneManager();
         createEntityManager();
+        createMenuManager();
         initSounds();
-        loadGame();
+        menuManager.showMenu();
+        //startNewGame();
     }
     
     private void initSounds() {
@@ -43,12 +49,21 @@ public class GameManager extends AbstractAppState {
         utilityManager.getAudioManager().loadSound("Scream", "Sounds/Scream.wav", false);
         utilityManager.getAudioManager().loadSound("Reloading", "Sounds/Reloading.wav", false);
         utilityManager.getAudioManager().getSound("Ambience").setVolume(.6f);
-        utilityManager.getAudioManager().getSound("Ambience").play();
         
     }
     
-    private void loadGame() {
+    public void startNewGame() {
         sceneManager.initScene("Scenes/DarkHouse.j3o");
+        entityManager.getPlayerManager().placePlayer();
+        utilityManager.getAudioManager().getSound("Ambience").play();
+        menuManager.hideMenu();
+        entityManager.getPlayerManager().getPlayer().rotate(0,89,0);
+    }
+    
+    public void endGame() {
+        entityManager.getPlayerManager().getPlayer().getHud().getInfoText().hide();
+        utilityManager.getAudioManager().getSound("Ambience").stop();
+        menuManager.showMenu();
     }
     
     private void createEntityManager() {
@@ -75,8 +90,22 @@ public class GameManager extends AbstractAppState {
         return sceneManager;
     }
     
+    private void createMenuManager() {
+        menuManager = new MenuManager(app, this);
+    }
+    
+    public MenuManager getMenuManager() {
+        return menuManager;
+    }
+    
     @Override
     public void update(float tpf) {
+        
+        if (menuManager.isEnabled()) {
+            menuManager.update(tpf);
+            return;
+        }
+        
         entityManager.update(tpf);
         sceneManager.update(tpf);
     }

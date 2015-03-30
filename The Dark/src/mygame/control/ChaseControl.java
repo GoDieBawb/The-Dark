@@ -75,10 +75,7 @@ public class ChaseControl extends InteractionControl {
         
         player.getPhys().setWalkDirection(walkDirection.mult(speedMult));
         
-        //if (!up && !down && !left && !right)
         player.getPhys().setViewDirection(camDir);
-        //else
-        //player.getPhys().setViewDirection(walkDirection);
         
     }
     

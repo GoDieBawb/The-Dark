@@ -105,7 +105,7 @@ public class EntityManager {
 
             }
             
-            cleanEntityNode();
+            initEntityNode();
             
         }
         
@@ -114,7 +114,7 @@ public class EntityManager {
         
     }
     
-    private void cleanEntityNode() {
+    private void initEntityNode() {
         
         for (int i = 0; i < sceneEntities.size(); i++) {
             
@@ -153,7 +153,7 @@ public class EntityManager {
         for (int i = 0; i < entityNode.getQuantity(); i++) {
         
             if (!(entityNode.getChild(i) instanceof Entity)) {
-                cleanEntityNode();
+                initEntityNode();
                 return;
             }
             

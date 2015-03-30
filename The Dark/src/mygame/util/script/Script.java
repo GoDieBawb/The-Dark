@@ -56,15 +56,12 @@ public class Script {
         ArrayList startScript;
 
         try {
-
             Map<Object, Object> sm = (Map<Object, Object>)  map.get("Start");
             startScript            = (ArrayList)  sm.get("Script");
             scriptManager.getScriptParser().parse(startScript, entity);
-
         }
         
         catch (Exception e) {
-            
         }
 
     }

@@ -63,6 +63,7 @@ public class SceneComposer extends AbstractAppState {
                 tl.setColor(ColorRGBA.White.mult(1f));
                 tl.setRadius(5);
                 tl.setPosition(lightNode.getChild(i).getWorldTranslation());
+                tl.setIsLit(true);
                 lights.add(tl);
                 
             }

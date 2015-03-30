@@ -1,0 +1,8 @@
+Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
+     MaterialParameters {
+        AlphaDiscardThreshold : 0.5
+        ColorMap : Textures/Billboard.png
+     }
+    AdditionalRenderState {
+    }
+}

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.entity.player;
 
 import com.jme3.app.SimpleApplication;
@@ -42,6 +38,12 @@ public class ControlListener {
             
             else if (interact) {
                 
+                if (player.isDead()) {
+                    player.restartGame();
+                    interact = false;
+                    return;
+                }
+                
                 if(player.getHud().getInfoText().getIsVisible())
                     player.getHud().getInfoText().hide();
                 
@@ -59,8 +61,10 @@ public class ControlListener {
             else if (torch) {
                 
                 torch         = false;
-                if (player.getChild("Torch") == null)
+                
+                if (player.getChild("Torch") == null) {
                     return;
+                }
                 
                 Torch t = ((Torch) player.getChild("Torch"));
                 

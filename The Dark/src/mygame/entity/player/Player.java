@@ -9,6 +9,7 @@ import mygame.control.ChaseControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
 import java.util.ArrayList;
+import mygame.GameManager;
 import mygame.entity.Humanoid;
 import mygame.entity.Vulnerable;
 import mygame.entity.PhysicalEntity;
@@ -137,13 +138,20 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         return controlListener;
     }
     
+    public void restartGame() {
+        GameManager gm = stateManager.getState(GameManager.class);
+        gm.endGame();
+        isDead = false;
+    }
+    
     @Override
     public void die() {
         super.die();
-        ((SimpleApplication)stateManager.getApplication()).getRootNode().detachAllChildren();
+        ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
+        stateManager.getState(GameManager.class).getSceneManager().removeScene();
         inventory = new ArrayList();
         detachAllChildren();
-        attachChild(getModel());
+        isDead = true;
     }
     
 }
