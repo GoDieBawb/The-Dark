@@ -204,13 +204,34 @@ public class CommandParser {
             
             else if (command.equals("give")) {
                 
-                player.getInventory().add(args[1]);
+                try {
+                    int amount = (Integer) Integer.valueOf(args[2]);
+                    player.getInventory().put(args[1], amount);
+                }
+              
+                
+                
+                
+                catch(Exception e) {
+                    player.getInventory().put(args[1], 1);
+                }
             
             }
             
             else if (command.equals("take")) {
                 
-                player.getInventory().remove(args[1]);
+                try {
+                    int amount    = (Integer) Integer.valueOf(args[2]);
+                    int newAmount = ((Integer) player.getInventory().get(args[1])) - amount;
+                    player.getInventory().put(args[1], newAmount);
+                }
+              
+                
+                
+                
+                catch(Exception e) {
+                    player.getInventory().remove(args[1]);
+                }
             
             }
             

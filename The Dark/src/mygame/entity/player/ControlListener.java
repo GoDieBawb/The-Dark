@@ -73,8 +73,31 @@ public class ControlListener {
                 }
                 
                 else {
-                    player.getHud().showAlert("Light", "You light the torch...");
-                    t.Light();
+                    
+                    if (player.getInventory().get("Matches") == null) {
+                    
+                        player.getHud().showAlert("Matches", "Where are the matches?");
+                        
+                    }
+                    
+                    else if (((Integer)player.getInventory().get("Matches")) > 0) {
+                        
+                        int newMatches = ((Integer)player.getInventory().get("Matches"))-1;
+                        String matchInfo = "You have " + newMatches + " matches left";
+                        
+                        if(newMatches == 1)
+                            matchInfo = "You are down to your last match";
+                        
+                        player.getHud().showAlert("Light", "You light the torch..." + matchInfo);
+                        t.Light();
+                        player.getInventory().put("Matches", newMatches);
+                        
+                    }
+                    
+                    else {
+                        player.getHud().showAlert("Matches", "You are all out of matches");
+                    }
+                    
                 }    
                     
             }
@@ -86,12 +109,46 @@ public class ControlListener {
             else if (shoot) {
                 
                 shoot  = false;
-                if (player.getChild("Gun") == null)
-                    return;
                 
-                Gun g = ((Gun) player.getChild("Gun"));
-                g.fire();
+                if (player.getChild("Gun") == null)
+                   return;               
+                
+                if (((Gun) player.getChild("Gun")).getGunControl().hasShot())
+                    return;                
+                
+                if (player.getInventory().get("Bullets") == null) {
+                    player.getHud().showAlert("Bullets", "Where are the bullets?");
+                    return;
+                }
+                
+                else {
+                
+                    if (((Integer)player.getInventory().get("Bullets")) > 0) {
                     
+                        int newBullets    = ((Integer)player.getInventory().get("Bullets"))-1;
+                        String bulletInfo = "You have " + newBullets + " bullets left";
+                        
+                        if(newBullets == 1) 
+                            bulletInfo = "You are down to your last bullet...";
+                        
+                        else if (newBullets == 0) {
+                            
+                            bulletInfo = "You have fired your last shot..";
+                            
+                        }
+                        
+                        Gun g = ((Gun) player.getChild("Gun"));
+                        g.fire();   
+                        player.getHud().showAlert("Gun", bulletInfo);
+                        player.getInventory().put("Bullets", newBullets);
+                                
+                    }
+                    
+                    else {
+              
+                        player.getHud().showAlert("Gun", "You are out of bullets");
+                        
+                    }
             }
             
             if (im.getIsPressed("DebugLight")) {
@@ -111,9 +168,10 @@ public class ControlListener {
                     ((SimpleApplication) stateManager.getApplication()).getRootNode().addLight(light);
                     isLit = true;
                 }
-                
                     
             }
+            
+        }
             
     }
     

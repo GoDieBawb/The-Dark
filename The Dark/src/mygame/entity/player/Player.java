@@ -9,6 +9,7 @@ import mygame.control.ChaseControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
 import java.util.ArrayList;
+import java.util.HashMap;
 import mygame.GameManager;
 import mygame.entity.Humanoid;
 import mygame.entity.Vulnerable;
@@ -28,9 +29,9 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private boolean             isDead;
     private int                 maxHealth;
     private int                 currentHealth;
-    private ArrayList<String>   inventory;
     private Hud                 hud;
     private boolean             hasChecked;
+    private HashMap<Object, Object>  inventory;
     private BetterCharacterControl phys;
     
     public Player(AppStateManager stateManager) {
@@ -104,10 +105,10 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     }
     
     private void createInventory() {
-        inventory = new ArrayList();
+        inventory = new HashMap();
     }
     
-    public ArrayList<String> getInventory() {
+    public HashMap<Object, Object> getInventory() {
         return inventory;
     }
     
@@ -149,7 +150,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         super.die();
         ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
         stateManager.getState(GameManager.class).getSceneManager().removeScene();
-        inventory = new ArrayList();
+        inventory = new HashMap();
         detachAllChildren();
         isDead = true;
     }

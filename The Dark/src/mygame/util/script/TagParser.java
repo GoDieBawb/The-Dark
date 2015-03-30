@@ -7,7 +7,7 @@ package mygame.util.script;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import java.util.ArrayList;
+import java.util.HashMap;
 import mygame.GameManager;
 import mygame.entity.Entity;
 import mygame.entity.Scriptable;
@@ -135,8 +135,15 @@ public class TagParser {
             
             else if(args[i].contains("contains")) {
                 
+                System.out.println("Checking: " + obj);
                 String[] strAr = args[i].split("#");
-                obj = ((ArrayList<String>)obj).contains(strAr[1]);
+                obj = ((HashMap<String, Integer>)obj).get(strAr[1]);
+                
+                if (obj == null)
+                    obj = false;
+                
+                else
+                    obj = true;
                 
             }
             

@@ -43,6 +43,10 @@ public class Gun extends Entity {
         reload.play();
     }
     
+    public GunControl getGunControl() {
+        return gunControl;
+    }
+    
     public void fire() {
     
         if(gunControl.hasShot()) {
