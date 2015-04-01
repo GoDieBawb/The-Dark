@@ -1,0 +1,12 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - chat "A journal sits open on the table"
+
+Interact:
+  Script:
+    - if player.torch.islit
+    - chat "I've locked it in the basement, I'm throwing the key down the well and never coming back to this town."
+    
+    - else
+    - chat "A journal much too dark to read."

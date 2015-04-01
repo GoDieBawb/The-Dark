@@ -6,10 +6,12 @@ package mygame.entity.item;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.audio.AudioNode;
+import com.jme3.post.FilterPostProcessor;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
+import com.jme3.shadow.PointLightShadowFilter;
 import mygame.GameManager;
 import mygame.entity.player.Player;
 import mygame.util.AudioManager;

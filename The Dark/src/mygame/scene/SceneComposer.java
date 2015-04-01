@@ -58,7 +58,7 @@ public class SceneComposer extends AbstractAppState {
             
             else if (lightNode.getChild(i).getName().equals("Torch")) {
             
-                TorchLight tl = new TorchLight();
+                TorchLight tl = new TorchLight(app.getStateManager());
                 scene.addLight(tl);
                 tl.setColor(ColorRGBA.White.mult(1f));
                 tl.setRadius(5);

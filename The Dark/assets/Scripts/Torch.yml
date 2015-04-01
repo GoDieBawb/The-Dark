@@ -25,3 +25,4 @@ Start:
 
     - elseif player.inventory.contains#Torch
     - remove
+    - end

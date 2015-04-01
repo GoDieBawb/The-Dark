@@ -4,8 +4,11 @@
  */
 package mygame.entity.item;
 
+import com.jme3.app.state.AppStateManager;
 import com.jme3.light.PointLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.shadow.PointLightShadowFilter;
 import java.util.Random;
 
 /**
@@ -17,10 +20,27 @@ public class TorchLight extends PointLight {
     private Long    lastFlicker;
     private int     flickerDelay;
     private boolean isLit;
+    private PointLightShadowFilter shadow;
+
     
-    public TorchLight() {
+    public TorchLight(AppStateManager stateManager) {
         lastFlicker = 0L;
+        createShadow(stateManager);
     }
+    
+    private void createShadow(AppStateManager stateManager) {
+        shadow = new PointLightShadowFilter(stateManager.getApplication().getAssetManager(), 1024);
+        shadow.setLight(this);
+        shadow.setShadowIntensity(1f);
+        shadow.setEnabled(true);
+        FilterPostProcessor fpp = new FilterPostProcessor();
+        fpp.addFilter(shadow);
+        stateManager.getApplication().getViewPort().addProcessor(fpp);
+    }
+    
+    public PointLightShadowFilter getShadow() {
+        return shadow;
+    }    
     
     public void setIsLit(boolean newVal) {
         isLit = newVal;
@@ -41,11 +61,11 @@ public class TorchLight extends PointLight {
     
     private int randInt(int min, int max) {
         
-        Random rand = new Random();
+        Random rand   = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
         
-    } 
+    }
     
     public void update (float tpf) {
         

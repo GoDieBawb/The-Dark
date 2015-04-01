@@ -1,6 +1,8 @@
 Material My Material : Common/MatDefs/Light/Lighting.j3md {
      MaterialParameters {
         DiffuseMap : 3d_objects/structures/textures/rezpa_stained_walls/D.png
+        NormalMap : 3d_objects/structures/textures/rezpa_stained_walls/N.png
+        ShadowMap0 : 3d_objects/structures/textures/foundation_brick/S.png
      }
     AdditionalRenderState {
     }

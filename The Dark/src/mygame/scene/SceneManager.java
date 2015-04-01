@@ -11,6 +11,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.PointLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.post.FilterPostProcessor;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
 import mygame.GameManager;
@@ -62,6 +63,7 @@ public class SceneManager {
             scene.detachAllChildren();
         
         scene = new Node();
+        scene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         
     }    
     

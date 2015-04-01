@@ -11,6 +11,7 @@ import java.util.HashMap;
 import mygame.GameManager;
 import mygame.entity.Entity;
 import mygame.entity.Scriptable;
+import mygame.entity.item.Torch;
 import mygame.entity.player.Player;
 
 /**
@@ -135,7 +136,6 @@ public class TagParser {
             
             else if(args[i].contains("contains")) {
                 
-                System.out.println("Checking: " + obj);
                 String[] strAr = args[i].split("#");
                 obj = ((HashMap<String, Integer>)obj).get(strAr[1]);
                 
@@ -144,6 +144,28 @@ public class TagParser {
                 
                 else
                     obj = true;
+                
+            }
+            
+            else if(args[i].contains("torch")) {
+            
+                if (((Player) obj).getChild("Torch") !=null) {
+                    obj = ((Player) obj).getChild("Torch");
+                }
+                
+                else {
+                    obj = null;
+                }
+                
+            }
+            
+            else if (args[i].contains("lit")) {
+                
+                if (obj == null)
+                    obj = false;
+                
+                else
+                    obj = (boolean) ((Torch) obj).getTorchLight().isLit();
                 
             }
             
@@ -161,7 +183,7 @@ public class TagParser {
         
         }
       
-      return obj;
+        return obj;
         
     }
     

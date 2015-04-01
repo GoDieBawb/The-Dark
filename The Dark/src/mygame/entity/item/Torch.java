@@ -21,7 +21,7 @@ public class Torch  extends Entity {
     
     public Torch(SimpleApplication app, Node scene) {
         torchControl = new TorchControl(app.getStateManager(), this);
-        torchLight   = new TorchLight();
+        torchLight   = new TorchLight(app.getStateManager());
         addControl(torchControl);
         torchLight.setPosition(getWorldTranslation());
         scene.addLight(torchLight);

@@ -10,6 +10,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FogFilter;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import mygame.GameManager;
 import mygame.entity.item.TorchLight;
@@ -36,7 +37,7 @@ public class MenuManager {
         this.app  = app;
         this.gm   = gm;
         menuScene = (Node) app.getAssetManager().loadModel("Scenes/Menu.j3o");
-        fire      = new TorchLight();
+        fire      = new TorchLight(app.getStateManager());
         start     = (Node) menuScene.getChild("Start");
         mcl       = new MenuControlListener(app.getStateManager(), this);
         gm.getUtilityManager().getAudioManager().loadSound("Menu", "Sounds/Menu.ogg", true);
@@ -47,6 +48,8 @@ public class MenuManager {
         music.setVolume(0);
         fire.setPosition(menuScene.getChild("Fire").getWorldTranslation());
         fire.setIsLit(true);
+        fog.addFilter(fire.getShadow());
+        menuScene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
     }
     
     public void showMenu() {
