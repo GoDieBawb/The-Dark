@@ -55,6 +55,10 @@ public class GunControl extends AbstractControl {
         
         else {
             recoiling = false;
+            float y = gun.getLocalRotation().getY();
+            float z = gun.getLocalRotation().getZ();
+            float w = gun.getLocalRotation().getW();
+            gun.setLocalRotation(new Quaternion(.02f,y,z,w));
             smoke.setStartColor(ColorRGBA.White);
         }
             

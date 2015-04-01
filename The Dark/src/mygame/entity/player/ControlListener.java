@@ -149,6 +149,9 @@ public class ControlListener {
                         player.getHud().showAlert("Gun", "You are out of bullets");
                         
                     }
+                    
+                }    
+                    
             }
             
             if (im.getIsPressed("DebugLight")) {
@@ -170,8 +173,6 @@ public class ControlListener {
                 }
                     
             }
-            
-        }
             
     }
     
