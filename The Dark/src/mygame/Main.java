@@ -20,7 +20,7 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         setDisplayStatView(false);
-        //setShowSettings(false);
+        setShowSettings(false);
         setDisplayFps(false);
         getFlyByCamera().setEnabled(false);
         getStateManager().attach(new GameManager());

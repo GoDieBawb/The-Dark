@@ -1,12 +1,32 @@
 Proximity:
   Distance: 2
   Enter:
-    - chat "A journal sits open on the table"
+    - chat "A journal sits here on the table"
 
 Interact:
   Script:
-    - if player.torch.islit
-    - chat "I've locked it in the basement, I'm throwing the key down the well and never coming back to this town."
-    
+    - if player.torch.islit.!
+    - chat "A journal too dark to read"
+
+    - elseif player.inventory.contains#Page1
+    - chat "Tragedy... As our exploration of the tunnel began one of the workman's screams could be heard. We rushed to the location to find nothing. We hold out hope for his safe return..."
+    - take Page1
+    - give Page2
+
+    - elseif player.inventory.contains#Page2
+    - chat "The screams, the creaking of the door, the footsteps... In the basement.  I have locked shut the door... I have thrown the key down the well."
+    - take Page2
+    - give Page3
+
+    - elseif player.inventory.contains#Page3
+    - chat "It comes... The door remains locked but it comes out. I hear it from my bed. I see it crawl across the floor. If I live another night, I'm leaving like the rest. It's beter than living in the dark."
+    - take Page3
+    - give End
+
+    - elseif player.inventory.contains#End
+    - chat "The journal ends there... You close the book"
+    - take End
+
     - else
-    - chat "A journal much too dark to read."
+    - chat "You open the journal, page one reads, The well excavation has struck some sort of cavern... It seems worth exploring"
+    - give Page1
