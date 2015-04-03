@@ -21,8 +21,6 @@ public class Hud {
     private AlertBox            infoText;
     private AppStateManager     stateManager;
     private Screen              screen;
-    private int                 alertDelay;
-    private long                delayStart;
     private String[]            currentMessage;
     private ArrayList<String[]> messages;
     
@@ -44,7 +42,7 @@ public class Hud {
                     hideWithEffect();
                 
                 else
-                    showAlert();
+                    checkAlert();
                 
             }
             
@@ -57,7 +55,6 @@ public class Hud {
         infoText.setButtonOkText("Ok");
         infoText.setLockToParentBounds(true);
         infoText.setClippingLayer(infoText);
-        //infoText.setDimensions(new Vector2f(getScreen().getWidth()/10, getScreen().getHeight()/10));
         infoText.setIsResizable(false);
         screen.addElement(infoText);
         infoText.hide();
@@ -79,6 +76,7 @@ public class Hud {
         
         if (!infoText.getIsVisible()) {
             showAlert();
+            infoText.getButtonOk().setText("Ok");
         }
         
         else {
@@ -104,14 +102,6 @@ public class Hud {
     }
     
     public void update(float tpf) {
-        
-        if (!messages.isEmpty()) {
-            
-            if (!infoText.getIsVisible()) {
-                //showAlert();
-            }
-            
-        }
         
     }
     

@@ -96,7 +96,6 @@ public class EntityManager {
                     
                     entity.setScript(script);
                     
-                    
                 }
                 
                 entity.setModel(model);
@@ -126,8 +125,9 @@ public class EntityManager {
                entityNode.attachChild(e);
                e.getScript().initialize();
                
-               if(e instanceof Gun)
+               if(e instanceof Gun) {
                    ((Gun)e).initModel();
+               }
                
            }
            
