@@ -1,0 +1,13 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - chat "The Well"
+
+Interact:
+  Script:
+    - if player.inventory.contains#Diary.!
+    - chat "Moving the planks aside you descend into the depths of the well"
+    - changescene Well
+
+    - else
+    - chat "The Well..."

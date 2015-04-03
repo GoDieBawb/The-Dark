@@ -59,28 +59,28 @@ public class TorchControl extends AbstractControl {
             }
             
             else if (litTime > 50 && step==4) {
-                player.getHud().showAlert("", "It's Behind You");
+                player.getHud().addAlert("", "It's Behind You");
                 step = 5;
             }        
         
             else if (litTime > 40 && step==3) {
-                player.getHud().showAlert("", "It Seeks You");
+                player.getHud().addAlert("", "It Seeks You");
                 step = 4;
             }        
         
             else if (litTime > 30 && step==2) {
-                player.getHud().showAlert("", "It Comes Outside");
+                player.getHud().addAlert("", "It Comes Outside");
                 door.playInstance();
                 step = 3;
             }
         
             else if (litTime > 20 && step == 1) {
-                player.getHud().showAlert("", "It Crawls");
+                player.getHud().addAlert("", "It Crawls");
                 step = 2;
             }
         
             else if(litTime > 10 && step == 0) {
-                player.getHud().showAlert("", "It awakens");
+                player.getHud().addAlert("", "It awakens");
                 step = 1;
             }
             
@@ -89,7 +89,7 @@ public class TorchControl extends AbstractControl {
         }
 
         if (litTime > 60 && step ==5) {
-            player.getHud().showAlert("", "It Kills");
+            player.getHud().addAlert("", "It Kills");
             scream.setVolume(100f);
             scream.playInstance();
             steps.stop();
@@ -97,7 +97,7 @@ public class TorchControl extends AbstractControl {
         }
         
         else if (litTime > 50 && step==4) {
-            player.getHud().showAlert("", "It's Behind You");
+            player.getHud().addAlert("", "It's Behind You");
             steps.play();
             steps.setVolume(4f);
             steps.setPitch(2);
@@ -105,7 +105,7 @@ public class TorchControl extends AbstractControl {
         }        
         
         else if (litTime > 40 && step==3) {
-            player.getHud().showAlert("", "It Seeks You");
+            player.getHud().addAlert("", "It Seeks You");
             steps.play();
             steps.setPitch(1.5f);
             steps.setVolume(2f);
@@ -113,18 +113,18 @@ public class TorchControl extends AbstractControl {
         }        
         
         else if (litTime > 30 && step==2) {
-            player.getHud().showAlert("", "It Comes Inside");
+            player.getHud().addAlert("", "It Comes Inside");
             door.playInstance();
             step = 3;
         }
         
         else if (litTime > 20 && step == 1) {
-            player.getHud().showAlert("", "It Crawls");
+            player.getHud().addAlert("", "It Crawls");
             step = 2;
         }
         
         else if(litTime > 10 && step == 0) {
-            player.getHud().showAlert("", "It awakens");
+            player.getHud().addAlert("", "It awakens");
             step = 1;
         }
         
@@ -137,7 +137,7 @@ public class TorchControl extends AbstractControl {
     public void stopLight() {
         
         if(step != 0)
-            player.getHud().showAlert("", "It sleeps");
+            player.getHud().addAlert("", "It sleeps");
         
         stateManager.getState(GameManager.class).getUtilityManager().getAudioManager().getSound("Footsteps").stop();
         step = 0;

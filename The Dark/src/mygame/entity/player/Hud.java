@@ -7,6 +7,7 @@ package mygame.entity.player;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import java.util.ArrayList;
 import mygame.GameManager;
 import tonegod.gui.controls.windows.AlertBox;
 import tonegod.gui.core.Screen;
@@ -17,18 +18,18 @@ import tonegod.gui.core.Screen;
  */
 public class Hud {
     
-    private AlertBox        infoText;
-    private AppStateManager stateManager;
-    private Screen          screen;
-    private boolean         hasAlert;
-    private String          delayedMessage;
-    private String          delayedTitle;
-    private int             alertDelay;
-    private long            delayStart;
+    private AlertBox            infoText;
+    private AppStateManager     stateManager;
+    private Screen              screen;
+    private int                 alertDelay;
+    private long                delayStart;
+    private String[]            currentMessage;
+    private ArrayList<String[]> messages;
     
     public Hud(AppStateManager stateManager) {
         this.stateManager = stateManager;
-        this.screen       = stateManager.getState(GameManager.class).getUtilityManager().getGuiManager().getScreen();
+        screen            = stateManager.getState(GameManager.class).getUtilityManager().getGuiManager().getScreen();
+        messages          = new ArrayList();
         createInfoText();
     }
     
@@ -39,7 +40,11 @@ public class Hud {
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
                 
-                hideWithEffect();
+                if (messages.isEmpty())
+                    hideWithEffect();
+                
+                else
+                    showAlert();
                 
             }
             
@@ -59,19 +64,40 @@ public class Hud {
         
     }
         
-    public void showAlert(String title, String text){
+    public void addAlert(String title, String text) {
+        
+        String[] message = {title, text};
+        messages.add(message);
+        checkAlert();
+        
+    }
+    
+    public void checkAlert() {
+        
+        if (messages.isEmpty())
+            return;
+        
+        if (!infoText.getIsVisible()) {
+            showAlert();
+        }
+        
+        else {
+            infoText.getButtonOk().setText("Next");
+            infoText.setWindowTitle(currentMessage[0] + " (" + messages.size() + ")" );
+        }
+    
+    }
+    
+    private void showAlert() {
+        String[] message = messages.get(0);
+        currentMessage   = message;
+        String   title   = message[0];
+        String   text    = message[1];
         infoText.showWithEffect();
         infoText.setWindowTitle(title);
         infoText.setMsg(text);
+        messages.remove(message);
     }
-    
-    public void delayAlert(String speaker, String text, int delay){
-        hasAlert = true;
-        delayStart = System.currentTimeMillis() / 1000;
-        alertDelay = delay;
-        delayedTitle = speaker;
-        delayedMessage = text;
-    }    
     
     public AlertBox getInfoText() {
         return infoText;
@@ -79,14 +105,14 @@ public class Hud {
     
     public void update(float tpf) {
         
-        if (hasAlert) {
+        if (!messages.isEmpty()) {
             
-            if (System.currentTimeMillis()/1000 - delayStart > alertDelay) {
-                showAlert(delayedTitle, delayedMessage);
-                hasAlert = false;
+            if (!infoText.getIsVisible()) {
+                //showAlert();
             }
             
         }
+        
     }
     
 }

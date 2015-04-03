@@ -31,8 +31,8 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private int                 currentHealth;
     private Hud                 hud;
     private boolean             hasChecked;
-    private HashMap<Object, Object>  inventory;
     private BetterCharacterControl phys;
+    private HashMap<Object, Object>  inventory;
     
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;

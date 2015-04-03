@@ -44,8 +44,10 @@ public class ControlListener {
                     return;
                 }
                 
-                if(player.getHud().getInfoText().getIsVisible())
+                if(player.getHud().getInfoText().getIsVisible()) {
                     player.getHud().getInfoText().hide();
+                    player.getHud().checkAlert();
+                }
                 
                 else
                     player.setHasChecked(interact);
@@ -76,7 +78,7 @@ public class ControlListener {
                     
                     if (player.getInventory().get("Matches") == null) {
                     
-                        player.getHud().showAlert("Matches", "Where are the matches?");
+                        player.getHud().addAlert("Matches", "Where are the matches?");
                         
                     }
                     
@@ -88,14 +90,14 @@ public class ControlListener {
                         if(newMatches == 1)
                             matchInfo = "You are down to your last match";
                         
-                        player.getHud().showAlert("Light", "You light the torch..." + matchInfo);
+                        player.getHud().addAlert("Light", "You light the torch..." + matchInfo);
                         t.Light();
                         player.getInventory().put("Matches", newMatches);
                         
                     }
                     
                     else {
-                        player.getHud().showAlert("Matches", "You are all out of matches");
+                        player.getHud().addAlert("Matches", "You are all out of matches");
                     }
                     
                 }    
@@ -117,7 +119,7 @@ public class ControlListener {
                     return;                
                 
                 if (player.getInventory().get("Bullets") == null) {
-                    player.getHud().showAlert("Bullets", "Where are the bullets?");
+                    player.getHud().addAlert("Bullets", "Where are the bullets?");
                     return;
                 }
                 
@@ -139,14 +141,14 @@ public class ControlListener {
                         
                         Gun g = ((Gun) player.getChild("Gun"));
                         g.fire();   
-                        player.getHud().showAlert("Gun", bulletInfo);
+                        player.getHud().addAlert("Gun", bulletInfo);
                         player.getInventory().put("Bullets", newBullets);
                                 
                     }
                     
                     else {
               
-                        player.getHud().showAlert("Gun", "You are out of bullets");
+                        player.getHud().addAlert("Gun", "You are out of bullets");
                         
                     }
                     

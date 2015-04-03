@@ -167,7 +167,7 @@ public class EntityManager {
             }
             
             if (playerManager.getPlayer().hasChecked() && entityNode.getQuantity()-1 == i) {
-                playerManager.getPlayer().getHud().showAlert("Nothing", "There doesn't seem to be anything here.");
+                playerManager.getPlayer().getHud().addAlert("Nothing", "There doesn't seem to be anything here.");
                 playerManager.getPlayer().setHasChecked(false);
             }
             

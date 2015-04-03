@@ -1,0 +1,9 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - chat "Ladder out of the Well"
+
+Interact:
+  Script:
+    - chat "You climb out of the well"
+    - changescene Town

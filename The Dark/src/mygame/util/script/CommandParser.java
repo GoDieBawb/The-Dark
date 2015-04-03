@@ -123,7 +123,7 @@ public class CommandParser {
             else if (command.equals("finish")) {
             
                 ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
-                player.getHud().delayAlert("Finish", "", 4);
+                player.getHud().addAlert("Finish", "");
                 
             }
             
@@ -131,7 +131,7 @@ public class CommandParser {
             
                 player.die();
                 
-                player.getHud().delayAlert("Awakening", "You Wake Up... But the nightmare had seemed so... Real", 3);
+                player.getHud().addAlert("Awakening", "You Wake Up... But the nightmare had seemed so... Real");
 
             }
             
@@ -238,14 +238,14 @@ public class CommandParser {
             else if (command.equals("chat")) {
             
                 String[] a     = ((String) commands.get(i)).split(" ", 2);
-                player.getHud().showAlert(((Entity) entity).getName(), a[1]);
+                player.getHud().addAlert(((Entity) entity).getName(), a[1]);
             
             }
             
             else if (command.equals("delaychat")) {
             
                 String[] a     = ((String) commands.get(i)).split(" ", 2);
-                player.getHud().delayAlert(((Entity) entity).getName(), a[1],3);
+                player.getHud().addAlert(((Entity) entity).getName(), a[1]);
             
             }
             

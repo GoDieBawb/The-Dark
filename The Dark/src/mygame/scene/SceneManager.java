@@ -4,7 +4,6 @@
  */
 package mygame.scene;
 
-import mygame.entity.item.TorchLight;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.light.AmbientLight;
@@ -13,7 +12,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
-import java.util.ArrayList;
 import mygame.GameManager;
 import mygame.entity.item.Torch;
 import mygame.entity.player.PlayerManager;
@@ -28,18 +26,19 @@ public class SceneManager {
     private Node                   scene;
     private SimpleApplication      app;
     private PhysicsManager         physicsManager;
-    private ArrayList<TorchLight>  lights;
-    private FilterPostProcessor    ppf;
+    private FilterPostProcessor    fog;
+    private FilterPostProcessor    water;
     
     public SceneManager(SimpleApplication app, GameManager gm) {
         this.app       = app;
         physicsManager = gm.getUtilityManager().getPhysicsManager();
-        initFog();
+        initEffects();
     }
     
     public void initScene(String path) {
         
         removeScene();
+        
         scene                 = (Node) app.getAssetManager().loadModel(path);
         RigidBodyControl rbc  = new RigidBodyControl(0f);
         PlayerManager    pm   = app.getStateManager().getState(GameManager.class).getEntityManager().getPlayerManager();
@@ -49,15 +48,24 @@ public class SceneManager {
         app.getStateManager().getState(GameManager.class).getEntityManager().initEntities(this);
         pm.placePlayer();
         
-        if (scene.getUserData("Interior") == null)
-            app.getViewPort().addProcessor(ppf);
+        if (path.toLowerCase().contains("town"))
+            app.getViewPort().addProcessor(fog);
+        
+        else
+            app.getViewPort().removeProcessor(fog);
+        
+        if (path.toLowerCase().contains("well"))
+            app.getViewPort().addProcessor(water);
+        
+        else
+            app.getViewPort().removeProcessor(water);
         
     }
     
     public void removeScene() {
         
         physicsManager.clearPhysics(app.getStateManager(), scene);
-        app.getViewPort().removeProcessor(ppf);
+        app.getViewPort().removeProcessor(fog);
         
         if(scene != null)
             scene.detachAllChildren();
@@ -67,8 +75,9 @@ public class SceneManager {
         
     }    
     
-    private void initFog() {
-        ppf = app.getAssetManager().loadFilter("Effects/Fog.j3f");
+    private void initEffects() {
+        fog   = app.getAssetManager().loadFilter("Effects/Fog.j3f");
+        water = app.getAssetManager().loadFilter("Effects/Water.j3f");
     }    
     
     public void initLights() {
