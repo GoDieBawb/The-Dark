@@ -5,4 +5,8 @@ Proximity:
 
 Interact:
   Script:
+    - if player.inventory.contains#Key
     - changescene BigHouse
+    
+    - else 
+    - chat "This door is locked tightly..."

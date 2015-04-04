@@ -124,7 +124,6 @@ public class Script {
                 ArrayList interactScript = (ArrayList) im.get("Script");
                 scriptManager.getScriptParser().parse(interactScript, entity);
                 player.setHasChecked(false);
-                player.getHud().getInfoText().hide();
 
             }
             

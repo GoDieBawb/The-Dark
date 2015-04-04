@@ -46,8 +46,14 @@ public class Hud {
                 
             }
             
+            @Override
+            public void hide(){
+                super.hide();
+                System.out.println("Hiding");
+            };
+            
         };
-        
+       
         infoText.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
         infoText.getButtonOk().setFont("Interface/Impact.fnt");
         infoText.setWindowTitle("Welcome");
@@ -63,6 +69,7 @@ public class Hud {
         
     public void addAlert(String title, String text) {
         
+        System.out.println("Adding: " + title + " " + text);
         String[] message = {title, text};
         messages.add(message);
         checkAlert();
@@ -91,10 +98,11 @@ public class Hud {
         currentMessage   = message;
         String   title   = message[0];
         String   text    = message[1];
-        infoText.showWithEffect();
         infoText.setWindowTitle(title);
         infoText.setMsg(text);
+        infoText.show();
         messages.remove(message);
+        System.out.println("Showing: " + title + " " + text);
     }
     
     public AlertBox getInfoText() {

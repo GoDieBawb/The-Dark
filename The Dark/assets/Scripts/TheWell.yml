@@ -5,7 +5,7 @@ Proximity:
 
 Interact:
   Script:
-    - if player.inventory.contains#Diary.!
+    - if player.inventory.contains#Journal
     - chat "Moving the planks aside you descend into the depths of the well"
     - changescene Well
 
