@@ -5,4 +5,8 @@ Proximity:
     
 Interact:
   Script:
+    - if player.inventory.contains#Journal
     - changescene Basement
+    
+    - else 
+    - chat "This door is locked tightly..."

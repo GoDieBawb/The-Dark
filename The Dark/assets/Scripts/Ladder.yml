@@ -6,4 +6,4 @@ Proximity:
 Interact:
   Script:
     - chat "You climb out of the well"
-    - changescene Town
+    - changescene Town entity#WellExit.location

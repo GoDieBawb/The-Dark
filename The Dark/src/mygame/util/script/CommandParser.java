@@ -141,14 +141,10 @@ public class CommandParser {
                 gm.getSceneManager().initScene(scenePath);
                     
                 try {
-                        
-                    System.out.println(parser.parseTag(stateManager, args[2], entity));
-                    player.getPhys().warp((Vector3f)(parser.parseTag(stateManager, args[2], entity)));
-                        
+                    player.getPhys().warp((Vector3f) (parser.parseTag(stateManager, args[2], entity)));
                 }
                     
-                catch(Exception e) {  
-                    
+                catch(Exception e) {
                 }
                     
             }

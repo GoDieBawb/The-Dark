@@ -46,12 +46,6 @@ public class Hud {
                 
             }
             
-            @Override
-            public void hide(){
-                super.hide();
-                System.out.println("Hiding");
-            };
-            
         };
        
         infoText.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
@@ -69,7 +63,6 @@ public class Hud {
         
     public void addAlert(String title, String text) {
         
-        System.out.println("Adding: " + title + " " + text);
         String[] message = {title, text};
         messages.add(message);
         checkAlert();
@@ -102,7 +95,6 @@ public class Hud {
         infoText.setMsg(text);
         infoText.show();
         messages.remove(message);
-        System.out.println("Showing: " + title + " " + text);
     }
     
     public AlertBox getInfoText() {
