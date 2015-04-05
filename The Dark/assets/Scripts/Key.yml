@@ -1,0 +1,15 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - chat "A shines in the water..."
+
+Interact:
+  Script:
+    - chat "You reach into the water and grab the key"
+    - give Key
+    - hide
+
+Start:
+  Script:
+    - if player.inventory.contains#Key
+    - remove

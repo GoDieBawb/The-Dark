@@ -47,7 +47,7 @@ public class TorchControl extends AbstractControl {
         AudioNode door    = am.getSound("Door"); 
         AudioNode scream  = am.getSound("Scream"); 
         
-        if(scene.getName().equals("Town")) {
+        if(scene.getName().equals("Town") || scene.getName().equals("Well")) {
             
             steps.stop();
             

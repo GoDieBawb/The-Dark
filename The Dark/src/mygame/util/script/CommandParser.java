@@ -39,6 +39,7 @@ public class CommandParser {
     }
     
     public void parse(ArrayList commands, Entity entity) {
+        
         Player  player  = gm.getEntityManager().getPlayerManager().getPlayer();
         boolean go      = true;
         boolean met     = false;
@@ -308,6 +309,7 @@ public class CommandParser {
             }              
             
             else if (command.equals("remove")) {
+                
                 entity.setLocalTranslation(0,-15,0);
                 entity.removeFromParent();
                 
@@ -318,11 +320,13 @@ public class CommandParser {
             
             else if (command.equals("equipleft")) {
                 player.attachChild(entity);
+                //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(entity);
                 entity.setLocalTranslation(.25f,.6f,.1f);
             }
             
             else if (command.equals("equipright")) {
                 player.attachChild(entity);
+                //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(entity);
                 entity.setLocalTranslation(-.25f,.6f,.1f);
                 
                 if(entity instanceof Gun)
