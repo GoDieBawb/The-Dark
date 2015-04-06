@@ -1,4 +1,34 @@
 Proximity:
   Distance: 2
   Enter:
-    - chat "It"
+    - if player.inventory.contains#Finish
+    - chat "The body of the creature lies here on the floor."
+
+    - else
+    - chat "It sleeps here..."
+    
+Interact:
+  Script:
+    - if player.inventory.contains#Finish.!
+    - chat "You wake it up and it kills you immeidiately"
+    - fail
+
+    - elseif player.torch.islit.!
+    - chat "The creature is obscurred by darkness."
+
+    - else 
+    - chat "The creature's face is finally revealed... The terrible beast that had caused so much evil..." 
+    - chat "But perhaps it was just misunderstood...."
+    
+While:
+  Script:
+    - if player.inventory.contains#Finish
+    
+    - elseif player.torch.islit
+    - chat "The light of the torch illuminating it's den enrages it and it kills you..."
+    - fail
+    
+Start:
+  Script:
+    - if player.inventory.contains#Finish
+    - die

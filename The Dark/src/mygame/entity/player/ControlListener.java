@@ -2,11 +2,17 @@ package mygame.entity.player;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.collision.CollisionResults;
 import com.jme3.light.AmbientLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Ray;
+import com.jme3.scene.Node;
+import java.lang.String;
 import mygame.GameManager;
+import mygame.entity.Entity;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
+import mygame.entity.npc.It;
 import mygame.util.InteractionManager;
 
 /**
@@ -128,6 +134,28 @@ public class ControlListener {
                     if (((Integer)player.getInventory().get("Bullets")) > 0) {
                     
                         int newBullets    = ((Integer)player.getInventory().get("Bullets"))-1;
+                        
+                        CollisionResults results = new CollisionResults();
+                        Ray              ray     = new Ray(stateManager.getApplication().getCamera().getLocation(), stateManager.getApplication().getCamera().getDirection());
+                        Node          entityNode = stateManager.getState(GameManager.class).getEntityManager().getEntityNode();
+                        
+                        entityNode.collideWith(ray, results);
+                        
+                        if (results.size() > 0) {
+                            
+                            Entity hitEntity = findEntity(results.getCollision(1).getGeometry().getParent());
+                            
+                            if (hitEntity instanceof It) {
+                                ((It) hitEntity).die();
+                                player.getInventory().put("Finish", 1);
+                                player.getHud().addAlert("Finally", "As the shot rings out in the darkness... It strikes it's target and death overcomes it");
+                                Gun g = ((Gun) player.getChild("Gun"));
+                                g.fire();   
+                                return;
+                            }
+                            
+                        }
+                        
                         String bulletInfo = "You have " + newBullets + " bullets left";
                         
                         if(newBullets == 1) 
@@ -176,6 +204,22 @@ public class ControlListener {
                     
             }
             
+    }
+    
+    private Entity findEntity(Node node) {
+    
+        if (node instanceof Entity) {
+            return (Entity) node;
+        }
+        
+        else if (node != ((SimpleApplication) stateManager.getApplication()).getRootNode()){
+            return findEntity(node.getParent());
+        }
+        
+        else {
+            return null;
+        }
+        
     }
     
     public void update() {

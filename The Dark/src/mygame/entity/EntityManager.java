@@ -12,6 +12,7 @@ import mygame.GameManager;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.entity.monster.MonsterManager;
+import mygame.entity.npc.It;
 import mygame.entity.player.PlayerManager;
 import mygame.scene.SceneManager;
 import mygame.util.script.Script;
@@ -79,6 +80,9 @@ public class EntityManager {
                                         .getState(GameManager.class)
                                             .getUtilityManager()
                                                 .getAudioManager());
+                    
+                    else if (model.getUserData("Type").equals("It"))
+                        entity = new It();
                     
                 }
                 

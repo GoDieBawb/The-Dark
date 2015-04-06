@@ -40,6 +40,10 @@ public class TorchControl extends AbstractControl {
             return;
         }
         
+        if (player.getInventory().get("Finish") != null) {
+            return;
+        }
+        
         Long litTime      = System.currentTimeMillis()/1000 - firstLit/1000;
         AudioManager am   = stateManager.getState(GameManager.class).getUtilityManager().getAudioManager();
         Node      scene   = stateManager.getState(GameManager.class).getSceneManager().getScene();

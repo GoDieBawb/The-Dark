@@ -18,6 +18,7 @@ import mygame.entity.Scriptable;
 import mygame.entity.animation.Fighter;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
+import mygame.entity.npc.It;
 import mygame.entity.player.Player;
 
 /**
@@ -329,8 +330,14 @@ public class CommandParser {
                 //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(entity);
                 entity.setLocalTranslation(-.25f,.6f,.1f);
                 
-                if(entity instanceof Gun)
+                if(entity instanceof Gun) {
                     ((Gun) entity).setEquipped(true);
+                    //BitmapFont guiFont = stateManager.getApplication().getAssetManager().loadFont("Interface/Fonts/Default.fnt");
+                    //BitmapText ch = new BitmapText(guiFont, false);
+                    //ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+                    //ch.setLocalTranslation(Display.getWidth() / 2 - ch.getLineWidth()/2, Display.getHeight() / 2 + ch.getLineHeight()/2, 0);
+                   //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(ch);
+                }
                 
             }
             
@@ -369,8 +376,14 @@ public class CommandParser {
             
             else if (command.equals("die")) {
             
-                ((Living) entity).die();
-            
+                if (entity instanceof It) {
+                    ((It) entity).die();
+                }
+                
+                else {
+                    ((Living) entity).die();
+                }    
+                    
             } 
             
             else if (command.equals("noanim")) {
