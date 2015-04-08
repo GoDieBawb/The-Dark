@@ -193,12 +193,12 @@ public class ControlListener {
                 debugLight  = false;
 
                 if (isLit) {
-                    ((SimpleApplication) stateManager.getApplication()).getRootNode().removeLight(light);
+                    //((SimpleApplication) stateManager.getApplication()).getRootNode().removeLight(light);
                     isLit = false;
                 }
                 
                 else {
-                    ((SimpleApplication) stateManager.getApplication()).getRootNode().addLight(light);
+                    //((SimpleApplication) stateManager.getApplication()).getRootNode().addLight(light);
                     isLit = true;
                 }
                     

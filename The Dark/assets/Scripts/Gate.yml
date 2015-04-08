@@ -1,0 +1,13 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - chat "The Gate"
+
+Interact:
+  Script:
+    - if player.inventory.contains#Finish
+    - chat "You open the gate and leave, never to return to this town."
+    - finish
+    
+    - else
+    - chat "You can't leave town... It has to die..."

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.util.script;
 
 import com.jme3.app.SimpleApplication;
@@ -125,15 +121,13 @@ public class CommandParser {
             else if (command.equals("finish")) {
             
                 ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
-                player.getHud().addAlert("Finish", "");
+                player.getHud().addAlert("Finish", "Thanks for playing");
                 
             }
             
             else if (command.equals("fail")) {
             
                 player.die();
-                
-                player.getHud().addAlert("Awakening", "You Wake Up... But the nightmare had seemed so... Real");
 
             }
             
