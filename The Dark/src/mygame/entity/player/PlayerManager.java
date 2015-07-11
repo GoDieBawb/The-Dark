@@ -39,6 +39,7 @@ public class PlayerManager {
         
         else
             player.getPhys().warp(new Vector3f(0,0,0));
+        
     }
     
     public Player getPlayer() {

@@ -12,6 +12,7 @@ import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FogFilter;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import mygame.GameManager;
 import mygame.entity.item.TorchLight;
 
@@ -26,12 +27,14 @@ public class MenuManager {
     private Node                menuScene;
     private boolean             enabled;
     private TorchLight          fire;
-    private Node                start;
+    private Node                start, help, quit, helpScreen;
     private boolean             slidingIn;
     private boolean             slidingOut;
+    private boolean             helpShown;
     private MenuControlListener mcl;
     private AudioNode           music;
     private FilterPostProcessor fog;
+    private int                 selection;
     
     public MenuManager(SimpleApplication app, GameManager gm) {
         this.app  = app;
@@ -39,6 +42,9 @@ public class MenuManager {
         menuScene = (Node) app.getAssetManager().loadModel("Scenes/Menu.j3o");
         fire      = new TorchLight(app.getStateManager());
         start     = (Node) menuScene.getChild("Start");
+        help      = (Node) menuScene.getChild("Help");
+        quit      = (Node) menuScene.getChild("Quit");
+        selection = 1;
         mcl       = new MenuControlListener(app.getStateManager(), this);
         gm.getUtilityManager().getAudioManager().loadSound("Menu", "Sounds/Menu.ogg", true);
         music     = gm.getUtilityManager().getAudioManager().getSound("Menu");
@@ -50,6 +56,9 @@ public class MenuManager {
         fire.setIsLit(true);
         fog.addFilter(fire.getShadow());
         menuScene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        inflateSelection();
+        createHelp();
+        hideHelp();
     }
     
     public void showMenu() {
@@ -58,6 +67,8 @@ public class MenuManager {
         slidingIn = true;
         fog.getFilter(FogFilter.class).setFogDensity(20);
         start.getChild(0).setLocalTranslation(0,5,0);
+        help.getChild(0).setLocalTranslation(0,5,0);
+        quit.getChild(0).setLocalTranslation(0,5,0);
         app.getRootNode().attachChild(menuScene);
         app.getRootNode().addLight(fire);
         app.getCamera().setLocation(new Vector3f(2.2538838f, 4.34696f, -3.2751317f));
@@ -77,7 +88,91 @@ public class MenuManager {
         
     }
     
-    public void startGame() {
+    public void changeSelection(int change) {
+        
+        if(helpShown)
+            return;
+        
+        selection += change;
+        
+        if (selection == 0) {
+            selection = 3;
+        }
+        
+        if (selection == 4) {
+            selection = 1;
+        }
+        
+        inflateSelection();
+        
+    }
+    
+    private void inflateSelection() {
+    
+        switch(selection) {
+            
+            case 1:
+                start.setLocalScale(1.25f/3.4f);
+                help.setLocalScale(1f/3.4f);
+                quit.setLocalScale(1f/3.4f);
+                break;
+                
+            case 2:
+                start.setLocalScale(1f/3.4f);
+                help.setLocalScale(1.25f/3.4f);
+                quit.setLocalScale(1f/3.4f);
+                break;
+                
+            case 3:
+                start.setLocalScale(1f/3.4f);
+                help.setLocalScale(1f/3.4f);
+                quit.setLocalScale(1.25f/3.4f);
+                break;
+        
+        }
+        
+    }
+    
+    public void makeSelection() {
+    
+        if (helpShown) {
+            hideHelp();
+            return;
+        }
+            
+        switch(selection) {
+            
+            case 1:
+                startGame();
+                break;
+                
+            case 2:
+                showHelp();
+                break;
+                
+            case 3:
+                app.stop();
+                break;
+                
+        }
+    
+    }
+    
+    private void createHelp() {
+        helpScreen = (Node) menuScene.getChild("Controls");
+    }
+    
+    private void showHelp() {
+        helpScreen.getChild(0).setLocalTranslation(0,0f,0);
+        helpShown = true;
+    }
+    
+    private void hideHelp() {
+        helpScreen.getChild(0).setLocalTranslation(0,-15f,0);
+        helpShown = false;
+    }
+    
+    private void startGame() {
         slidingIn  = false;
         slidingOut = true;
     }
@@ -90,16 +185,16 @@ public class MenuManager {
         return enabled;
     }
     
-    private void slideIn (float tpf) {
+    private void slideIn (Spatial spatial, float tpf) {
     
-        if (start.getChild(0).getLocalTranslation().y > 0) {
-            start.getChild(0).move(0,-1.5f*tpf,0);
+        if (spatial.getLocalTranslation().y > 0) {
+            spatial.move(0,-1.5f*tpf,0);
             fog.getFilter(FogFilter.class).setFogDensity(fog.getFilter(FogFilter.class).getFogDensity()-6f*tpf);
         }
         
         else {
             slidingIn = false;
-            start.getChild(0).setLocalTranslation(0,0,0);
+            spatial.setLocalTranslation(0,0,0);
             music.setVolume(.3f);
             fog.getFilter(FogFilter.class).setFogDensity(0);
         }
@@ -110,17 +205,17 @@ public class MenuManager {
         
     }
     
-    private void slideOut (float tpf) {
+    private void slideOut (Spatial spatial, float tpf) {
     
-        if (start.getChild(0).getLocalTranslation().y < 5) {
-            start.getChild(0).move(0,1.5f*tpf,0);
+        if (spatial.getLocalTranslation().y < 6.5f) {
+            spatial.move(0,1.5f*tpf,0);
             fog.getFilter(FogFilter.class).setFogDensity(fog.getFilter(FogFilter.class).getFogDensity()+6f*tpf);
         }
         
         else {
             slidingOut = false;
             app.getStateManager().getState(GameManager.class).startNewGame();
-            start.getChild(0).setLocalTranslation(0,5,0);
+            spatial.setLocalTranslation(0,5,0);
             music.setVolume(0f);
             fog.getFilter(FogFilter.class).setFogDensity(2);
         }
@@ -139,12 +234,18 @@ public class MenuManager {
     
         if (enabled) {
             
-            if (slidingIn)
-                slideIn(tpf);
+            if (slidingIn) {
+                slideIn(start.getChild(0), tpf);
+                slideIn(help.getChild(0), tpf);
+                slideIn(quit.getChild(0), tpf);
+            }
             
-            if (slidingOut)
-                slideOut(tpf);
-            
+            if (slidingOut) {
+                slideOut(start.getChild(0), tpf);
+                slideOut(help.getChild(0), tpf);
+                slideOut(quit.getChild(0), tpf);
+            }
+                
             fire.update(tpf);
             
             mcl.update();

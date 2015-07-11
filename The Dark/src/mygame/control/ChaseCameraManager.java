@@ -32,6 +32,7 @@ public class ChaseCameraManager {
      private void initCamera(){
         //Creates a new chase cam and attached it to the player.model for the game
         cam = new ChaseCamera(this.app.getCamera(), player, this.app.getInputManager());
+        cam.setDefaultHorizontalRotation(2.7f);
         cam.setMinDistance(0.5f);
         cam.setMaxDistance(.5f);
         cam.setDefaultDistance(.5f);
@@ -49,7 +50,6 @@ public class ChaseCameraManager {
         app.getCamera().setFrustumRight(app.getCamera().getFrustumRight()*scale);
         app.getCamera().setFrustumTop(app.getCamera().getFrustumTop()*scale);
         app.getCamera().setFrustumBottom(app.getCamera().getFrustumBottom()*scale);
-        
     }
 
     private void chaseCamMove() {

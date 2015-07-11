@@ -82,7 +82,7 @@ public class SceneManager {
     
     public void initLights() {
     
-        PlayerManager    pm   = app.getStateManager().getState(GameManager.class).getEntityManager().getPlayerManager();
+        PlayerManager pm   = app.getStateManager().getState(GameManager.class).getEntityManager().getPlayerManager();
         
         if(pm.getPlayer().getChild("Torch") != null) {
             scene.addLight(((Torch) pm.getPlayer().getChild("Torch")).getTorchLight());

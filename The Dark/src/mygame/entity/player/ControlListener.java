@@ -30,9 +30,9 @@ public class ControlListener {
     
     public ControlListener(AppStateManager stateManager, Player player) {
         this.stateManager = stateManager;
-        im          = stateManager.getState(GameManager.class).getUtilityManager().getInteractionManager();
-        this.player = player;
-        light       =  new AmbientLight();
+        im                = stateManager.getState(GameManager.class).getUtilityManager().getInteractionManager();
+        this.player       = player;
+        light             =  new AmbientLight();
         light.setColor(ColorRGBA.White.mult(3));
     }
     

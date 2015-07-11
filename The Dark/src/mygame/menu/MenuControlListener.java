@@ -11,7 +11,7 @@ import mygame.util.InteractionManager;
 public class MenuControlListener {
     
     private InteractionManager im;
-    private boolean            interact;
+    private boolean            interact, up, down;
     private MenuManager        menuManager;
     
     public MenuControlListener(AppStateManager stateManager, MenuManager menuManager) {
@@ -25,9 +25,27 @@ public class MenuControlListener {
         if (im.getIsPressed("Interact")) {
             interact = true;
         }
-            
+        
+        else if (im.getIsPressed("Up")) {
+            up = true;
+        }
+        
+        else  if (im.getIsPressed("Down")) {
+            down = true;
+        }
+        
+        else if (up) {
+            menuManager.changeSelection(-1);
+            up = false;
+        }
+        
+        else if (down) {
+            menuManager.changeSelection(1);
+            down = false;
+        }
+        
         else if (interact) {  
-            menuManager.startGame();
+            menuManager.makeSelection();
             interact = false;   
         }
                 
