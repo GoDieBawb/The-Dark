@@ -3,10 +3,6 @@ package mygame;
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
 
-/**
- * test
- * @author normenhansen
- */
 public class Main extends SimpleApplication {
 
     public static void main(String[] args) {

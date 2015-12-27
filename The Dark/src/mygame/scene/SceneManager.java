@@ -23,11 +23,11 @@ import mygame.util.PhysicsManager;
  */
 public class SceneManager {
     
-    private Node                   scene;
-    private SimpleApplication      app;
-    private PhysicsManager         physicsManager;
-    private FilterPostProcessor    fog;
-    private FilterPostProcessor    water;
+    private Node                         scene;
+    private final SimpleApplication      app;
+    private final PhysicsManager         physicsManager;
+    private FilterPostProcessor          fog;
+    private FilterPostProcessor          water;
     
     public SceneManager(SimpleApplication app, GameManager gm) {
         this.app       = app;

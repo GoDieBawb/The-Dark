@@ -22,11 +22,11 @@ import mygame.util.AudioManager;
  */
 public class TorchControl extends AbstractControl {
 
-    private AppStateManager stateManager;
-    private Player          player;
-    private Long            firstLit;
-    private Torch           torch;
-    private int             step;
+    private final AppStateManager stateManager;
+    private final Player          player;
+    private Long                  firstLit;
+    private final Torch           torch;
+    private int                   step;
     
     public TorchControl(AppStateManager stateManager, Torch torch) {
         this.stateManager = stateManager;

@@ -8,8 +8,6 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.math.Quaternion;
-import com.jme3.math.Vector3f;
 import mygame.entity.EntityManager;
 import mygame.menu.MenuManager;
 import mygame.scene.SceneManager;
@@ -19,6 +17,7 @@ import mygame.util.UtilityManager;
  *
  * @author Bawb
  */
+
 public class GameManager extends AbstractAppState {
     
     private SimpleApplication  app;
@@ -108,6 +107,7 @@ public class GameManager extends AbstractAppState {
         
         entityManager.update(tpf);
         sceneManager.update(tpf);
+        
     }
     
 }

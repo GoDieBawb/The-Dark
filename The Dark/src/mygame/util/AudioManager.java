@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.util;
 
 import com.jme3.app.state.AppStateManager;
@@ -14,8 +10,8 @@ import java.util.HashMap;
  */
 public class AudioManager {
     
-    private HashMap         sounds;
-    private AppStateManager stateManager; 
+    private final HashMap         sounds;
+    private final AppStateManager stateManager; 
     
     public AudioManager(AppStateManager stateManager) {
         this.stateManager = stateManager;

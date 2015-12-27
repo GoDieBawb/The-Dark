@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.entity;
 
 import com.jme3.app.state.AppStateManager;
@@ -16,7 +12,6 @@ public class Entity extends Node implements Scriptable {
     
     private Node    model;
     private boolean isHid;
-    private boolean inProx;
     private Script  script;
     
     public void setModel(String path, AppStateManager stateManager) {

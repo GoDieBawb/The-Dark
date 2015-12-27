@@ -11,5 +11,5 @@ Interact:
 
 Start:
   Script:
-    - if player.inventory.contains#Dank
+    - if player.inventory.contains#Dank.!
     - hide

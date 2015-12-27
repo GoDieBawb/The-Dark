@@ -25,10 +25,10 @@ import mygame.entity.PhysicalEntity;
  */
 public class FinderControl extends AbstractControl {
     
-    private NavMesh           navMesh;
-    private NavMeshPathfinder pathfinder;
-    private PhysicalEntity    entity;
-    private Finder            finder;
+    private final NavMesh           navMesh;
+    private final NavMeshPathfinder pathfinder;
+    private final PhysicalEntity    entity;
+    private final Finder            finder;
     private Spatial           target;
     private boolean           finding;
     private boolean           atGoal;

@@ -17,13 +17,13 @@ import mygame.util.InteractionManager;
  */
 public class ChaseControl extends InteractionControl {
     
-    private boolean            left, right, up, down, cursor;
-    private AppStateManager    stateManager;
-    private Player             player;
-    private SimpleApplication  app;
-    private Vector3f           camDir = new Vector3f(), camLeft = new Vector3f(), walkDirection = new Vector3f();
-    private ChaseCameraManager cameraManager;
-    private boolean            enabled;
+    private boolean                  left, right, up, down, cursor;
+    private final AppStateManager    stateManager;
+    private final Player             player;
+    private final SimpleApplication  app;
+    private final Vector3f           camDir = new Vector3f(), camLeft = new Vector3f(), walkDirection = new Vector3f();
+    private ChaseCameraManager       cameraManager;
+    private boolean                  enabled;
     
     public ChaseControl(AppStateManager stateManager, Player player) {
         this.stateManager = stateManager;

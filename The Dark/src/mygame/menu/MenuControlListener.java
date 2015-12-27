@@ -10,9 +10,9 @@ import mygame.util.InteractionManager;
  */
 public class MenuControlListener {
     
-    private InteractionManager im;
-    private boolean            interact, up, down;
-    private MenuManager        menuManager;
+    private final InteractionManager im;
+    private final MenuManager        menuManager;
+    private boolean                  interact, up, down;
     
     public MenuControlListener(AppStateManager stateManager, MenuManager menuManager) {
         GameManager gm    = stateManager.getState(GameManager.class);

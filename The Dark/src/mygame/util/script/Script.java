@@ -17,15 +17,16 @@ import mygame.entity.player.Player;
  *
  * @author Bawb
  */
+
 public class Script {
     
-    private Entity          entity;
-    private ScriptManager   scriptManager;
-    private float           proximity;
-    private boolean         inProx;
-    private boolean         enteredProx;
-    private Player          player;
-    private LinkedHashMap   map;
+    private final Entity          entity;
+    private final ScriptManager   scriptManager;
+    private float                 proximity;
+    private boolean               inProx;
+    private boolean               enteredProx;
+    private final Player          player;
+    private final LinkedHashMap   map;
     
     public Script(Entity entity, AppStateManager stateManager, LinkedHashMap map) {
         this.entity   = entity;
@@ -54,6 +55,7 @@ public class Script {
     public void startAction() {
 
         ArrayList startScript;
+        
 
         try {
             Map<Object, Object> sm = (Map<Object, Object>)  map.get("Start");
@@ -67,7 +69,7 @@ public class Script {
     }
   
     public void hitAction() {
-
+        
         if (map.get("Hit") != null) {
 
             Map<Object, Object> hm  = (Map<Object, Object>)  map.get("Hit");
@@ -140,7 +142,6 @@ public class Script {
         Map<Object, Object> wm          = (Map<Object, Object>)  map.get("While");
         ArrayList whileScript           = (ArrayList) wm.get("Script");
         scriptManager.getScriptParser().parse(whileScript, entity);
-        
 
     }    
     

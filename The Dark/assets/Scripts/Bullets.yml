@@ -1,5 +1,5 @@
 Proximity:
-  Distance: 2
+  Distance: 1
   Enter:
     - if player.inventory.contains#Bullets.!
     - chat "A box of bullets sits here on the table"
