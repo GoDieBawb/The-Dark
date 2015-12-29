@@ -89,7 +89,7 @@ public class SceneManager {
         }        
         
         AmbientLight al = new AmbientLight();
-        al.setColor(ColorRGBA.White.mult(.05f));
+        al.setColor(ColorRGBA.White.mult(1.05f));
         scene.addLight(al);
         
         Node lightNode = (Node) scene.getChild("Lights");

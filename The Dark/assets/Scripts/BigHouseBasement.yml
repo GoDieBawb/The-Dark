@@ -5,7 +5,7 @@ Proximity:
     
 Interact:
   Script:
-    - if player.inventory.contains#Key
+    - if player.inventory.contains#Key.!
     - changescene Basement
     
     - else 

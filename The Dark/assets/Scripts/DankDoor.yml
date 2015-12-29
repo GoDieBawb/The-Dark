@@ -8,8 +8,10 @@ Interact:
   Script:
     - if player.inventory.contains#Dank.!
     - changescene Dank
+    - else
+    - chat "Fuck you"
 
 Start:
   Script:
-    - if player.inventory.contains#Dank.!
+    - if player.inventory.contains#Dank
     - hide
