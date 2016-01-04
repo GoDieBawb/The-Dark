@@ -20,6 +20,16 @@ Interact:
     - chat "The creature's face is finally revealed... The terrible beast that had caused so much evil..." 
     - chat "But perhaps it was just misunderstood...."
     
+Hit:
+  Script:
+    - if player.inventory.contains#Finish
+    - chat "You shoot the creatures body."
+    - else
+    - die
+    - give Finish
+    - chat "As the shot rings out in the darkness... It strikes it's target and death overcomes it"
+      
+    
 While:
   Script:
     - if player.inventory.contains#Finish

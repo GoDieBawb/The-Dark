@@ -2,6 +2,8 @@ package mygame.util.script;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -16,6 +18,7 @@ import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.entity.npc.It;
 import mygame.entity.player.Player;
+import org.lwjgl.opengl.Display;
 
 /**
  *
@@ -291,7 +294,6 @@ public class CommandParser {
                         Entity ent = (Entity) parser.parseTag(stateManager, args[1], entity);
                         ent.hide();
                         //stateManager.getState(SceneManager.class).addPhys();
-                        
                     }
                     
                 }    
@@ -320,17 +322,15 @@ public class CommandParser {
             }
             
             else if (command.equals("equipright")) {
+                
                 player.attachChild(entity);
                 //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(entity);
-                entity.setLocalTranslation(-.25f,.6f,.1f);
-                
+                entity.setLocalTranslation(-.25f,.6f,.25f);
+            
                 if(entity instanceof Gun) {
+                    System.out.println("Equipping Gun!");
                     ((Gun) entity).setEquipped(true);
-                    //BitmapFont guiFont = stateManager.getApplication().getAssetManager().loadFont("Interface/Fonts/Default.fnt");
-                    //BitmapText ch = new BitmapText(guiFont, false);
-                    //ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
-                    //ch.setLocalTranslation(Display.getWidth() / 2 - ch.getLineWidth()/2, Display.getHeight() / 2 + ch.getLineHeight()/2, 0);
-                   //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(ch);
+                    player.getHud().attachCrossHair();
                 }
                 
             }

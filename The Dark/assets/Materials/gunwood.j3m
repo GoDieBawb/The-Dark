@@ -1,6 +1,7 @@
 Material My Material : Common/MatDefs/Light/Lighting.j3md {
      MaterialParameters {
-        DiffuseMap : Textures/wood.png
+        DiffuseMap : 3d_objects/structures/textures/ossyja_post/D.png
+        NormalMap : 3d_objects/structures/textures/ossyja_post/N.png
      }
     AdditionalRenderState {
     }

@@ -14,10 +14,11 @@ import mygame.entity.ai.Finder;
 import mygame.entity.ai.FinderControl;
 import mygame.entity.player.Player;
 
-/**
+/*
  *
  * @author Bawb
  */
+
 public class Zombie extends Humanoid implements PhysicalEntity, Finder, Monster {
 
     private BetterCharacterControl phys;

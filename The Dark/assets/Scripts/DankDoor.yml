@@ -7,7 +7,7 @@ Proximity:
 Interact:
   Script:
     - if player.inventory.contains#Dank.!
-    - changescene Dank
+    - changescene DankHall
     - else
     - chat "Fuck you"
 

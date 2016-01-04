@@ -11,7 +11,6 @@ import mygame.GameManager;
 import mygame.entity.Entity;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
-import mygame.entity.npc.It;
 import mygame.util.InteractionManager;
 
 /**
@@ -43,23 +42,7 @@ public class ControlListener {
         }
         
         else if (interact) {
-            
-            if (player.isDead()) {
-                player.restartGame();
-                interact = false;
-                return;
-            }
-            
-            if (player.getHud().getInfoText().getIsVisible()) {
-                player.getHud().getInfoText().hide();
-                player.getHud().checkAlert();
-            }
-            
-            else
-                player.setHasChecked(interact);
-            
-            interact      = false;
-            
+            interactPress();
         }
         
         if (im.getIsPressed("Torch")) {
@@ -67,47 +50,7 @@ public class ControlListener {
         }
         
         else if (torch) {
-            
-            torch         = false;
-            
-            if (player.getChild("Torch") == null) {
-                return;
-            }
-            
-            Torch t = ((Torch) player.getChild("Torch"));
-            
-            if (t.isLit()) {
-                t.Extinguish();
-            }
-            
-            else {
-                
-                if (player.getInventory().get("Matches") == null) {
-                
-                    player.getHud().addAlert("Matches", "Where are the matches?");
-                    
-                }
-                
-                else if (((Integer)player.getInventory().get("Matches")) > 0) {
-                    
-                    int newMatches = ((Integer)player.getInventory().get("Matches"))-1;
-                    String matchInfo = "You have " + newMatches + " matches left";
-                    
-                    if(newMatches == 1)
-                        matchInfo = "You are down to your last match";
-                    
-                    player.getHud().addAlert("Light", "You light the torch..." + matchInfo);
-                    t.Light();
-                    player.getInventory().put("Matches", newMatches);
-                    
-                }
-                
-                else {
-                    player.getHud().addAlert("Matches", "You are all out of matches");
-                }
-                
-            }    
-                
+            torchPress();  
         }
         
         if (im.getIsPressed("Click")) {
@@ -115,77 +58,7 @@ public class ControlListener {
         }
         
         else if (shoot) {
-            
-            shoot  = false;
-            
-            if (player.getChild("Gun") == null)
-               return;               
-            
-            if (((Gun) player.getChild("Gun")).getGunControl().hasShot())
-                return;                
-            
-            if (player.getInventory().get("Bullets") == null) {
-                player.getHud().addAlert("Bullets", "Where are the bullets?");
-                return;
-            }
-            
-            else {
-            
-                if (((Integer)player.getInventory().get("Bullets")) > 0) {
-                
-                    int newBullets    = ((Integer)player.getInventory().get("Bullets"))-1;
-                    
-                    CollisionResults results = new CollisionResults();
-                    Ray              ray     = new Ray(stateManager.getApplication().getCamera().getLocation(), stateManager.getApplication().getCamera().getDirection());
-                    Node          entityNode = stateManager.getState(GameManager.class).getEntityManager().getEntityNode();
-                    
-                    entityNode.collideWith(ray, results);
-                    
-                    if (results.size() > 0) {
-                        
-                        Entity hitEntity = findEntity(results.getCollision(1).getGeometry().getParent());
-                        
-                        if (hitEntity instanceof It) {
-                            ((It) hitEntity).die();
-                            player.getInventory().put("Finish", 1);
-                            player.getHud().addAlert("Finally", "As the shot rings out in the darkness... It strikes it's target and death overcomes it");
-                            Gun g = ((Gun) player.getChild("Gun"));
-                            g.fire();   
-                            return;
-                        }
-                        
-                        else if (hitEntity != null) {
-                            hitEntity.getScript().hitAction();
-                        }
-                        
-                    }
-                    
-                    String bulletInfo = "You have " + newBullets + " bullets left";
-                    
-                    if(newBullets == 1) 
-                        bulletInfo = "You are down to your last bullet...";
-                    
-                    else if (newBullets == 0) {
-                        
-                        bulletInfo = "You have fired your last shot..";
-                        
-                    }
-                    
-                    Gun g = ((Gun) player.getChild("Gun"));
-                    g.fire();   
-                    player.getHud().addAlert("Gun", bulletInfo);
-                    player.getInventory().put("Bullets", newBullets);
-                            
-                }
-                
-                else {
-          
-                    player.getHud().addAlert("Gun", "You are out of bullets");
-                    
-                }
-                
-            }    
-                
+            shootPress();
         }
         
         if (im.getIsPressed("DebugLight")) {
@@ -193,17 +66,150 @@ public class ControlListener {
         }
         
         else if (debugLight) {
+            debugLightPress();
+        }
             
-            debugLight  = false;
-
-            if (isLit) {
-                //((SimpleApplication) stateManager.getApplication()).getRootNode().removeLight(light);
-                isLit = false;
+    }
+    
+    private void interactPress() {
+        
+        if (player.isDead()) {
+            player.restartGame();
+            interact = false;
+            return;
+        }
+            
+        if (player.getHud().getInfoText().getIsVisible()) {
+            player.getHud().getInfoText().hide();
+            player.getHud().checkAlert();
+        }
+            
+        else
+            player.setHasChecked(interact);
+            
+        interact      = false;
+        
+    }
+    
+    private void shootPress() {
+        
+        shoot  = false;
+         
+        if (player.getChild("Gun") == null)
+           return;               
+         
+        if (((Gun) player.getChild("Gun")).getGunControl().hasShot())
+            return;                
+         
+        if (player.getInventory().get("Bullets") == null) {
+            player.getHud().addAlert("Bullets", "Where are the bullets?");
+            return;
+        }
+         
+        else {
+         
+            if (((Integer)player.getInventory().get("Bullets")) > 0) {
+            
+                int newBullets           = ((Integer)player.getInventory().get("Bullets"))-1;
+                
+                CollisionResults results = new CollisionResults();
+                Ray              ray     = new Ray(stateManager.getApplication().getCamera().getLocation(), stateManager.getApplication().getCamera().getDirection());
+                Node          entityNode = stateManager.getState(GameManager.class).getEntityManager().getEntityNode();
+                 
+                entityNode.collideWith(ray, results);
+                 
+                if (results.size() > 0) {
+                    
+                    Entity hitEntity = findEntity(results.getCollision(1).getGeometry().getParent());
+                    
+                    if (hitEntity != null) {
+                        hitEntity.getScript().hitAction();
+                    }
+                    
+                }
+                 
+                String bulletInfo = "You have " + newBullets + " bullets left";
+                 
+                if(newBullets == 1) 
+                    bulletInfo = "You are down to your last bullet...";
+                 
+                else if (newBullets == 0) {
+                     
+                    bulletInfo = "You have fired your last shot..";
+                     
+                }
+                 
+                Gun g = ((Gun) player.getChild("Gun"));
+                g.fire();   
+                player.getHud().addAlert("Gun", bulletInfo);
+                player.getInventory().put("Bullets", newBullets);
+                         
             }
-            
+             
             else {
-                //((SimpleApplication) stateManager.getApplication()).getRootNode().addLight(light);
-                isLit = true;
+       
+                player.getHud().addAlert("Gun", "You are out of bullets");
+                 
+            }
+             
+        }    
+            
+    }
+    
+    private void debugLightPress() {
+        
+        debugLight  = false;
+
+        if (isLit) {
+            ((SimpleApplication) stateManager.getApplication()).getRootNode().removeLight(light);
+            isLit = false;
+        }
+            
+        else {
+            ((SimpleApplication) stateManager.getApplication()).getRootNode().addLight(light);
+            isLit = true;
+        }
+        
+    }
+    
+    private void torchPress() {
+        
+        torch = false;
+            
+        if (player.getChild("Torch") == null) {
+                return;
+        }
+            
+        Torch t = ((Torch) player.getChild("Torch"));
+            
+        if (t.isLit()) {
+            t.Extinguish();
+        }
+            
+        else {
+                
+            if (player.getInventory().get("Matches") == null) {
+                
+                player.getHud().addAlert("Matches", "Where are the matches?");
+                    
+            }
+                
+            else if (((Integer)player.getInventory().get("Matches")) > 0) {
+                    
+                int newMatches = ((Integer)player.getInventory().get("Matches"))-1;
+                String matchInfo = "You have " + newMatches + " matches left";
+                    
+                if(newMatches == 1)
+                    matchInfo = "You are down to your last match";
+                    
+                player.getHud().addAlert("Light", "You light the torch..." + matchInfo);
+                t.Light();
+                player.getInventory().put("Matches", newMatches);
+                    
+            }
+                
+            else {
+                player.getHud().addAlert("Matches", "You are all out of matches");
             }
                 
         }

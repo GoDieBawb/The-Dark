@@ -148,7 +148,9 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     @Override
     public void die() {
         super.die();
+        
         ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
+        hud.detachCrossHair();
         stateManager.getState(GameManager.class).getSceneManager().removeScene();
         inventory = new HashMap();
         detachAllChildren();

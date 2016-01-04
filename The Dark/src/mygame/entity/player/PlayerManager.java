@@ -32,7 +32,7 @@ public class PlayerManager {
         GameManager gm = app.getStateManager().getState(GameManager.class);
         gm.getSceneManager().getScene().attachChild(player);
         gm.getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().add(player.getPhys());
-        gm.getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().setGravity(new Vector3f(0,-50,0));
+        gm.getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().setGravity(new Vector3f(0,-9.8f,0));
         
         if(gm.getSceneManager().getScene().getChild("StartSpot") != null)
             player.getPhys().warp(gm.getSceneManager().getScene().getChild("StartSpot").getWorldTranslation());

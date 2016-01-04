@@ -15,6 +15,7 @@ import com.jme3.scene.control.AbstractControl;
  *
  * @author Bawb
  */
+
 public class GunControl extends AbstractControl {
 
     private Long    lastShot;
@@ -35,7 +36,7 @@ public class GunControl extends AbstractControl {
         smoke    = (ParticleEmitter) gun.getModel().getChild("Smoke");
         smoke.setParticlesPerSec(0);
         smoke.killAllParticles();
-        
+
     }
     
     public void shootGun() {
@@ -55,19 +56,17 @@ public class GunControl extends AbstractControl {
         
         else {
             recoiling = false;
-            float y = gun.getLocalRotation().getY();
-            float z = gun.getLocalRotation().getZ();
-            float w = gun.getLocalRotation().getW();
+            float y   = gun.getLocalRotation().getY();
+            float z   = gun.getLocalRotation().getZ();
+            float w   = gun.getLocalRotation().getW();
             gun.setLocalRotation(new Quaternion(.02f,y,z,w));
             smoke.setStartColor(ColorRGBA.White);
-        }
-            
-                    
-        
+        }      
+
     }
     
     private void finishReloading() {
-        gun.setLocalTranslation(-.25f,.6f,.1f);
+        gun.setLocalTranslation(-.25f,.6f,.25f);
         gun.setLocalRotation(new Quaternion(0.0f, 0.9993738f, 0.0f, 0.03538324f));
         reloading = false;
         hasShot   = false;

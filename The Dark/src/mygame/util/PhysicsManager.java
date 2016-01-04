@@ -34,6 +34,7 @@ public class PhysicsManager {
             node = ((SimpleApplication)stateManager.getApplication()).getRootNode();
         
         physics.getPhysicsSpace().removeAll(node);
+        
     }
     
     public void addToPhysics(Node node) {

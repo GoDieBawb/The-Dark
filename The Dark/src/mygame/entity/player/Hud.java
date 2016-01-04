@@ -4,11 +4,15 @@
  */
 package mygame.entity.player;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
 import java.util.ArrayList;
 import mygame.GameManager;
+import org.lwjgl.opengl.Display;
 import tonegod.gui.controls.windows.AlertBox;
 import tonegod.gui.core.Screen;
 
@@ -23,12 +27,31 @@ public class Hud {
     private Screen              screen;
     private String[]            currentMessage;
     private ArrayList<String[]> messages;
+    private BitmapText          crossHair;
     
     public Hud(AppStateManager stateManager) {
         this.stateManager = stateManager;
         screen            = stateManager.getState(GameManager.class).getUtilityManager().getGuiManager().getScreen();
         messages          = new ArrayList();
         createInfoText();
+        createCrossHair();
+    }
+    
+    private void createCrossHair() {
+        BitmapFont guiFont = stateManager.getApplication().getAssetManager().loadFont("Interface/Fonts/Default.fnt");
+        crossHair          = new BitmapText(guiFont, false);
+        crossHair.setName("CrossHair");
+        crossHair.setSize(guiFont.getCharSet().getRenderedSize() * 2);
+        crossHair.setLocalTranslation(Display.getWidth() / 2 - crossHair.getLineWidth()/2, Display.getHeight() / 2 + crossHair.getLineHeight()/2, 0);
+        crossHair.setText("+");
+    }
+    
+    public void attachCrossHair() {
+        ((SimpleApplication) stateManager.getApplication()).getGuiNode().attachChild(crossHair);
+    }
+    
+    public void detachCrossHair() {
+        ((SimpleApplication) stateManager.getApplication()).getGuiNode().detachChild(crossHair);
     }
     
     private void createInfoText() {
