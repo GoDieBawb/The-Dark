@@ -42,7 +42,8 @@ public class SceneManager {
         scene                 = (Node) app.getAssetManager().loadModel(path);
         RigidBodyControl rbc  = new RigidBodyControl(0f);
         PlayerManager    pm   = app.getStateManager().getState(GameManager.class).getEntityManager().getPlayerManager();
-        scene.getChild(0).addControl(rbc);
+        scene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
+        scene.getChild("SceneNode").addControl(rbc);
         physicsManager.getPhysics().getPhysicsSpace().add(rbc);
         app.getRootNode().attachChild(scene);
         app.getStateManager().getState(GameManager.class).getEntityManager().initEntities(this);
@@ -71,7 +72,6 @@ public class SceneManager {
             scene.detachAllChildren();
         
         scene = new Node();
-        scene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         
     }    
     

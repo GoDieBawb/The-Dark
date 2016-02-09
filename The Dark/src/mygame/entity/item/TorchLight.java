@@ -20,7 +20,7 @@ public class TorchLight extends PointLight {
     private Long    lastFlicker;
     private int     flickerDelay;
     private boolean isLit;
-    private PointLightShadowFilter shadow;
+    private FilterPostProcessor shadowFilter;
 
     
     public TorchLight(AppStateManager stateManager) {
@@ -29,17 +29,17 @@ public class TorchLight extends PointLight {
     }
     
     private void createShadow(AppStateManager stateManager) {
-        shadow = new PointLightShadowFilter(stateManager.getApplication().getAssetManager(), 1024);
+        PointLightShadowFilter shadow = new PointLightShadowFilter(stateManager.getApplication().getAssetManager(), 1024);
         shadow.setLight(this);
         shadow.setShadowIntensity(1f);
         shadow.setEnabled(true);
-        FilterPostProcessor fpp = new FilterPostProcessor();
-        fpp.addFilter(shadow);
-        stateManager.getApplication().getViewPort().addProcessor(fpp);
+        shadowFilter = new FilterPostProcessor();
+        shadowFilter.addFilter(shadow);
+        //stateManager.getApplication().getViewPort().addProcessor(shadowFilter);
     }
     
-    public PointLightShadowFilter getShadow() {
-        return shadow;
+    public FilterPostProcessor getShadow() {
+        return shadowFilter;
     }    
     
     public void setIsLit(boolean newVal) {

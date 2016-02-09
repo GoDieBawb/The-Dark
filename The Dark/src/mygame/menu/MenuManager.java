@@ -54,7 +54,6 @@ public class MenuManager {
         music.setVolume(0);
         fire.setPosition(menuScene.getChild("Fire").getWorldTranslation());
         fire.setIsLit(true);
-        fog.addFilter(fire.getShadow());
         menuScene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         inflateSelection();
         createHelp();
@@ -75,6 +74,7 @@ public class MenuManager {
         app.getCamera().lookAtDirection(new Vector3f(0.5634576f, -0.21033159f, -0.79892194f), new Vector3f(0,1,0));
         music.play();
         app.getViewPort().addProcessor(fog);
+        //app.getViewPort().addProcessor(fire.getShadow());
         
     }
     
@@ -85,6 +85,7 @@ public class MenuManager {
         app.getRootNode().removeLight(fire); 
         music.stop();
         app.getViewPort().removeProcessor(fog);
+        app.getViewPort().removeProcessor(fire.getShadow());
         
     }
     

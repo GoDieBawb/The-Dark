@@ -8,7 +8,7 @@ import com.jme3.app.SimpleApplication;
 import mygame.control.ChaseControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
-import java.util.ArrayList;
+import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
 import mygame.entity.Humanoid;
@@ -49,8 +49,9 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     @Override
     public void createPhys() {
         phys = new BetterCharacterControl(.35f, 1.1f, 100);
+        attachChild(getModel());
         addControl(phys);
-    }
+    } 
     
     public BetterCharacterControl getPhys() {
         return phys;

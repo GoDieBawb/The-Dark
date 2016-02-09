@@ -200,12 +200,9 @@ public class CommandParser {
             else if (command.equals("give")) {
                 
                 try {
-                    int amount = (Integer) Integer.valueOf(args[2]);
+                    int amount = Integer.valueOf(args[2]);
                     player.getInventory().put(args[1], amount);
                 }
-              
-                
-                
                 
                 catch(Exception e) {
                     player.getInventory().put(args[1], 1);
@@ -216,14 +213,11 @@ public class CommandParser {
             else if (command.equals("take")) {
                 
                 try {
-                    int amount    = (Integer) Integer.valueOf(args[2]);
+                    int amount    = Integer.valueOf(args[2]);
                     int newAmount = ((Integer) player.getInventory().get(args[1])) - amount;
                     player.getInventory().put(args[1], newAmount);
                 }
               
-                
-                
-                
                 catch(Exception e) {
                     player.getInventory().remove(args[1]);
                 }
@@ -361,8 +355,6 @@ public class CommandParser {
             }
             
             else if (command.equals("animateattack")) {
-            
-                
                 
                 ((Fighter) entity).attack();
             
