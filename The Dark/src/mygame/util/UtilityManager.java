@@ -14,14 +14,15 @@ import mygame.util.yaml.YamlManager;
  */
 public class UtilityManager {
     
-    private PhysicsManager     physicsManager;
-    private InteractionManager interactionManager;
-    private YamlManager        yamlManager;
-    private GuiManager         guiManager;
-    private ScriptManager      scriptManager;
-    private AudioManager       audioManager;
-    private SimpleApplication  app;
+    private PhysicsManager           physicsManager;
+    private InteractionManager       interactionManager;
+    private YamlManager              yamlManager;
+    private GuiManager               guiManager;
+    private ScriptManager            scriptManager;
+    private AudioManager             audioManager;
+    private final SimpleApplication  app;
     
+    //Create Utilities
     public UtilityManager(SimpleApplication app) {
         this.app = app;
         createPhysicsManager();

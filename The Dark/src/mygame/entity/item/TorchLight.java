@@ -22,12 +22,13 @@ public class TorchLight extends PointLight {
     private boolean isLit;
     private FilterPostProcessor shadowFilter;
 
-    
+    //Constructs the time of last flicker and creates the shadow filer
     public TorchLight(AppStateManager stateManager) {
         lastFlicker = 0L;
         createShadow(stateManager);
     }
     
+    //Construct the shadow filter. Currently not working
     private void createShadow(AppStateManager stateManager) {
         PointLightShadowFilter shadow = new PointLightShadowFilter(stateManager.getApplication().getAssetManager(), 1024);
         shadow.setLight(this);
@@ -38,18 +39,22 @@ public class TorchLight extends PointLight {
         //stateManager.getApplication().getViewPort().addProcessor(shadowFilter);
     }
     
+    //Returns the shadow filter
     public FilterPostProcessor getShadow() {
         return shadowFilter;
     }    
     
+    //Sets whether the torch is lit
     public void setIsLit(boolean newVal) {
         isLit = newVal;
     }
     
+    //Returns whether the torch is lit
     public boolean isLit() {
         return isLit;
     }
     
+    //Flicker the torch by changing color and distance
     private void flicker() {
     
         lastFlicker = System.currentTimeMillis();
@@ -59,6 +64,7 @@ public class TorchLight extends PointLight {
         
     }
     
+    //Generate a random integer within a range
     private int randInt(int min, int max) {
         
         Random rand   = new Random();
@@ -67,12 +73,15 @@ public class TorchLight extends PointLight {
         
     }
     
+    //Upate loop for the torch light
     public void update (float tpf) {
         
+        //Do nothing if the torch isn't lit
         if(!isLit) {
             return;
         }
 
+        //Flicker the torch light on timed loop
         if (System.currentTimeMillis()/10 - lastFlicker/10 > flickerDelay)
             flicker();
         

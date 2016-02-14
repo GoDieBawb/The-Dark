@@ -19,12 +19,13 @@ import com.jme3.math.Vector2f;
  */
 public class InteractionManager implements ActionListener {
     
-    private InputManager      inputManager;
-    private SimpleApplication app;
+    private final InputManager      inputManager;
+    private final SimpleApplication app;
     private boolean           up = false, down = false, left = false, right = false, click = false, interact = false, cursor = false;
     private boolean           up1 = false, down1 = false, left1 = false, right1 = false, torch = false, debugLight;
     private Vector2f          touchSpot;
     
+    //Constructor
     public InteractionManager(SimpleApplication app) {
         this.app     = app;
         inputManager = app.getInputManager();
@@ -32,6 +33,7 @@ public class InteractionManager implements ActionListener {
         setUpKeys();
     }
     
+    //Set up the Keys
     private void setUpKeys() {
         inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
@@ -162,6 +164,7 @@ public class InteractionManager implements ActionListener {
         right1 = newVal;
     }    
     
+    //Ability to Check Buttons Pressed This is For the Camera Manager
     public boolean getIsPressed(String triggerName) {
         
         if (triggerName.equals("Left"))

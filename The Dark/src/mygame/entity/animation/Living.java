@@ -4,16 +4,16 @@
  */
 package mygame.entity.animation;
 
-import mygame.entity.animation.Animated;
-
 /**
  *
  * @author Bawb
  */
 public interface Living extends Animated {
     
+    //Living Entities Can Run
     public void run();
     
+    //Living Entities Can Die
     public void die();
 
 }

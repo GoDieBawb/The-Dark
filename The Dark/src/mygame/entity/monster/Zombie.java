@@ -21,11 +21,12 @@ import mygame.entity.player.Player;
 
 public class Zombie extends Humanoid implements PhysicalEntity, Finder, Monster {
 
-    private BetterCharacterControl phys;
-    private FinderControl          fc;
-    private AppStateManager        stateManager;
-    private int                    moveSpeed;
+    private       BetterCharacterControl phys;
+    private       FinderControl          fc;
+    private final AppStateManager        stateManager;
+    private       int                    moveSpeed;
     
+    //Constructs a zombie
     public Zombie(AppStateManager stateManager) {
         this.stateManager = stateManager;
         setModel(null, stateManager);
@@ -33,17 +34,20 @@ public class Zombie extends Humanoid implements PhysicalEntity, Finder, Monster 
         getModel().setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Zombie.j3m"));
     }
     
+    //Creats a character control
     @Override
     public void createPhys() {
         phys = new BetterCharacterControl(.35f, 1.1f, 150);
         addControl(phys);
     }
 
+    //Returns the zombies character control
     @Override
     public BetterCharacterControl getPhys() {
         return phys;
     }
 
+    //Creates the zombies Finder Control
     @Override
     public void createFinderControl(AppStateManager stateManager) {
         
@@ -77,30 +81,37 @@ public class Zombie extends Humanoid implements PhysicalEntity, Finder, Monster 
     
     }
 
+    //Run on a loop for action
     @Override
     public void act() {
         
+        //Monster will attack player must know target and distance
         Player player = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer();
         float  dist   = player.getWorldTranslation().distance(getWorldTranslation());
         
+        //If at the goal attack the player
         if (getFinderControl().atGoal()) {
             attack();
         }
         
+        //If the player is within the attack range begin to follow the player
         else if (dist < 5 && !getFinderControl().isFinding()) {
             getFinderControl().findTarget(player);
         }
         
+        //Once the player is far enough away stop finding the player
         else if (dist > 10) {
             getFinderControl().stopFinding();
         }
         
     }
 
+    //Sets the zombies move speed
     public void setMoveSpeed() {
         moveSpeed = 5;
     }
 
+    //Returns the zombies move speed
     public int getMoveSpeed() {
         return moveSpeed;
     }

@@ -26,6 +26,7 @@ public class GameManager extends AbstractAppState {
     private SceneManager       sceneManager;
     private MenuManager        menuManager;
     
+    //Initializes Sub Managers
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         this.app = (SimpleApplication) app;
@@ -38,6 +39,7 @@ public class GameManager extends AbstractAppState {
         //startNewGame();
     }
     
+    //Loads the Game Sounds into individual Audio Nodes
     private void initSounds() {
     
         utilityManager.getAudioManager().loadSound("Ambience" , "Sounds/Organ.ogg", true);
@@ -51,6 +53,7 @@ public class GameManager extends AbstractAppState {
         
     }
     
+    //Starts a New Game From the Dark House Scene
     public void startNewGame() {
         sceneManager.initScene("Scenes/DarkHouse.j3o");
         entityManager.getPlayerManager().placePlayer();
@@ -59,6 +62,7 @@ public class GameManager extends AbstractAppState {
         entityManager.getPlayerManager().getPlayer().rotate(0,89,0);
     }
     
+    //When the Game is Ended Returns the Player to the Menu
     public void endGame() {
         entityManager.getPlayerManager().getPlayer().getHud().getInfoText().hide();
         utilityManager.getAudioManager().getSound("Ambience").stop();
@@ -100,11 +104,13 @@ public class GameManager extends AbstractAppState {
     @Override
     public void update(float tpf) {
         
+        //Update the Menu if Enabled
         if (menuManager.isEnabled()) {
             menuManager.update(tpf);
             return;
         }
         
+        //Update the Entity and Scene Manager
         entityManager.update(tpf);
         sceneManager.update(tpf);
         

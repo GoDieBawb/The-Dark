@@ -14,11 +14,12 @@ import mygame.util.AudioManager;
  */
 public class Gun extends Entity {
     
-    private GunControl gunControl;
-    private boolean    equipped;
-    private AudioNode  gunShot;
-    private AudioNode  reload;
+    private final GunControl gunControl;
+    private final AudioNode  gunShot;
+    private final AudioNode  reload;
+    private boolean          equipped;
     
+    //Load the proper sounds from the audiomanager
     public Gun(AudioManager am) {
         gunShot    = am.getSound("Gunshot");
         reload     = am.getSound("Reloading");
@@ -26,34 +27,37 @@ public class Gun extends Entity {
         addControl(gunControl);
     }
     
+    //Determines whether the gun is equipped
     public void setEquipped(boolean newVal) {
         equipped = newVal;
     }
     
+    //Returns whether the gun is equipped
     public boolean isEquipped() {
         return equipped;
     }
     
+    //Initiates the Smoke Particles
     public void initModel() {
         gunControl.initSmoke();
     }
     
+    //Starts the reloading of the weapon and plays the sound
     public void startReloading() {
         reload.setTimeOffset(1);
         reload.play();
     }
     
+    //Returns the Gun Control Haha Gun Control
     public GunControl getGunControl() {
         return gunControl;
     }
     
+    //Fires the Gun
     public void fire() {
     
-        if(gunControl.hasShot()) {
-        
-        }
-        
-        else {
+        //If the player has not shot play a gun shot and shoot the gun
+        if(!gunControl.hasShot()) {
             gunShot.playInstance();
             gunControl.shootGun();
         }

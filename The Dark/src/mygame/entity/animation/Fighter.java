@@ -7,9 +7,11 @@ package mygame.entity.animation;
 /**
  *
  * @author Bawb
+ * Interface for a fighting Entity
  */
 public interface Fighter extends Living {
     
+    //All fighters can attack in some way
     public void attack();
     
 }

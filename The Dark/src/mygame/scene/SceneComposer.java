@@ -18,12 +18,15 @@ import java.util.ArrayList;
 /**
  *
  * @author Bawb
+ * Allows for placement of lights within the scene composer
+ * Currently setting the location of lights is bugged
  */
 public class SceneComposer extends AbstractAppState {
     
     private SimpleApplication app;
     private ArrayList<TorchLight> lights;
     
+    //On initialize init lights
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
@@ -31,6 +34,7 @@ public class SceneComposer extends AbstractAppState {
         initLights();
     }
     
+    //Inits lights in the scene composer
     private void initLights() {
     
         AmbientLight al = new AmbientLight();
@@ -44,8 +48,10 @@ public class SceneComposer extends AbstractAppState {
         
         lights       = new ArrayList();
         
+        //Iterate over the light node
         for (int i = 0; i < lightNode.getQuantity(); i++) {
         
+            //If the name of the node is point add a point light
             if (lightNode.getChild(i).getName().equals("Point")) {
             
                 PointLight pl = new PointLight();
@@ -56,6 +62,7 @@ public class SceneComposer extends AbstractAppState {
             
             }
             
+            //If the name of the node is torch add a torch light
             else if (lightNode.getChild(i).getName().equals("Torch")) {
             
                 TorchLight tl = new TorchLight(app.getStateManager());
@@ -72,6 +79,7 @@ public class SceneComposer extends AbstractAppState {
         
     }    
     
+    //Run on a loop to update the light node
     @Override
     public void update(float tpf) {
         
@@ -81,6 +89,7 @@ public class SceneComposer extends AbstractAppState {
         
     }
     
+    //Clean up the Application State
     @Override
     public void cleanup() {
         super.cleanup();

@@ -12,6 +12,7 @@ import mygame.entity.Actor;
  */
 public interface Monster extends Actor {
     
+    //All Monsters Can attack
     public void attack();
     
 }

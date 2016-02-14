@@ -14,6 +14,7 @@ package mygame.control;
      
     public abstract void update(float tpf);
     
+    //Determines whether the Player is interacting
     public void setEnabled(boolean newVal) {
         enabled = newVal;
     }

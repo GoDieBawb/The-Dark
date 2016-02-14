@@ -29,12 +29,14 @@ public class SceneManager {
     private FilterPostProcessor          fog;
     private FilterPostProcessor          water;
     
+    //Inits Scene 
     public SceneManager(SimpleApplication app, GameManager gm) {
         this.app       = app;
         physicsManager = gm.getUtilityManager().getPhysicsManager();
         initEffects();
     }
     
+    //Inits the scene by path
     public void initScene(String path) {
         
         removeScene();
@@ -49,6 +51,7 @@ public class SceneManager {
         app.getStateManager().getState(GameManager.class).getEntityManager().initEntities(this);
         pm.placePlayer();
         
+        //Checks scene name and adds proper effects
         if (path.toLowerCase().contains("town"))
             app.getViewPort().addProcessor(fog);
         
@@ -63,6 +66,7 @@ public class SceneManager {
         
     }
     
+    //Removes the Current Scene and Nulls it
     public void removeScene() {
         
         physicsManager.clearPhysics(app.getStateManager(), scene);
@@ -75,11 +79,13 @@ public class SceneManager {
         
     }    
     
+    //Initializes Post Processor Filters
     private void initEffects() {
         fog   = app.getAssetManager().loadFilter("Effects/Fog.j3f");
         water = app.getAssetManager().loadFilter("Effects/Water.j3f");
     }    
     
+    //Adds Lights to Nodes in the Light Node
     public void initLights() {
     
         PlayerManager pm   = app.getStateManager().getState(GameManager.class).getEntityManager().getPlayerManager();
@@ -113,6 +119,7 @@ public class SceneManager {
         
     }
     
+    //Returns the Current Scene
     public Node getScene() {
         return scene;
     }

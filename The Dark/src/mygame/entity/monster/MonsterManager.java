@@ -18,11 +18,12 @@ import mygame.util.PhysicsManager;
  */
 public class MonsterManager {
     
-    private SimpleApplication   app;
-    private PhysicsManager      physicsManager;
-    private ArrayList<Monster>  monsters;
-    private EntityManager       em;
+    private final SimpleApplication   app;
+    private final PhysicsManager      physicsManager;
+    private final ArrayList<Monster>  monsters;
+    private final EntityManager       em;
     
+    //Construct the monster manager
     public MonsterManager(SimpleApplication app, EntityManager em) {
         this.app        = app;
         physicsManager  = app.getStateManager().getState(GameManager.class).getUtilityManager().getPhysicsManager();
@@ -30,10 +31,12 @@ public class MonsterManager {
         this.em         = em;
     }
     
+    //Returns a list of all the monsters
     public ArrayList<Monster> getMonsters() {
         return monsters;
     }
     
+    //Create a zombie type monster
     public void createZombie() {
         Zombie zombie;
         zombie = new Zombie(app.getStateManager());

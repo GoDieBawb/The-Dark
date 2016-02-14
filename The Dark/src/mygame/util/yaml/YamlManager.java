@@ -20,10 +20,12 @@ import org.yaml.snakeyaml.Yaml;
  */
 public class YamlManager {
     
+    //On Construct Register the Yaml Loader
     public YamlManager(AppStateManager stateManager) {
         stateManager.getApplication().getAssetManager().registerLoader(YamlLoader.class, "yml");
     }
     
+    //This Method is Used to Load a Script From the Compiled Assets jar
     public HashMap loadYamlAsset(String path, AppStateManager stateManager) {
     
         HashMap map = (HashMap) stateManager.getApplication().getAssetManager().loadAsset(path);
@@ -31,6 +33,7 @@ public class YamlManager {
         
     }
     
+    //This Method is used to load an external script
     public HashMap loadYaml(String path) {
         
         HashMap map;
@@ -52,6 +55,7 @@ public class YamlManager {
        
     }
     
+    //Will Save a Hashmap to a YAML file at the given path
     public void saveYaml(String path, HashMap map) {
         
         DumperOptions options = new DumperOptions();

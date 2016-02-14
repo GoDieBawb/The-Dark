@@ -60,6 +60,7 @@ public class MenuManager {
         hideHelp();
     }
     
+    //Enables the Menu Places Camera and Initiates Scene
     public void showMenu() {
     
         enabled   = true;
@@ -78,6 +79,7 @@ public class MenuManager {
         
     }
     
+    //Disables the Manager and removes the scene
     public void hideMenu() {
     
         enabled = false;
@@ -108,6 +110,7 @@ public class MenuManager {
         
     }
     
+    //Enlarges the Selected Options
     private void inflateSelection() {
     
         switch(selection) {
@@ -134,13 +137,16 @@ public class MenuManager {
         
     }
     
+    //Called From Menu Control Listener. Takes Selected Node and Makes Choice
     public void makeSelection() {
     
+        //If Help Menu is Shown Hide it
         if (helpShown) {
             hideHelp();
             return;
         }
             
+        //Act on Selection
         switch(selection) {
             
             case 1:
@@ -159,40 +165,49 @@ public class MenuManager {
     
     }
     
+    //The Help Screen is A physical child node of the scene. Sets the field.
     private void createHelp() {
         helpScreen = (Node) menuScene.getChild("Controls");
     }
     
+    //Shows the Help Screen By setting it to 0,0,0
     private void showHelp() {
         helpScreen.getChild(0).setLocalTranslation(0,0f,0);
         helpShown = true;
     }
     
+    //Hides the Help Screen by moving it down 15 units
     private void hideHelp() {
         helpScreen.getChild(0).setLocalTranslation(0,-15f,0);
         helpShown = false;
     }
     
+    //If start is selected start sliding the menu out
     private void startGame() {
         slidingIn  = false;
         slidingOut = true;
     }
     
+    //Enables the Menu Manager
     public void setEnabled(boolean newVal) {
         enabled = newVal;
     }
     
+    //Returns the Enabled State of the Menu Manager
     public boolean isEnabled() {
         return enabled;
     }
     
+    //Slides the Nodes of the Menu into place
     private void slideIn (Spatial spatial, float tpf) {
     
+        //Slowly Move Nodes Down and Lessen Fog Density
         if (spatial.getLocalTranslation().y > 0) {
             spatial.move(0,-1.5f*tpf,0);
             fog.getFilter(FogFilter.class).setFogDensity(fog.getFilter(FogFilter.class).getFogDensity()-6f*tpf);
         }
         
+        //Once Far Enough turn up music turn off fog and stop sliding
         else {
             slidingIn = false;
             spatial.setLocalTranslation(0,0,0);
@@ -200,19 +215,23 @@ public class MenuManager {
             fog.getFilter(FogFilter.class).setFogDensity(0);
         }
         
+        //Slowly fades in music until volume of .3f
         if (music.getVolume() < .3f) {
             music.setVolume(music.getVolume()+.05f*tpf);
         }
         
     }
     
+    //Move the Menu Nodes Upwards and off the screen
     private void slideOut (Spatial spatial, float tpf) {
     
+        //Slow Move Nodes and Make Fog Darker
         if (spatial.getLocalTranslation().y < 6.5f) {
             spatial.move(0,1.5f*tpf,0);
             fog.getFilter(FogFilter.class).setFogDensity(fog.getFilter(FogFilter.class).getFogDensity()+6f*tpf);
         }
         
+        //Once Moved Far Enough actually start the game
         else {
             slidingOut = false;
             app.getStateManager().getState(GameManager.class).startNewGame();
@@ -231,6 +250,7 @@ public class MenuManager {
         
     }    
     
+    //Updates the Menu Manager if Enabled
     public void update(float tpf) {
     
         if (enabled) {

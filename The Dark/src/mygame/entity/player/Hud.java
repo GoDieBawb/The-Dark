@@ -22,13 +22,14 @@ import tonegod.gui.core.Screen;
  */
 public class Hud {
     
-    private AlertBox            infoText;
-    private AppStateManager     stateManager;
-    private Screen              screen;
-    private String[]            currentMessage;
-    private ArrayList<String[]> messages;
-    private BitmapText          crossHair;
+    private AlertBox                  infoText;
+    private final AppStateManager     stateManager;
+    private final Screen              screen;
+    private String[]                  currentMessage;
+    private final ArrayList<String[]> messages;
+    private BitmapText                crossHair;
     
+    //Constructs the Heads Up Display
     public Hud(AppStateManager stateManager) {
         this.stateManager = stateManager;
         screen            = stateManager.getState(GameManager.class).getUtilityManager().getGuiManager().getScreen();
@@ -37,6 +38,7 @@ public class Hud {
         createCrossHair();
     }
     
+    //Creates the Crosshair for the gun
     private void createCrossHair() {
         BitmapFont guiFont = stateManager.getApplication().getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         crossHair          = new BitmapText(guiFont, false);
@@ -46,14 +48,17 @@ public class Hud {
         crossHair.setText("+");
     }
     
+    //Attach the Crosshair
     public void attachCrossHair() {
         ((SimpleApplication) stateManager.getApplication()).getGuiNode().attachChild(crossHair);
     }
     
+    //Detach the CrossHair
     public void detachCrossHair() {
         ((SimpleApplication) stateManager.getApplication()).getGuiNode().detachChild(crossHair);
     }
     
+    //Creates the Alert Box that displays the text in the game
     private void createInfoText() {
         
         infoText = new AlertBox(screen, Vector2f.ZERO) {
@@ -83,7 +88,8 @@ public class Hud {
         infoText.hide();
         
     }
-        
+    
+    //Add a Message to the messages list
     public void addAlert(String title, String text) {
         
         String[] message = {title, text};
@@ -92,6 +98,7 @@ public class Hud {
         
     }
     
+    //Check to see if there is an alert in the list if so, show it
     public void checkAlert() {
         
         if (messages.isEmpty())
@@ -109,6 +116,7 @@ public class Hud {
     
     }
     
+    //Show the message and then remove it from the messages list
     private void showAlert() {
         String[] message = messages.get(0);
         currentMessage   = message;
@@ -120,6 +128,7 @@ public class Hud {
         messages.remove(message);
     }
     
+    //Return the Alert Box
     public AlertBox getInfoText() {
         return infoText;
     }

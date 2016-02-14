@@ -14,6 +14,7 @@ import org.yaml.snakeyaml.Yaml;
 */
 public class YamlLoader implements AssetLoader {
     
+    //Allows for the loading of YAML files from the compiled assets jar
     public Object load(AssetInfo assetInfo) throws IOException {
         Yaml yaml              = new Yaml();
         InputStream openStream = assetInfo.openStream();

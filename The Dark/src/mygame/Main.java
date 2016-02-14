@@ -13,6 +13,7 @@ public class Main extends SimpleApplication {
         app.start();
     }
 
+    // Game Starts with Attaching the Game Manager
     @Override
     public void simpleInitApp() {
         setDisplayStatView(false);

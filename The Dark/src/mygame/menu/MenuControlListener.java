@@ -14,12 +14,14 @@ public class MenuControlListener {
     private final MenuManager        menuManager;
     private boolean                  interact, up, down;
     
+    //Is Updated When Menu is Active
     public MenuControlListener(AppStateManager stateManager, MenuManager menuManager) {
         GameManager gm    = stateManager.getState(GameManager.class);
         im                = gm.getUtilityManager().getInteractionManager();
         this.menuManager  = menuManager;
     }
     
+    //Checks for Arrow Press and Interact and Acts on the MenuManager
     private void updateKeys() {
     
         if (im.getIsPressed("Interact")) {

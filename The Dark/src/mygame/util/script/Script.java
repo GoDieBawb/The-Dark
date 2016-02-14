@@ -28,6 +28,7 @@ public class Script {
     private final Player          player;
     private final LinkedHashMap   map;
     
+    //Contstructs the Script
     public Script(Entity entity, AppStateManager stateManager, LinkedHashMap map) {
         this.entity   = entity;
         this.map      = map;     
@@ -35,11 +36,13 @@ public class Script {
         scriptManager =  stateManager.getState(GameManager.class).getUtilityManager().getScriptManager();
     }
     
+    //Initializes the Proximity and Start Actions
     public void initialize() {
         setProximity();
         startAction();
     }
     
+    //If there is a proximity map in the script get the Distance
     private void setProximity() {
         
         try {
@@ -52,6 +55,7 @@ public class Script {
         
     }
     
+    //If there is a start action do it on initialize
     public void startAction() {
 
         ArrayList startScript;
@@ -68,6 +72,7 @@ public class Script {
 
     }
   
+    //This Action is Run When Hit is Called. Currently Only With Gun
     public void hitAction() {
         
         if (map.get("Hit") != null) {
@@ -80,6 +85,7 @@ public class Script {
 
     }
   
+    //Run if the players distance is within the proximity or leaves it
     private void proximityAction() {
 
         float distance  = player.getLocalTranslation().distance(entity.getLocalTranslation());
@@ -93,6 +99,7 @@ public class Script {
             inProx = false;
         }
 
+        //If in prox but has not yet run. Run Proximity Action
         if (inProx && !enteredProx) {
 
             enteredProx           = true;
@@ -101,6 +108,7 @@ public class Script {
 
         }
 
+        //If left prox but has not run. Run leave proximity action
         if (!inProx && enteredProx) {
 
             player.getHud().getInfoText().hide();
@@ -112,10 +120,12 @@ public class Script {
 
     }
   
+    //Returns whether the player is within the entities proximity
     public boolean InProx() {
         return inProx;
     }
     
+    //Run when the player interacts within the entities proximity
     private void checkAction() {
 
         try {
@@ -132,11 +142,12 @@ public class Script {
         }
                 
         catch(Exception e) {
-        
+            e.printStackTrace();
         }
         
     }
   
+    //This script is contanstly run on a loop.
     private void loopAction() {
 
         Map<Object, Object> wm          = (Map<Object, Object>)  map.get("While");
@@ -145,6 +156,7 @@ public class Script {
 
     }    
     
+    //Run on loop and checks for player interaction and distance from entity
     public void checkForTriggers() {
         
         if (player.hasChecked()) {

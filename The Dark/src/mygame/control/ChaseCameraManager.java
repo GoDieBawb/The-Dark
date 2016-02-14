@@ -51,6 +51,7 @@ public class ChaseCameraManager {
         app.getCamera().setFrustumBottom(app.getCamera().getFrustumBottom()*scale);
     }
 
+    //Run on a loop to maintain backwards view
     private void chaseCamMove() {
         
         if (cam.getDistanceToTarget() < 1) {
@@ -78,6 +79,7 @@ public class ChaseCameraManager {
         return enabled;
     }
     
+    //Update Loop
     public void update(float tpf) {
         
         chaseCamMove();

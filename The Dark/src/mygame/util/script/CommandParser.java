@@ -2,8 +2,6 @@ package mygame.util.script;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -18,7 +16,6 @@ import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.entity.npc.It;
 import mygame.entity.player.Player;
-import org.lwjgl.opengl.Display;
 
 /**
  *
@@ -26,9 +23,9 @@ import org.lwjgl.opengl.Display;
  */
 public class CommandParser {
 
-    private AppStateManager stateManager;
-    private GameManager     gm;
-    private TagParser       parser;
+    private final AppStateManager stateManager;
+    private final GameManager     gm;
+    private final TagParser       parser;
     
     public CommandParser(AppStateManager stateManager) {
     
@@ -38,9 +35,12 @@ public class CommandParser {
     
     }
     
+    //Takes the current line from the script and executes the proper command
     public void parse(ArrayList commands, Entity entity) {
         
         Player  player  = gm.getEntityManager().getPlayerManager().getPlayer();
+        
+        //Start with assuming there is no condition to run the script
         boolean go      = true;
         boolean met     = false;
         
@@ -52,13 +52,16 @@ public class CommandParser {
             String[] args     = ((String) commands.get(i)).split(" ");
             String   command  = args[0];
             
+            //Starts an if logic statement
             if (command.equals("if")) {
                 
+                //If the condition returns true then go
                 if (ifCheck(entity, args)) {
                     go  = true;
                     met = true;
                 }
                 
+                //If not the condition is not met and the commands should not go
                 else {
                     go  = false;
                     met = false;
@@ -66,10 +69,13 @@ public class CommandParser {
                 
             }       
             
+            //If the elseif command is run there may be a change in condition
             else if (command.equals("elseif")) {
                 
+                //If previous condition was not met else if comes into action
                 if (!met) {
                     
+                    //Check the condiition if true the script can go
                     if (ifCheck(entity, args)) {
                         
                         go  = true;
@@ -79,6 +85,7 @@ public class CommandParser {
                     
                 }
                 
+                //If the previous condition was met else if does not come into play
                 else {
                 
                     go  = false;
@@ -87,25 +94,29 @@ public class CommandParser {
             
             }
             
+            //Else simple flips the met condition
             else if (command.equals("else")) {
 
                 if(met)
-                go = false;
+                    go = false;
                 else
-                go = true;
+                    go = true;
             
             }
             
+            //End of the if statement makes all future commands good to go
             else if (command.equals("end")) {
                 
                 go = true;    
             
             }
             
+            //If not able to go continue onto the next command
             else if(!go) {
                 continue;
             }
             
+            //Debug command prints a message to the console
             else if (command.equals("debug")) {
                 
                 String[] a     = ((String) commands.get(i)).split(" ", 2);
@@ -114,6 +125,7 @@ public class CommandParser {
                 
             }
             
+            //Debugs a tag
             else if (command.equals("debugtag")) {
             
                 String[] a     = ((String) commands.get(i)).split(" ", 2);
@@ -121,6 +133,7 @@ public class CommandParser {
             
             }
             
+            //End the game if the command is finish
             else if (command.equals("finish")) {
             
                 ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
@@ -128,26 +141,56 @@ public class CommandParser {
                 
             }
             
+            //Fail command causes the player to die
             else if (command.equals("fail")) {
             
                 player.die();
 
             }
             
+            //Changes the scene and possibly teleports player
             else if (command.equals("changescene")) {
-            
-                String scenePath = "Scenes/" + args[1] + ".j3o";
+                
+                //File Path for scene and boolean for teleporting
+                String  scenePath;
+                boolean teleport = false;
+                
+                //If args are 4 both Directory and Teleport Location
+                if (args.length == 4) {
+                    scenePath = "Scenes/" + args[1] + "/" + args[2] + ".j3o";
+                    teleport = true;
+                }
+                
+                //If Args are 3 Either Directory or Teleport Location
+                else if (args.length == 3) {
+                    
+                    //If last arg contains .location it cannot be a location tag
+                    if (!args[args.length -1 ].contains(".location")) {
+                        scenePath = "Scenes/" + args[1] + "/" + args[2] + ".j3o";
+                    }
+                    
+                    //The final args must be location
+                    else {
+                         scenePath = "Scenes/" + args[1] + ".j3o";
+                         teleport = true;
+                    }
+                    
+                }
+                
+                //There is only one argument and that is the direct scene path
+                else {
+                    scenePath = "Scenes/" + args[1] + ".j3o";
+                }
+                
                 gm.getSceneManager().initScene(scenePath);
-                    
-                try {
-                    player.getPhys().warp((Vector3f) (parser.parseTag(stateManager, args[2], entity)));
-                }
-                    
-                catch(Exception e) {
-                }
+                
+                //If teleport is true the player will warp to the final tag
+                if (teleport)
+                    player.getPhys().warp((Vector3f) (parser.parseTag(stateManager, args[args.length-1], entity)));
                     
             }
             
+            //Sets the player's or the entity's model
             else if (command.equals("setmodel")) {
             
                 if (args[1].toLowerCase().equals("player")) {
@@ -159,17 +202,17 @@ public class CommandParser {
                     ((Entity) entity).getModel().removeFromParent();
                     ((Entity) entity).setModel(args[1], stateManager);
                 }
-                
-                
             
             }
             
+            //Sets the entities look direction to the player
             else if (command.equals("look")) {
                 
                 ((Entity) entity).lookAt(player.getModel().getWorldTranslation().add(0,.3f,0), new Vector3f(0,1,0));
                 
             }
             
+            //Sets the rotation of an entity
             else if (command.equals("setrotation")) {
                 
                 float xRot = Float.valueOf(args[1]);
@@ -180,23 +223,27 @@ public class CommandParser {
                 
             }            
             
+            //Clears the rotation of the entity
             else if (command.equals("clearrotation")) {
                 
                 ((Entity) entity).getModel().setLocalRotation(new Quaternion(0,0,0,1));
                 
             }
             
+            //Changes the scale of an entity
             else if (command.equals("scale")) {
                 float scale = Float.valueOf(args[1]);
                 entity.scale(scale);
             }
             
+            //Drops the item in the players hand
             else if (command.equals("drop")) {
             
                 player.dropItem();
             
             }
             
+            //Puts a string into the players inventory
             else if (command.equals("give")) {
                 
                 try {
@@ -210,6 +257,7 @@ public class CommandParser {
             
             }
             
+            //Takes a string from the players inventory
             else if (command.equals("take")) {
                 
                 try {
@@ -224,6 +272,7 @@ public class CommandParser {
             
             }
             
+            //Sends a message to the players Alert Box
             else if (command.equals("chat")) {
             
                 String[] a     = ((String) commands.get(i)).split(" ", 2);
@@ -231,6 +280,7 @@ public class CommandParser {
             
             }
             
+            //Sends a delayed message to the players alert box
             else if (command.equals("delaychat")) {
             
                 String[] a     = ((String) commands.get(i)).split(" ", 2);
@@ -238,6 +288,7 @@ public class CommandParser {
             
             }
             
+            //Moves the player or an entity
             else if (command.equals("move")) {
             
                 if (args[1].toLowerCase().equals("player")) {
@@ -254,6 +305,7 @@ public class CommandParser {
                     node.setLocalTranslation(spot);
                 
                 }
+                
                 catch (Exception e) {
                     
                     Vector3f spot = (Vector3f) parser.parseTag(stateManager, args[1], entity);
@@ -264,6 +316,7 @@ public class CommandParser {
             
             }
             
+            //Hides an entity or entities by moving them below ground
             else if (command.equals("hide")) {
             
                 try {
@@ -299,6 +352,7 @@ public class CommandParser {
                 
             }              
             
+            //removes an enitty from the map
             else if (command.equals("remove")) {
                 
                 entity.setLocalTranslation(0,-15,0);
@@ -309,12 +363,14 @@ public class CommandParser {
                 
             }
             
+            //Equips an entity to the left side of the player
             else if (command.equals("equipleft")) {
                 player.attachChild(entity);
                 //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(entity);
                 entity.setLocalTranslation(.25f,.6f,.1f);
             }
             
+            //Equips an entity to the right side of a player
             else if (command.equals("equipright")) {
                 
                 player.attachChild(entity);
@@ -329,6 +385,7 @@ public class CommandParser {
                 
             }
             
+            //Shows an entity or entities by moving them to their original location
             else if (command.equals("show")) {
             
                 try {
@@ -348,18 +405,21 @@ public class CommandParser {
                 
             }  
             
+            //Runs the entities idle animation
             else if (command.equals("idle")) {
             
                 ((Living) entity).idle();
             
             }
             
+            //Animates the entities attack
             else if (command.equals("animateattack")) {
                 
                 ((Fighter) entity).attack();
             
             }
             
+            //Causes the script holding entity to die
             else if (command.equals("die")) {
             
                 if (entity instanceof It) {
@@ -372,12 +432,14 @@ public class CommandParser {
                     
             } 
             
+            //Clears the entities animations
             else if (command.equals("noanim")) {
             
                 ((Animated) entity).getAnimControl().clearChannels();    
             
             }
             
+            //If not on the list the command is unknown
             else {
             
                 System.out.println("Unknown comand: " + command);
@@ -388,6 +450,7 @@ public class CommandParser {
         
     }
   
+  //Determines the truth value of a tag
   private boolean ifCheck(Scriptable entity, String[] args) {
       
       Object comp1 = null;
@@ -456,10 +519,10 @@ public class CommandParser {
               Boolean b = (Boolean) comp2;
               
               if (!a && !b) {
-              truthVal = true;
+                truthVal = true;
               }
               else{
-              truthVal = false;
+                truthVal = false;
               }
           
           }
@@ -482,10 +545,10 @@ public class CommandParser {
               Boolean b = (Boolean) comp2;
               
               if (a && !b) {
-              truthVal = false;
+                truthVal = false;
               }
               else{
-              truthVal = true;
+                truthVal = true;
               }
               
             return truthVal;  

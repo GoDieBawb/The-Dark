@@ -32,10 +32,12 @@ public class ChaseControl extends InteractionControl {
         createCameraManager();
     } 
     
+    //Creates the Camera Manager
     private void createCameraManager() {
         cameraManager = new ChaseCameraManager(app, player);
     }
     
+    //Updates which keys are pressed
     private void updateKeys() {
         InteractionManager im = stateManager.getState(GameManager.class).getUtilityManager().getInteractionManager();
         up     = im.getIsPressed("Up");
@@ -45,6 +47,7 @@ public class ChaseControl extends InteractionControl {
         cursor = im.getIsPressed("Cursor");
     }
     
+    //Actually moves the player based on the keys pressed
     private void chaseMove(float tpf){
         camDir.set(app.getCamera().getDirection()).multLocal(10.0f, 0.0f, 10.0f);
         camLeft.set(app.getCamera().getLeft()).multLocal(10.0f);
@@ -89,6 +92,7 @@ public class ChaseControl extends InteractionControl {
         cameraManager.setEnabled(newVal);
     }
     
+    //If e is held down keep the cursor visible
     private void checkCursor() {
         
         if(cursor) {
@@ -103,6 +107,7 @@ public class ChaseControl extends InteractionControl {
         
     }
     
+    //Updates proper methods on the loop
     @Override
     public void update(float tpf) {
         chaseMove(tpf);

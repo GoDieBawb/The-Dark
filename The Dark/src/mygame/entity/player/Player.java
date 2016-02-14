@@ -34,6 +34,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private BetterCharacterControl phys;
     private HashMap<Object, Object>  inventory;
     
+    //Construct the player
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;
         setModel(null, stateManager);
@@ -46,6 +47,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         createControlListener();
     }
     
+    //Create the Character Control
     @Override
     public void createPhys() {
         phys = new BetterCharacterControl(.35f, 1.1f, 100);
@@ -53,6 +55,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         addControl(phys);
     } 
     
+    //Returns the Character Control
     public BetterCharacterControl getPhys() {
         return phys;
     }
@@ -146,16 +149,18 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         isDead = false;
     }
     
+    //When the player dies clear the root node remove the cross hair and reset
     @Override
     public void die() {
-        super.die();
         
+        super.die();
         ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
         hud.detachCrossHair();
         stateManager.getState(GameManager.class).getSceneManager().removeScene();
         inventory = new HashMap();
         detachAllChildren();
         isDead = true;
+        
     }
     
 }

@@ -28,18 +28,22 @@ public class TorchControl extends AbstractControl {
     private final Torch           torch;
     private int                   step;
     
+    //Constructs the Torch Control
     public TorchControl(AppStateManager stateManager, Torch torch) {
         this.stateManager = stateManager;
         player            = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer();
         this.torch        = torch;
     }
     
+    //Checks what time the torch was lit. This should probably be scripted
     private void checkLitTime() {
         
+        //If the torch isnt lit dont do anything
         if(!torch.isLit()) {
             return;
         }
         
+        //If the player is finished stop the monster finding 
         if (player.getInventory().get("Finish") != null) {
             return;
         }
@@ -92,6 +96,7 @@ public class TorchControl extends AbstractControl {
             
         }
 
+        //Kills the player if lit time is more than 60 seconds
         if (litTime > 60 && step ==5) {
             player.getHud().addAlert("", "It Kills");
             scream.setVolume(100f);
@@ -100,6 +105,7 @@ public class TorchControl extends AbstractControl {
             player.die();
         }
         
+        //50 seconds warns it's behind them
         else if (litTime > 50 && step==4) {
             player.getHud().addAlert("", "It's Behind You");
             steps.play();
@@ -108,6 +114,7 @@ public class TorchControl extends AbstractControl {
             step = 5;
         }        
         
+        //Third warning after 40 seconds
         else if (litTime > 40 && step==3) {
             player.getHud().addAlert("", "It Seeks You");
             steps.play();
@@ -116,17 +123,20 @@ public class TorchControl extends AbstractControl {
             step = 4;
         }        
         
+        //Second warning after 30 seconds
         else if (litTime > 30 && step==2) {
             player.getHud().addAlert("", "It Comes Inside");
             door.playInstance();
             step = 3;
         }
         
+        //First warning after 20 seconds
         else if (litTime > 20 && step == 1) {
             player.getHud().addAlert("", "It Crawls");
             step = 2;
         }
         
+        //When the torch is first lit it wakes up
         else if(litTime > 10 && step == 0) {
             player.getHud().addAlert("", "It awakens");
             step = 1;
@@ -134,10 +144,12 @@ public class TorchControl extends AbstractControl {
         
     }
     
+    //Sets the time the torch was lit
     public void setFirstLit() {
         firstLit = System.currentTimeMillis();
     }
     
+    //Turns off the lights and stops the sound
     public void stopLight() {
         
         if(step != 0)
@@ -148,6 +160,7 @@ public class TorchControl extends AbstractControl {
         
     }
     
+    //Update loop for the torch and torch control
     @Override
     protected void controlUpdate(float tpf) {
         checkLitTime();

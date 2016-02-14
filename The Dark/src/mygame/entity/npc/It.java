@@ -15,6 +15,7 @@ import mygame.entity.animation.Animated;
  */
 public class It extends Entity implements Animated {
 
+    //Returns It's animation control
     public AnimControl getAnimControl() {
         return getModel().getChild("Model").getControl(AnimControl.class);
     }
@@ -23,6 +24,7 @@ public class It extends Entity implements Animated {
 
     }
     
+    //Die animation relative to the It model
     public void die() {
         getAnimControl().createChannel().setAnim("Die");
         getAnimControl().getChannel(0).setLoopMode(LoopMode.DontLoop);

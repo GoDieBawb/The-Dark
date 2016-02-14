@@ -16,9 +16,10 @@ import mygame.entity.Entity;
  */
 public class Torch  extends Entity {
     
-    private TorchControl torchControl;
-    private TorchLight   torchLight;
+    private final TorchControl torchControl;
+    private final TorchLight   torchLight;
     
+    //Constructs the Torch Entity
     public Torch(SimpleApplication app, Node scene) {
         torchControl = new TorchControl(app.getStateManager(), this);
         torchLight   = new TorchLight(app.getStateManager());
@@ -29,12 +30,14 @@ public class Torch  extends Entity {
         torchControl.setFirstLit();
     }
     
+    //Lights the torch
     public void Light() {
         ((ParticleEmitter) getModel().getChild("Flame")).setEnabled(true);
         torchLight.setIsLit(true);
         torchControl.setFirstLit();
     }
     
+    //Extinguishes the torch
     public void Extinguish() {
         ((ParticleEmitter) getModel().getChild("Flame")).setEnabled(false);
         ((ParticleEmitter) getModel().getChild("Flame")).killAllParticles();
@@ -44,14 +47,17 @@ public class Torch  extends Entity {
         torchControl.stopLight();
     }
     
+    //Returns the torches particle emitter
     public ParticleEmitter getFlame() {
         return (ParticleEmitter) getModel().getChild("Flame");
     }
     
+    //Returns the torch light
     public TorchLight getTorchLight() {
         return torchLight;
     }
     
+    //Returns whether the torch is lit
     public boolean isLit() {
         return torchLight.isLit();
     }
