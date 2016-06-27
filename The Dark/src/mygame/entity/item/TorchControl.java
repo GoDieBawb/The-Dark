@@ -6,12 +6,11 @@ package mygame.entity.item;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.audio.AudioNode;
-import com.jme3.post.FilterPostProcessor;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
-import com.jme3.shadow.PointLightShadowFilter;
 import mygame.GameManager;
 import mygame.entity.player.Player;
 import mygame.util.AudioManager;
@@ -48,12 +47,12 @@ public class TorchControl extends AbstractControl {
             return;
         }
         
-        Long litTime      = System.currentTimeMillis()/1000 - firstLit/1000;
-        AudioManager am   = stateManager.getState(GameManager.class).getUtilityManager().getAudioManager();
-        Node      scene   = stateManager.getState(GameManager.class).getSceneManager().getScene();
-        AudioNode steps   = am.getSound("Footsteps");
-        AudioNode door    = am.getSound("Door"); 
-        AudioNode scream  = am.getSound("Scream"); 
+        Long         litTime = System.currentTimeMillis()/1000 - firstLit/1000;
+        AudioManager am      = stateManager.getState(GameManager.class).getUtilityManager().getAudioManager();
+        Node         scene   = stateManager.getState(GameManager.class).getSceneManager().getScene();
+        AudioNode    steps   = am.getSound("Footsteps");
+        AudioNode    door    = am.getSound("Door"); 
+        AudioNode    scream  = am.getSound("Scream"); 
         
         if(scene.getName().equals("Town") || scene.getName().equals("Well")) {
             
@@ -163,9 +162,12 @@ public class TorchControl extends AbstractControl {
     //Update loop for the torch and torch control
     @Override
     protected void controlUpdate(float tpf) {
+        
         checkLitTime();
-        ((Torch) spatial).getTorchLight().update(tpf);
-        ((Torch) spatial).getTorchLight().setPosition(((Torch) spatial).getFlame().getWorldTranslation());
+        Torch t = ((Torch) spatial);
+        t.getTorchLight().update(tpf);
+        t.getTorchLight().setPosition(((Torch) spatial).getFlame().getWorldTranslation());
+        
     }
 
     @Override

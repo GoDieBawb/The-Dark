@@ -12,7 +12,7 @@ import mygame.entity.Entity;
 import mygame.entity.animation.Living;
 import mygame.entity.Scriptable;
 import mygame.entity.animation.Fighter;
-import mygame.entity.item.Gun;
+import mygame.entity.item.Item;
 import mygame.entity.item.Torch;
 import mygame.entity.npc.It;
 import mygame.entity.player.Player;
@@ -359,30 +359,26 @@ public class CommandParser {
                 entity.removeFromParent();
                 
                 if(entity instanceof Torch)
-                    ((Torch) entity).Extinguish();
+                    ((Torch) entity).extinguish();
                 
             }
             
             //Equips an entity to the left side of the player
             else if (command.equals("equipleft")) {
-                player.attachChild(entity);
-                //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(entity);
-                entity.setLocalTranslation(.25f,.6f,.1f);
+                
+                Item item = (Item) entity;
+                player.setLeftEquip(item);
+                //player.attachChild(entity);
+                //entity.setLocalTranslation(.25f,.6f,.1f);
             }
             
             //Equips an entity to the right side of a player
             else if (command.equals("equipright")) {
                 
-                player.attachChild(entity);
-                //((SimpleApplication)stateManager.getApplication()).getGuiNode().attachChild(entity);
-                entity.setLocalTranslation(-.25f,.6f,.25f);
-            
-                if(entity instanceof Gun) {
-                    System.out.println("Equipping Gun!");
-                    ((Gun) entity).setEquipped(true);
-                    player.getHud().attachCrossHair();
-                }
-                
+                Item item = (Item) entity;
+                player.setRightEquip(item);
+                item.equip(player, false);
+
             }
             
             //Shows an entity or entities by moving them to their original location

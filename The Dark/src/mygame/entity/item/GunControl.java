@@ -112,7 +112,7 @@ public class GunControl extends AbstractControl {
     //The Update Loop
     @Override
     protected void controlUpdate(float tpf) {
-
+        
         //If gun is not equipped dont do anythign
         if (!gun.isEquipped())
             return;

@@ -49,6 +49,7 @@ public class SceneManager {
         physicsManager.getPhysics().getPhysicsSpace().add(rbc);
         app.getRootNode().attachChild(scene);
         app.getStateManager().getState(GameManager.class).getEntityManager().initEntities(this);
+        
         pm.placePlayer();
         
         //Checks scene name and adds proper effects
@@ -90,13 +91,13 @@ public class SceneManager {
     
         PlayerManager pm   = app.getStateManager().getState(GameManager.class).getEntityManager().getPlayerManager();
         
-        if(pm.getPlayer().getChild("Torch") != null) {
-            scene.addLight(((Torch) pm.getPlayer().getChild("Torch")).getTorchLight());
+        if(pm.getPlayer().hasLeft()) {
+            scene.addLight(((Torch) pm.getPlayer().getLeftEquip()).getTorchLight());
         }        
         
         AmbientLight al = new AmbientLight();
         al.setColor(ColorRGBA.White.mult(.05f));
-        scene.addLight(al);
+        //scene.addLight(al);
         
         Node lightNode = (Node) scene.getChild("Lights");
         

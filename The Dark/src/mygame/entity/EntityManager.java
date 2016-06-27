@@ -83,13 +83,10 @@ public class EntityManager {
                 if (model.getUserData("Type") != null) {
                     
                     if (model.getUserData("Type").equals("Torch"))
-                        entity = new Torch(app, scene);
+                        entity = new Torch(app.getStateManager());
                     
                     else if (model.getUserData("Type").equals("Gun"))
-                        entity = new Gun(app.getStateManager()
-                                        .getState(GameManager.class)
-                                            .getUtilityManager()
-                                                .getAudioManager());
+                        entity = new Gun(app.getStateManager());
                     
                     else if (model.getUserData("Type").equals("It"))
                         entity = new It();

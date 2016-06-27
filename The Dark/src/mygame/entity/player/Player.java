@@ -8,12 +8,13 @@ import com.jme3.app.SimpleApplication;
 import mygame.control.ChaseControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
-import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
+import mygame.entity.Entity;
 import mygame.entity.Humanoid;
 import mygame.entity.Vulnerable;
 import mygame.entity.PhysicalEntity;
+import mygame.entity.item.Item;
 
 /**
  *
@@ -31,8 +32,12 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private int                 currentHealth;
     private Hud                 hud;
     private boolean             hasChecked;
+    private Item              leftEquip;
+    private Item              rightEquip;
     private BetterCharacterControl phys;
     private HashMap<Object, Object>  inventory;
+    private boolean hasLeft;
+    private boolean hasRight;
     
     //Construct the player
     public Player(AppStateManager stateManager) {
@@ -141,6 +146,36 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     
     public ControlListener getControlListener() {
         return controlListener;
+    }
+    
+    public void setLeftEquip(Item item) {
+        leftEquip = item;
+        hasLeft   = true;
+        attachChild(item);
+        item.setLocalTranslation(.25f,.6f,.1f);
+    }
+    
+    public Item getLeftEquip() {
+        return leftEquip;
+    }
+    
+    public boolean hasLeft () {
+        return hasLeft;
+    }
+    
+    public void setRightEquip(Item item) {
+        rightEquip = item;
+        hasRight   = true;
+        attachChild(item);
+        item.setLocalTranslation(-.25f,.6f,.25f);
+    }
+    
+    public Item getRightEquip() {
+        return rightEquip;
+    }
+    
+    public boolean hasRight() {
+        return hasRight;
     }
     
     public void restartGame() {

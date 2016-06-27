@@ -59,7 +59,6 @@ public class Script {
     public void startAction() {
 
         ArrayList startScript;
-        
 
         try {
             Map<Object, Object> sm = (Map<Object, Object>)  map.get("Start");
