@@ -1,5 +1,5 @@
 Proximity:
-  Distance: 2
+  Distance: 1
   Enter:
     - chat " A box of matches sits here on the table"
     

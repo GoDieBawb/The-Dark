@@ -76,7 +76,6 @@ public class Gun extends Item {
     @Override
     public void equip(Player player, boolean isLeft) {    
         super.equip(player, isLeft);
-        System.out.println("Equipping Gun!");
         player.getHud().attachCrossHair();
         setEquipped(true);
     }
@@ -89,10 +88,10 @@ public class Gun extends Item {
     @Override
     public void use() {
          
-        Player player = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer();
+        Player player = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer(); 
         
         //If the player is still reloading don't do anything
-        if (((Gun) player.getChild("Gun")).getGunControl().hasShot())
+        if (getGunControl().hasShot())
             return;                
          
         //If the player has no bullets inform them
@@ -141,8 +140,8 @@ public class Gun extends Item {
                 }
                  
                 //Fire the guns
-                Gun g = ((Gun) player.getChild("Gun"));
-                g.fire();
+                fire();
+                
                 //Update the players inventory
                 player.getHud().addAlert("Gun", bulletInfo);
                 player.getInventory().put("Bullets", newBullets);

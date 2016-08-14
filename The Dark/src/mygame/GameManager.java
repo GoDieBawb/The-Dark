@@ -55,11 +55,12 @@ public class GameManager extends AbstractAppState {
     
     //Starts a New Game From the Dark House Scene
     public void startNewGame() {
-        sceneManager.initScene("Scenes/DarkHouse.j3o");
+        sceneManager.initScene("Scenes/TestCell/BobsTestCell.j3o");
         entityManager.getPlayerManager().placePlayer();
         utilityManager.getAudioManager().getSound("Ambience").play();
         menuManager.hideMenu();
         entityManager.getPlayerManager().getPlayer().rotate(0,89,0);
+        app.getFlyByCamera().setEnabled(true);
     }
     
     //When the Game is Ended Returns the Player to the Menu

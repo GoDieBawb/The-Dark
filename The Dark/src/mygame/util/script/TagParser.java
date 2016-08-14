@@ -171,8 +171,8 @@ public class TagParser {
             //Casts to the players torch
             else if(args[i].contains("torch")) {
             
-                if (((Player) obj).getChild("Torch") !=null) {
-                    obj = ((Player) obj).getChild("Torch");
+                if (((Player) obj).getCameraManager().getCameraNode().getChild("Torch") !=null) {
+                    obj = ((Player) obj).getCameraManager().getCameraNode().getChild("Torch");
                 }
                 
                 else {

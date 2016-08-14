@@ -10,7 +10,6 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.PointLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.post.FilterPostProcessor;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import mygame.GameManager;
 import mygame.entity.item.Torch;
@@ -39,12 +38,13 @@ public class SceneManager {
     //Inits the scene by path
     public void initScene(String path) {
         
+        System.out.println("Initializing Scene...");
+        
         removeScene();
         
         scene                 = (Node) app.getAssetManager().loadModel(path);
         RigidBodyControl rbc  = new RigidBodyControl(0f);
         PlayerManager    pm   = app.getStateManager().getState(GameManager.class).getEntityManager().getPlayerManager();
-        scene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         scene.getChild("SceneNode").addControl(rbc);
         physicsManager.getPhysics().getPhysicsSpace().add(rbc);
         app.getRootNode().attachChild(scene);

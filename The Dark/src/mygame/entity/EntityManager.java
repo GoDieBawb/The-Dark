@@ -13,6 +13,7 @@ import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.entity.monster.MonsterManager;
 import mygame.entity.npc.It;
+import mygame.entity.npc.Jimmy;
 import mygame.entity.player.PlayerManager;
 import mygame.scene.SceneManager;
 import mygame.util.script.Script;
@@ -55,6 +56,7 @@ public class EntityManager {
     //Intializes the Entities in The Scene
     public void initEntities(SceneManager sceneManager) {
 
+        System.out.println("Initializing Entities...");
         //Get Scene Node From Scene Manager
         Node scene = sceneManager.getScene();
         
@@ -91,7 +93,14 @@ public class EntityManager {
                     else if (model.getUserData("Type").equals("It"))
                         entity = new It();
                     
+                    else if (model.getUserData("Type").equals("Jimmy"))
+                        entity = new Jimmy();
+                    
                 }
+                
+                //Set the Entities Model Name and Add the Entity itself to the Scene
+                entity.setModel(model);
+                entity.setName(model.getName());
                 
                 //Get the Script User Data from the Entity. 
                 //Without this Scene Will Crash
@@ -115,9 +124,6 @@ public class EntityManager {
                     
                 }
                 
-                //Set the Entities Model Name and Add the Entity itself to the Scene
-                entity.setModel(model);
-                entity.setName(model.getName());
                 sceneEntities.add(entity);
 
             }

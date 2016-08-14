@@ -30,6 +30,7 @@ public class Script {
     
     //Contstructs the Script
     public Script(Entity entity, AppStateManager stateManager, LinkedHashMap map) {
+        System.out.println("Constructing Script For: " + entity.getName());
         this.entity   = entity;
         this.map      = map;     
         player        = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer();
@@ -45,21 +46,28 @@ public class Script {
     //If there is a proximity map in the script get the Distance
     private void setProximity() {
         
+        if (map.get("Proximity") == null)
+            return;        
+        
         try {
             Map<Object, Object> pm = (Map<Object, Object>) map.get("Proximity");
             proximity              = (Integer) pm.get("Distance");
         }
         
         catch (Exception e){
+            System.out.println("Proximity Error For Entity: " + entity.getName());
+            e.printStackTrace();
         }
         
     }
     
     //If there is a start action do it on initialize
     public void startAction() {
-
+        
         ArrayList startScript;
-
+        if (map.get("Start") == null)
+            return;
+            
         try {
             Map<Object, Object> sm = (Map<Object, Object>)  map.get("Start");
             startScript            = (ArrayList)  sm.get("Script");
@@ -67,6 +75,8 @@ public class Script {
         }
         
         catch (Exception e) {
+            System.out.println("Start Error For Entity: " + entity.getName());
+            e.printStackTrace();
         }
 
     }

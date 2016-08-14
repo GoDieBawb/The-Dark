@@ -42,7 +42,6 @@ public class ChaseCameraManager {
         cam.setDefaultVerticalRotation(3f);
         cam.setMaxVerticalRotation(4f);
         cam.setMinVerticalRotation(2f);
-        app.getInputManager().setCursorVisible(false);
         float scale = .5f;
         app.getCamera().setFrustumNear(app.getCamera().getFrustumNear()*scale);
         app.getCamera().setFrustumLeft(app.getCamera().getFrustumLeft()*scale);

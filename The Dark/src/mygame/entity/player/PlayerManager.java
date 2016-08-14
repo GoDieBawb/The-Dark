@@ -27,7 +27,8 @@ public class PlayerManager {
     //Construct a new player object
     private void createPlayer() {
         player = new Player(app.getStateManager());
-        player.createChaseControl();
+        //player.createChaseControl();
+        player.createCameraManager();
         player.createPhys();
     }
     
@@ -35,6 +36,7 @@ public class PlayerManager {
     public void placePlayer() {
         GameManager gm = app.getStateManager().getState(GameManager.class);
         gm.getSceneManager().getScene().attachChild(player);
+        gm.getSceneManager().getScene().attachChild(player.getCameraManager().getCameraNode());
         gm.getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().add(player.getPhys());
         gm.getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().setGravity(new Vector3f(0,-9.8f,0));
         
@@ -55,8 +57,10 @@ public class PlayerManager {
     
     //Updates The Camera and Control Listeners
     public void update(float tpf) {
-        player.getChaseControl().update(tpf);
+        //player.getChaseControl().update(tpf);
+        player.getCameraManager().update(tpf);
         player.getControlListener().update();
+        
     }
     
 }
