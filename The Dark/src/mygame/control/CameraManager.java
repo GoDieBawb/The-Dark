@@ -43,6 +43,10 @@ public class CameraManager {
         return camNode;
     }
     
+    public void clearCameraNode() {
+        camNode.detachAllChildren();
+    }
+    
     private void initCamera() {
         float scale = .5f;
         app.getCamera().setFrustumNear(app.getCamera().getFrustumNear()*scale);

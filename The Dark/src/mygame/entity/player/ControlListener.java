@@ -75,6 +75,7 @@ public class ControlListener {
         
         //Restart the game if the player is dead
         if (player.isDead()) {
+            player.getHud().getInfoText().hide();
             player.restartGame();
             return;
         }
