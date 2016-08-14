@@ -5,7 +5,6 @@
 package mygame.entity.player;
 
 import com.jme3.app.SimpleApplication;
-import mygame.control.ChaseControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
 import java.util.HashMap;
@@ -24,7 +23,6 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     
     private float               speedMult;
     private float               strafeMult;
-    private ChaseControl        chaseControl;
     private CameraManager       cameraManager;
     private ControlListener     controlListener;
     private AppStateManager     stateManager;
@@ -83,14 +81,6 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         return strafeMult;
     }
     
-    public void createChaseControl() {
-        chaseControl = new ChaseControl(stateManager, this);
-    }    
-    
-    public ChaseControl getChaseControl() {
-        return chaseControl;
-    }
-
     @Override
     public void setMaxHealth(int newVal) {
         maxHealth = newVal;
@@ -192,6 +182,9 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     }
     
     public void restartGame() {
+        System.out.println("Restarting Game");
+        cameraManager.getCameraNode().detachAllChildren();
+        hud.getInfoText().hide();
         GameManager gm = stateManager.getState(GameManager.class);
         gm.endGame();
         isDead = false;
@@ -201,13 +194,22 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     @Override
     public void die() {
         
+        if (isDead)
+            return;
+        
         super.die();
+        System.out.println("Died");
         ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
-        hud.detachCrossHair();
         stateManager.getState(GameManager.class).getSceneManager().removeScene();
-        inventory = new HashMap();
+        cameraManager.getCameraNode().detachAllChildren();
+        hud.detachCrossHair();
         detachAllChildren();
-        isDead = true;
+        inventory  = new HashMap();
+        rightEquip = null;
+        leftEquip  = null;
+        hasLeft    = false;
+        hasRight   = false;
+        isDead     = true;
         
     }
     

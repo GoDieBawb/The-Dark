@@ -36,7 +36,6 @@ public class GameManager extends AbstractAppState {
         createMenuManager();
         initSounds();
         menuManager.showMenu();
-        //startNewGame();
     }
     
     //Loads the Game Sounds into individual Audio Nodes
@@ -55,6 +54,7 @@ public class GameManager extends AbstractAppState {
     
     //Starts a New Game From the Dark House Scene
     public void startNewGame() {
+        System.out.println("Starting New Game");
         sceneManager.initScene("Scenes/TestCell/BobsTestCell.j3o");
         entityManager.getPlayerManager().placePlayer();
         utilityManager.getAudioManager().getSound("Ambience").play();
@@ -65,6 +65,7 @@ public class GameManager extends AbstractAppState {
     
     //When the Game is Ended Returns the Player to the Menu
     public void endGame() {
+        System.out.println("Ending Game");
         entityManager.getPlayerManager().getPlayer().getHud().getInfoText().hide();
         utilityManager.getAudioManager().getSound("Ambience").stop();
         menuManager.showMenu();
@@ -104,6 +105,9 @@ public class GameManager extends AbstractAppState {
     
     @Override
     public void update(float tpf) {
+        
+        if (app.getInputManager().isCursorVisible())
+            app.getInputManager().setCursorVisible(false);
         
         //Update the Menu if Enabled
         if (menuManager.isEnabled()) {

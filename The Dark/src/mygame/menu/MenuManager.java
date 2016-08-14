@@ -64,8 +64,12 @@ public class MenuManager {
     //Enables the Menu Places Camera and Initiates Scene
     public void showMenu() {
     
-        enabled   = true;
-        slidingIn = true;
+        System.out.println("Showing Menu");
+        enabled    = true;
+        slidingIn  = true;
+        slidingOut = false;
+        hasStarted = false;
+        app.getFlyByCamera().setEnabled(false);
         fog.getFilter(FogFilter.class).setFogDensity(20);
         start.getChild(0).setLocalTranslation(0,5,0);
         help.getChild(0).setLocalTranslation(0,5,0);
