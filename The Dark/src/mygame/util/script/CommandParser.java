@@ -403,8 +403,24 @@ public class CommandParser {
             
             //Runs the entities idle animation
             else if (command.equals("idle")) {
-            
-                ((Living) entity).idle();
+                
+                try {
+                    ((Animated) entity).idle();
+                }
+                
+                catch (ClassCastException e) {
+                    System.out.println("Error Loading: " + entity.getName());
+                    
+                    if (entity.getUserData("Type") == null) {
+                        System.out.println("This Special Entity has no Type User Data");
+                    }
+                    
+                    else {
+                        System.out.println("User Data Type Detected: " + entity.getUserData("Type"));
+                        System.out.println("Has this special entity been constructed?");
+                    }
+                    
+                }
             
             }
             

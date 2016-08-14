@@ -20,6 +20,7 @@ public class Main extends SimpleApplication {
         setShowSettings(false);
         setDisplayFps(false);
         getFlyByCamera().setEnabled(false);
+        flyCam.setMoveSpeed(0);
         getStateManager().attach(new GameManager());
     }
 

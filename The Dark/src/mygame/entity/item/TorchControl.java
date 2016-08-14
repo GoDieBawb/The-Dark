@@ -6,7 +6,6 @@ package mygame.entity.item;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.audio.AudioNode;
-import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
@@ -23,9 +22,9 @@ public class TorchControl extends AbstractControl {
 
     private final AppStateManager stateManager;
     private final Player          player;
-    private Long                  firstLit;
     private final Torch           torch;
-    private int                   step;
+    private       int             step;
+    private       Long            firstLit;
     
     //Constructs the Torch Control
     public TorchControl(AppStateManager stateManager, Torch torch) {
@@ -163,7 +162,7 @@ public class TorchControl extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         
-        checkLitTime();
+        //checkLitTime();
         Torch t = ((Torch) spatial);
         t.getTorchLight().update(tpf);
         t.getTorchLight().setPosition(((Torch) spatial).getFlame().getWorldTranslation());

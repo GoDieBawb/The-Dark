@@ -35,6 +35,7 @@ public class MenuManager {
     private AudioNode           music;
     private FilterPostProcessor fog;
     private int                 selection;
+    private boolean             hasStarted;
     
     public MenuManager(SimpleApplication app, GameManager gm) {
         this.app  = app;
@@ -139,7 +140,10 @@ public class MenuManager {
     
     //Called From Menu Control Listener. Takes Selected Node and Makes Choice
     public void makeSelection() {
-    
+        
+        if (hasStarted)
+            return;
+        
         //If Help Menu is Shown Hide it
         if (helpShown) {
             hideHelp();
@@ -150,7 +154,8 @@ public class MenuManager {
         switch(selection) {
             
             case 1:
-                startGame();
+                slidingIn  = false;
+                slidingOut = true;
                 break;
                 
             case 2:
@@ -184,8 +189,14 @@ public class MenuManager {
     
     //If start is selected start sliding the menu out
     private void startGame() {
-        slidingIn  = false;
-        slidingOut = true;
+        
+        if (hasStarted)
+            return;
+        
+        System.out.println("Starting New Game...");
+        hasStarted = true;
+        app.getStateManager().getState(GameManager.class).startNewGame();
+        
     }
     
     //Enables the Menu Manager
@@ -234,7 +245,7 @@ public class MenuManager {
         //Once Moved Far Enough actually start the game
         else {
             slidingOut = false;
-            app.getStateManager().getState(GameManager.class).startNewGame();
+            startGame();
             spatial.setLocalTranslation(0,5,0);
             music.setVolume(0f);
             fog.getFilter(FogFilter.class).setFogDensity(2);

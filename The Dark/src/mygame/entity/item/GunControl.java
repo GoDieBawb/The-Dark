@@ -7,6 +7,7 @@ package mygame.entity.item;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
@@ -18,12 +19,13 @@ import com.jme3.scene.control.AbstractControl;
 
 public class GunControl extends AbstractControl {
 
-    private Long    lastShot;
-    private boolean hasShot;
-    private Gun     gun;
-    private boolean reloading;
-    private boolean up;
-    private boolean recoiling;
+    private Long     lastShot;
+    private boolean  hasShot;
+    private Gun      gun;
+    private boolean  reloading;
+    private boolean  up;
+    private boolean  recoiling;
+    private Vector3f camDir;
     private ParticleEmitter smoke;
     
     //When constructed make sure it can be shot right away
@@ -51,30 +53,23 @@ public class GunControl extends AbstractControl {
         smoke.setStartColor(ColorRGBA.Orange);
     }
     
+    public void setCamDirection(Vector3f camDir) {
+        this.camDir = camDir;
+    }
+    
     //Recoil the weapon
     private void recoil(float tpf) {
         
-        //If the gun is not full recoiled keep moving
-        if (gun.getLocalRotation().getX() < .02f) {
-            gun.rotate(50*tpf,0,0);
-        }
-        
-        //If the gun is fully recoiled stop recoiling
-        else {
-            recoiling = false;
-            float y   = gun.getLocalRotation().getY();
-            float z   = gun.getLocalRotation().getZ();
-            float w   = gun.getLocalRotation().getW();
-            gun.setLocalRotation(new Quaternion(.02f,y,z,w));
-            smoke.setStartColor(ColorRGBA.White);
-        }      
+        gun.lookAt(camDir.normalize().add(0,5,0).mult(50).negate(), new Vector3f(0,1,0));
 
     }
     
     //Finish reloading the gun
     private void finishReloading() {
-        gun.setLocalTranslation(-.25f,.6f,.25f);
+        gun.setLocalTranslation(-.47f,-.34f, -.92f);
         gun.setLocalRotation(new Quaternion(0.0f, 0.9993738f, 0.0f, 0.03538324f));
+        smoke.setParticlesPerSec(0);
+        recoiling = false;
         reloading = false;
         hasShot   = false;
     }
@@ -93,12 +88,12 @@ public class GunControl extends AbstractControl {
         }        
         
         //If too far up stop moving up
-        if (gun.getLocalTranslation().y > .6f) {
+        if (gun.getLocalTranslation().y > -.2f) {
             up = false;
         }
         
         //If too far down stop moving down
-        else if (gun.getLocalTranslation().y < .5f) {
+        if (gun.getLocalTranslation().y < -.3f) {
             up = true;
         }
         
@@ -124,7 +119,10 @@ public class GunControl extends AbstractControl {
             if (!reloading) {
                 reloading = true;
                 gun.startReloading();
-                smoke.setParticlesPerSec(0);
+                smoke.killAllParticles();
+                smoke.setParticlesPerSec(20);
+                smoke.setStartColor(ColorRGBA.White);
+                
             }
             
             //If reloading for more than 3 seconds done reloading
@@ -134,9 +132,10 @@ public class GunControl extends AbstractControl {
         }
         
         //If recoiling animate the recoil
-        if (recoiling)
+        if (recoiling) {
             recoil(tpf);
-        
+        }
+            
         //If reloading animate the reload
         if (reloading) {
             animateReload(tpf);

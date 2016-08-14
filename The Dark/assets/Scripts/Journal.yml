@@ -1,5 +1,5 @@
 Proximity:
-  Distance: 2
+  Distance: 1
   Enter:
     - chat "A journal sits here on the table"
 

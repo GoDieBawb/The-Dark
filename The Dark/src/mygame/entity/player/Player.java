@@ -10,7 +10,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
 import java.util.HashMap;
 import mygame.GameManager;
-import mygame.entity.Entity;
+import mygame.control.CameraManager;
 import mygame.entity.Humanoid;
 import mygame.entity.Vulnerable;
 import mygame.entity.PhysicalEntity;
@@ -25,6 +25,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private float               speedMult;
     private float               strafeMult;
     private ChaseControl        chaseControl;
+    private CameraManager       cameraManager;
     private ControlListener     controlListener;
     private AppStateManager     stateManager;
     private boolean             isDead;
@@ -32,9 +33,9 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private int                 currentHealth;
     private Hud                 hud;
     private boolean             hasChecked;
-    private Item              leftEquip;
-    private Item              rightEquip;
-    private BetterCharacterControl phys;
+    private Item                leftEquip;
+    private Item                rightEquip;
+    private BetterCharacterControl   phys;
     private HashMap<Object, Object>  inventory;
     private boolean hasLeft;
     private boolean hasRight;
@@ -45,9 +46,9 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         setModel(null, stateManager);
         createAnimControl();
         createHud();
-        setSpeedMult(2f);
-        setStrafeMult(.5f);
-        setName("Player");
+        speedMult  = 2f;
+        strafeMult = .5f;
+        name       = "Player";
         createInventory();
         createControlListener();
     }
@@ -56,11 +57,12 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     @Override
     public void createPhys() {
         phys = new BetterCharacterControl(.35f, 1.1f, 100);
-        attachChild(getModel());
+        detachChild(getModel());
         addControl(phys);
     } 
     
     //Returns the Character Control
+    @Override
     public BetterCharacterControl getPhys() {
         return phys;
     }
@@ -89,22 +91,27 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         return chaseControl;
     }
 
+    @Override
     public void setMaxHealth(int newVal) {
         maxHealth = newVal;
     }
 
+    @Override
     public int getMaxHealth() {
         return maxHealth;
     }
 
+    @Override
     public void setHealth(int newVal) {
         currentHealth = newVal;
     }
 
+    @Override
     public int getHealth() {
         return currentHealth;
     }
 
+    @Override
     public void endLife() {
         isDead = true;
     }
@@ -148,11 +155,18 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         return controlListener;
     }
     
+    public void createCameraManager() {
+        cameraManager = new CameraManager( (SimpleApplication) stateManager.getApplication(), this);
+    }
+    
+    public CameraManager getCameraManager() {
+        return cameraManager;
+    }
+    
     public void setLeftEquip(Item item) {
         leftEquip = item;
         hasLeft   = true;
-        attachChild(item);
-        item.setLocalTranslation(.25f,.6f,.1f);
+        cameraManager.getCameraNode().attachChild(item);
     }
     
     public Item getLeftEquip() {
@@ -166,8 +180,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     public void setRightEquip(Item item) {
         rightEquip = item;
         hasRight   = true;
-        attachChild(item);
-        item.setLocalTranslation(-.25f,.6f,.25f);
+        cameraManager.getCameraNode().attachChild(item);
     }
     
     public Item getRightEquip() {
