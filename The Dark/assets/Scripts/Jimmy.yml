@@ -1,3 +1,12 @@
+Proximity:
+  Distance: 1
+  Enter:
+    - chat "Hello I'm Jimmy the Goblin"
+
+Hit:
+  Script:
+    - chat "You shot Jimmy the Goblin!"
+
 Start:
   Script:
     - idle

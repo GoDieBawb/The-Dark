@@ -4,10 +4,12 @@
  */
 package mygame.entity.item;
 
+import com.jme3.app.state.AppStateManager;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
@@ -25,11 +27,12 @@ public class GunControl extends AbstractControl {
     private boolean  reloading;
     private boolean  up;
     private boolean  recoiling;
-    private Vector3f camDir;
     private ParticleEmitter smoke;
+    private final AppStateManager stateManager;
     
     //When constructed make sure it can be shot right away
-    public GunControl(Gun gun) {
+    public GunControl(Gun gun, AppStateManager stateManager) {
+        this.stateManager = stateManager;
         lastShot = System.currentTimeMillis() - 2000;
         this.gun = gun;
     }
@@ -45,21 +48,19 @@ public class GunControl extends AbstractControl {
     
     //Shoot the Gun
     public void shootGun() {
-        recoiling = true;
-        lastShot  = System.currentTimeMillis();
-        hasShot   = true;
+        gun.setIsActing(true);
+        recoiling     = true;
+        lastShot      = System.currentTimeMillis();
+        hasShot       = true;
         smoke.setEnabled(true);
         smoke.setParticlesPerSec(20);
         smoke.setStartColor(ColorRGBA.Orange);
     }
     
-    public void setCamDirection(Vector3f camDir) {
-        this.camDir = camDir;
-    }
-    
     //Recoil the weapon
     private void recoil(float tpf) {
         
+        Vector3f camDir = stateManager.getApplication().getCamera().getDirection();
         gun.lookAt(camDir.normalize().add(0,5,0).mult(50).negate(), new Vector3f(0,1,0));
 
     }
@@ -69,9 +70,10 @@ public class GunControl extends AbstractControl {
         gun.setLocalTranslation(-.47f,-.34f, -.92f);
         gun.setLocalRotation(new Quaternion(0.0f, 0.9993738f, 0.0f, 0.03538324f));
         smoke.setParticlesPerSec(0);
-        recoiling = false;
-        reloading = false;
-        hasShot   = false;
+        gun.setIsActing(false);
+        recoiling    = false;
+        reloading    = false;
+        hasShot      = false;
     }
     
     //Animate the Gun Reloading
@@ -104,6 +106,12 @@ public class GunControl extends AbstractControl {
         return hasShot;
     }
     
+    private void keepLocation() {
+        float y = gun.getLocalTranslation().getY();
+        Camera cam = stateManager.getApplication().getCamera();
+        gun.setLocalTranslation(cam.getDirection().normalize().add(cam.getLeft().normalize().negate().mult(.3f)).add(0,-.25f,0).setY(y));
+    }
+    
     //The Update Loop
     @Override
     protected void controlUpdate(float tpf) {
@@ -122,13 +130,17 @@ public class GunControl extends AbstractControl {
                 smoke.killAllParticles();
                 smoke.setParticlesPerSec(20);
                 smoke.setStartColor(ColorRGBA.White);
-                
             }
             
             //If reloading for more than 3 seconds done reloading
-            if (reloading && System.currentTimeMillis() / 1000 - lastShot / 1000 > 3)
+            if (reloading && System.currentTimeMillis() / 1000 - lastShot / 1000 > 3) {
                 finishReloading();
+            }
             
+        }
+        
+        if (gun.isActing()) {
+            keepLocation();
         }
         
         //If recoiling animate the recoil

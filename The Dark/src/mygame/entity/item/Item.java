@@ -16,8 +16,9 @@ import mygame.entity.player.Player;
  */
 public abstract class Item extends Entity {
     
-    AppStateManager stateManager;
-    Player          player;
+    protected AppStateManager stateManager;
+    private   boolean         isActing;
+    protected Player          player;
     
     public Item(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -32,6 +33,14 @@ public abstract class Item extends Entity {
         else
             player.setRightEquip(this);
         
+    }
+    
+    public void setIsActing(boolean newVal) {
+        isActing = newVal;
+    }
+    
+    public boolean isActing() {
+        return isActing;
     }
     
     public void unequip(Player player) {

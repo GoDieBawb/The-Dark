@@ -6,7 +6,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import mygame.GameManager;
-import mygame.entity.item.Gun;
 import mygame.entity.player.Player;
 import mygame.util.InteractionManager;
 
@@ -117,29 +116,24 @@ public class CameraManager {
         
         if (player.hasRight()) {
             
-            boolean isReloading = true;
-            
-            if (player.getRightEquip() instanceof Gun) {
-                Gun g       = (Gun) player.getRightEquip();
-                isReloading = g.getGunControl().hasShot();
-                ((Gun) player.getRightEquip()).getGunControl().setCamDirection(camDir);
-            }    
+            boolean isActing = player.getRightEquip().isActing();  
 
-            if (!isReloading) {
+            if (!isActing) {
                 player.getRightEquip().setLocalTranslation(cam.getDirection().normalize().add(camLeft.normalize().negate().mult(.3f)).add(0,-.25f,0));
                 player.getRightEquip().lookAt(cam.getDirection().normalize().multLocal(1,1,1).mult(500).negate(), new Vector3f(0,1,0));
-            }
-            
-            else {
-                float y = player.getRightEquip().getLocalTranslation().getY();
-                player.getRightEquip().setLocalTranslation(cam.getDirection().normalize().add(camLeft.normalize().negate().mult(.3f)).add(0,-.25f,0).setY(y));
             }
             
         }
         
         if (player.hasLeft()) {
-            player.getLeftEquip().setLocalTranslation(cam.getDirection().normalize().add(camLeft.normalize().mult(.3f)).add(0,-.25f,0));
-            player.getLeftEquip().lookAt(cam.getDirection().normalize().multLocal(1,1,1).mult(500), new Vector3f(0,1,0));
+            
+            boolean isActing = player.getLeftEquip().isActing();  
+            
+            if (!isActing) {
+                player.getLeftEquip().setLocalTranslation(cam.getDirection().normalize().add(camLeft.normalize().mult(.3f)).add(0,-.25f,0));
+                player.getLeftEquip().lookAt(cam.getDirection().normalize().multLocal(1,1,1).mult(500), new Vector3f(0,1,0));
+            }
+            
         }
         
         cam.setLocation(camNode.getWorldTranslation());

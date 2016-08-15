@@ -9,6 +9,7 @@ import com.jme3.scene.Node;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import mygame.GameManager;
+import mygame.entity.item.Bottle;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.entity.monster.MonsterManager;
@@ -84,17 +85,25 @@ public class EntityManager {
                 //If the Entity has a Special Type Set it
                 if (model.getUserData("Type") != null) {
                     
-                    if (model.getUserData("Type").equals("Torch"))
+                    String type = model.getUserData("Type");
+                    
+                    if (type.equals("Torch"))
                         entity = new Torch(app.getStateManager());
                     
-                    else if (model.getUserData("Type").equals("Gun"))
+                    else if (type.equals("Gun"))
                         entity = new Gun(app.getStateManager());
                     
-                    else if (model.getUserData("Type").equals("It"))
+                    else if (type.equals("It"))
                         entity = new It();
                     
-                    else if (model.getUserData("Type").equals("Jimmy"))
+                    else if (type.equals("Jimmy"))
                         entity = new Jimmy();
+                    
+                    else if (type.equals("Bottle"))
+                        entity = new Bottle(app.getStateManager());
+                    
+                    else
+                        System.out.println("Unknown Entity Type: " + type);
                     
                 }
                 

@@ -26,13 +26,14 @@ public class Gun extends Item {
     private final AudioNode  reload;
     private boolean          equipped;
     
+    
     //Load the proper sounds from the audiomanager
     public Gun(AppStateManager stateManager) {
         super(stateManager);
         AudioManager am = stateManager.getState(GameManager.class).getUtilityManager().getAudioManager();
         gunShot         = am.getSound("Gunshot");
         reload          = am.getSound("Reloading");
-        gunControl      = new GunControl(this);
+        gunControl      = new GunControl(this, stateManager);
         addControl(gunControl);
     }
     
