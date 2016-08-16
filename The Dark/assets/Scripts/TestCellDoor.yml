@@ -1,0 +1,8 @@
+Proximity:
+    Distance: 1
+    Enter:
+        - chat "Door to Bob's Test Cell"
+
+Interact:
+    Script:
+        - changescene TestCell/BobsTestCell

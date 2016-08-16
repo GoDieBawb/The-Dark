@@ -70,7 +70,6 @@ public class Torch extends Item {
     public void equip(Player player, boolean isLeft) {
         super.equip(player, isLeft);
         attachChild(this);
-        //setLocalTranslation(.25f,0f,.1f);
     }
     
     @Override

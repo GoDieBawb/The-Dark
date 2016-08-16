@@ -1,2 +1,26 @@
+Fields:
+    - int x 5
+    - String abc def
+    - float billy 5.5
+    - boolean isWorking true
+
 Proximity:
-  Distance: 0
+  Distance: 1
+  Enter:
+      - if sym#billy == const#5.5
+      - chat "Billy Works Okay"
+      - else
+      - chat "Sad Billy"
+      
+  Exit:
+      - if sym#x == const#5
+      - chat "Wow x is equal to 5"
+      - else
+      - chat "Nope Nothing About X"
+      
+Interact:
+  Script:
+    - if sym#abc == const#def
+    - chat "abcdef"
+    - else
+    - "No alphabet"

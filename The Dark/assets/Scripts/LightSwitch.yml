@@ -1,0 +1,8 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - chat "Anything"
+        
+Interact:
+  Script:
+    - debugtag entity.child#LightSwitch.child#Switch.location.add#0,1,0

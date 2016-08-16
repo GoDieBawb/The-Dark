@@ -4,6 +4,7 @@
  */
 package mygame.util.script;
 
+import mygame.util.script.handler.SymbolHandler;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -19,7 +20,7 @@ import mygame.entity.player.Player;
  * @author Bob
  */
 public class TagParser {
-
+    
     //This method returns on object based on the tag string
     public Object parseTag(AppStateManager stateManager, String tag, Scriptable entity) {
         
@@ -31,8 +32,19 @@ public class TagParser {
         //Iterate over the list of arguments
         for(int i = 0; i < args.length; i++) {
             
+            if (args[i].contains("sym")) {
+                String[] strAr = args[i].split("#");
+                         obj   = entity.getScript().getSymTab().get(strAr[1]);
+            }
+            
+            else if (args[i].contains("const")) {
+                String[] strAr = tag.split("#");
+                obj            = checkForConstants(strAr[1]);
+                return obj;
+            }
+            
             //If the current argument is player the object must be the player
-            if (args[i].equals("player")) {
+            else if (args[i].equals("player")) {
                 
                 obj = gm.getEntityManager().getPlayerManager().getPlayer();
                 
@@ -85,6 +97,17 @@ public class TagParser {
                 Vector3f check  = (Vector3f) parseTag(stateManager, strAr[1], entity);
                 obj             = ((Vector3f) obj).distance(check);
             
+            }
+            
+            else if (args[i].contains("add")) {
+            
+                String[] strAr  = args[i].split("#");
+                String[] floats = strAr[1].split(",");
+                float x         = Float.valueOf(floats[0]);
+                float y         = Float.valueOf(floats[1]);
+                float z         = Float.valueOf(floats[2]);
+                obj             = ((Vector3f) obj).add(x,y,z);
+                
             }
             
             //If the object is on the north side of the map
@@ -208,6 +231,20 @@ public class TagParser {
         }
         
         return obj;
+        
+    }
+    
+    private Object checkForConstants(String objString) {
+        
+        if (objString.matches("[0-9]*")) {
+            return Integer.valueOf(objString);
+        }
+        
+        else if (objString.matches("[0-9]*\\.[0-9]*")) {
+            return Float.valueOf(objString);
+        }
+        
+        return objString;
         
     }
     

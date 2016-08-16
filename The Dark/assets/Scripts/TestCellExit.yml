@@ -1,0 +1,8 @@
+Proximity:
+  Distance: 1
+  Enter:
+    - chat "Door to The Yard"
+
+Interact:
+  Script:
+    - changescene TestCell/TheYard

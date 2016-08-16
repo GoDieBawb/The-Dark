@@ -7,15 +7,13 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
 import mygame.GameManager;
-import mygame.entity.animation.Animated;
 import mygame.entity.Entity;
-import mygame.entity.animation.Living;
 import mygame.entity.Scriptable;
-import mygame.entity.animation.Fighter;
 import mygame.entity.item.Item;
 import mygame.entity.item.Torch;
-import mygame.entity.npc.It;
 import mygame.entity.player.Player;
+import mygame.util.script.handler.AnimationHandler;
+import mygame.util.script.handler.SymbolHandler;
 
 /**
  *
@@ -23,16 +21,18 @@ import mygame.entity.player.Player;
  */
 public class CommandParser {
 
-    private final AppStateManager stateManager;
-    private final GameManager     gm;
-    private final TagParser       parser;
+    private final AppStateManager  stateManager;
+    private final GameManager      gm;
+    private final TagParser        parser;
+    private final SymbolHandler    symbolHandler;
+    private final AnimationHandler animationHandler;
     
     public CommandParser(AppStateManager stateManager) {
-    
         this.stateManager = stateManager;
         parser            = new TagParser();
         gm                = stateManager.getState(GameManager.class);
-    
+        symbolHandler     = new SymbolHandler(stateManager, parser);
+        animationHandler  = new AnimationHandler(stateManager, parser);
     }
     
     //Takes the current line from the script and executes the proper command
@@ -43,6 +43,7 @@ public class CommandParser {
         //Start with assuming there is no condition to run the script
         boolean go      = true;
         boolean met     = false;
+        
         
         for (int i = 0; i < commands.size(); i++) {
             
@@ -67,7 +68,10 @@ public class CommandParser {
                     met = false;
                 }
                 
+                continue;
+                
             }       
+            
             
             //If the elseif command is run there may be a change in condition
             else if (command.equals("elseif")) {
@@ -91,6 +95,8 @@ public class CommandParser {
                     go  = false;
                     
                 }
+                
+                continue;
             
             }
             
@@ -101,13 +107,16 @@ public class CommandParser {
                     go = false;
                 else
                     go = true;
+                
+                continue;
             
             }
             
             //End of the if statement makes all future commands good to go
             else if (command.equals("end")) {
                 
-                go = true;    
+                go = true;
+                continue;
             
             }
             
@@ -116,8 +125,12 @@ public class CommandParser {
                 continue;
             }
             
+            //Check For A Symbol Declaration
+            if (symbolHandler.handle((String) commands.get(i), entity))
+                continue;
+            
             //Debug command prints a message to the console
-            else if (command.equals("debug")) {
+            if (command.equals("debug")) {
                 
                 String[] a     = ((String) commands.get(i)).split(" ", 2);
                 String debugMessage = a[1];
@@ -156,30 +169,25 @@ public class CommandParser {
                 boolean teleport = false;
                 
                 //If args are 4 both Directory and Teleport Location
-                if (args.length == 4) {
-                    scenePath = "Scenes/" + args[1] + "/" + args[2] + ".j3o";
-                    teleport = true;
-                }
-                
-                //If Args are 3 Either Directory or Teleport Location
-                else if (args.length == 3) {
-                    
-                    //If last arg contains .location it cannot be a location tag
-                    if (!args[args.length -1 ].contains(".location")) {
+                switch (args.length) {
+                    case 4:
                         scenePath = "Scenes/" + args[1] + "/" + args[2] + ".j3o";
-                    }
-                    
-                    //The final args must be location
-                    else {
-                         scenePath = "Scenes/" + args[1] + ".j3o";
-                         teleport = true;
-                    }
-                    
-                }
-                
-                //There is only one argument and that is the direct scene path
-                else {
-                    scenePath = "Scenes/" + args[1] + ".j3o";
+                        teleport = true;
+                        break;
+                    case 3:
+                        //If last arg contains .location it cannot be a location tag
+                        if (!args[args.length -1 ].contains(".location")) {
+                            scenePath = "Scenes/" + args[1] + "/" + args[2] + ".j3o";
+                        }
+                        
+                        //The final args must be location
+                        else {
+                            scenePath = "Scenes/" + args[1] + ".j3o";
+                            teleport = true;
+                        }   break;
+                    default:
+                        scenePath = "Scenes/" + args[1] + ".j3o";
+                        break;
                 }
                 
                 gm.getSceneManager().initScene(scenePath);
@@ -226,7 +234,7 @@ public class CommandParser {
             //Clears the rotation of the entity
             else if (command.equals("clearrotation")) {
                 
-                ((Entity) entity).getModel().setLocalRotation(new Quaternion(0,0,0,1));
+                ((Entity) entity).setLocalRotation(new Quaternion(0,0,0,1));
                 
             }
             
@@ -399,57 +407,10 @@ public class CommandParser {
                 
                 }  
                 
-            }  
-            
-            //Runs the entities idle animation
-            else if (command.equals("idle")) {
-                
-                try {
-                    ((Animated) entity).idle();
-                }
-                
-                catch (ClassCastException e) {
-                    System.out.println("Error Loading: " + entity.getName());
-                    
-                    if (entity.getUserData("Type") == null) {
-                        System.out.println("This Special Entity has no Type User Data");
-                    }
-                    
-                    else {
-                        System.out.println("User Data Type Detected: " + entity.getUserData("Type"));
-                        System.out.println("Has this special entity been constructed?");
-                    }
-                    
-                }
-            
             }
             
-            //Animates the entities attack
-            else if (command.equals("animateattack")) {
-                
-                ((Fighter) entity).attack();
-            
-            }
-            
-            //Causes the script holding entity to die
-            else if (command.equals("die")) {
-            
-                if (entity instanceof It) {
-                    ((It) entity).die();
-                }
-                
-                else {
-                    ((Living) entity).die();
-                }    
-                    
-            } 
-            
-            //Clears the entities animations
-            else if (command.equals("noanim")) {
-            
-                ((Animated) entity).getAnimControl().clearChannels();    
-            
-            }
+            if (animationHandler.handle(command, entity))
+                continue;
             
             //If not on the list the command is unknown
             else {
@@ -462,149 +423,129 @@ public class CommandParser {
         
     }
   
-  //Determines the truth value of a tag
-  private boolean ifCheck(Scriptable entity, String[] args) {
+    //Determines the truth value of a tag
+    private boolean ifCheck(Scriptable entity, String[] args) {
       
-      Object comp1 = null;
-      Object comp2 = null;
-      String comp  = null;
+        Object comp1 = null;
+        Object comp2 = null;
+        String comp  = null;
       
-      try {
-          
-          comp1      = parser.parseTag(stateManager, args[1], entity);
-          comp2      = parser.parseTag(stateManager, args[3], entity);
-          comp       = args[2];
-          
-      }
-      catch (Exception e) {
-      }
+        try {
+            comp1      = parser.parseTag(stateManager, args[1], entity);
+            comp2      = parser.parseTag(stateManager, args[3], entity);
+            comp       = args[2];
+        }
+        
+        catch (Exception e) {
+        }
       
-      boolean truthVal  = false;
+        boolean truthVal  = false;
       
-      if (comp == null) {
-      
-          if (comp1 instanceof Boolean) {
-              
+        if (comp == null) {
+            
+            if (comp1 instanceof Boolean) {
               truthVal = (Boolean) comp1;
-              
-          }
-          
-          else {
-          
+            }
+            
+            else {
               truthVal = false;
-          
-          }
-          
-      }
+            }
+            
+            return truthVal;
+            
+        }
       
-      else if (comp.equals("&&")) {
-          
-          if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
-              
-              Boolean a = (Boolean) comp1;
-              Boolean b = (Boolean) comp2;
-              
-              if (a&&b) {
-              truthVal = true;
-              }
-              else{
-              truthVal = false;
-              }
-          
-          }
-          
-          else {
-          
-              truthVal = false;
-          
-          }
-          
-          return truthVal;
-          
-      }
+        if (!comp1.getClass().getSimpleName().equals(comp2.getClass().getSimpleName())) {
+            System.out.println("Warning: Attempted to Compare Unlike Classes");
+            truthVal = false;      
+        }      
       
-      else if (comp.equals("!!")) {
-          
-          if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
-              
-              Boolean a = (Boolean) comp1;
-              Boolean b = (Boolean) comp2;
-              
-              if (!a && !b) {
-                truthVal = true;
-              }
-              else{
-                truthVal = false;
-              }
-          
-          }
-          
-          else {
-          
-              truthVal = false;
-          
-          }
-          
-          return truthVal;
-          
-      }
-      
-      else if (comp.equals("!&")) {
-          
-          if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
-              
-              Boolean a = (Boolean) comp1;
-              Boolean b = (Boolean) comp2;
-              
-              if (a && !b) {
-                truthVal = false;
-              }
-              else{
-                truthVal = true;
-              }
-              
-            return truthVal;  
-          
-          }
-          
-
-          
-          else {
-          
-              truthVal = true;
-          
-          }
-          
-          return truthVal;
-          
-      }
-      
-      else if (comp.equals("==")) {
-          
-          //if (comp1.getClass().getSimpleName().equals(comp2.getClass().getSimpleName())) {
-          if (comp1.equals(comp2)) {
-          
-              if (comp1 ==  comp2) {
-                  
-                  truthVal = true;
-                  
-              }
-              
-              else {
-              
-                  truthVal = false;
-              
-              }
-          
-          }
-          
-          else {
-          
-              truthVal = false;
-          
-          }
-          
-      }
+        switch (comp) {
+            
+            case "&&":
+                if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
+                    
+                    Boolean a = (Boolean) comp1;
+                    Boolean b = (Boolean) comp2;
+                    
+                    if (a&&b) {
+                        truthVal = true;
+                    }
+                    
+                    else{
+                        truthVal = false;
+                    }
+                    
+                }
+                
+                else {
+                    
+                    truthVal = false;
+                    
+                }
+                
+                return truthVal;
+                
+            case "!!":
+                if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
+                    
+                    Boolean a = (Boolean) comp1;
+                    Boolean b = (Boolean) comp2;
+                    
+                    if (!a && !b) {
+                        truthVal = true;
+                    }
+                    else{
+                        truthVal = false;
+                    }
+                    
+                }
+                
+                else {
+                    
+                    truthVal = false;
+                    
+                }
+                
+                return truthVal;
+                
+            case "!&":
+                if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
+                    
+                    Boolean a = (Boolean) comp1;
+                    Boolean b = (Boolean) comp2;
+                    
+                    if (a && !b) {
+                        truthVal = false;
+                    }
+                    else{
+                        truthVal = true;
+                    }
+                    
+                    return truthVal;
+                    
+                }
+                
+                else {  
+                    truthVal = true;
+                }
+                
+                return truthVal;
+                
+            case "==":
+                if (comp1.equals(comp2)) {
+                    truthVal = true;
+                }
+                else {
+                    truthVal = false;
+                }     
+                break;
+                
+            default:
+                System.out.println("Unknown Operator: " + comp);
+                break;
+                
+        }
       
     return truthVal;
     
