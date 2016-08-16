@@ -9,7 +9,6 @@ import mygame.GameManager;
 import mygame.entity.Entity;
 import mygame.entity.player.Player;
 
-
 /**
  *
  * @author Bawb

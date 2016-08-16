@@ -1,19 +1,12 @@
 package mygame.util.script;
 
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.math.Quaternion;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import java.util.ArrayList;
 import mygame.GameManager;
 import mygame.entity.Entity;
-import mygame.entity.Scriptable;
-import mygame.entity.item.Item;
-import mygame.entity.item.Torch;
 import mygame.entity.player.Player;
-import mygame.util.script.handler.AnimationHandler;
-import mygame.util.script.handler.SymbolHandler;
+import mygame.util.script.handler.*;
+
 
 /**
  *
@@ -26,6 +19,10 @@ public class CommandParser {
     private final TagParser        parser;
     private final SymbolHandler    symbolHandler;
     private final AnimationHandler animationHandler;
+    private final PlayerHandler    playerHandler;
+    private final EntityHandler    entityHandler;
+    private final UtilityHandler   utilityHandler;
+    private final LogicHandler     logicHandler;
     
     public CommandParser(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -33,6 +30,10 @@ public class CommandParser {
         gm                = stateManager.getState(GameManager.class);
         symbolHandler     = new SymbolHandler(stateManager, parser);
         animationHandler  = new AnimationHandler(stateManager, parser);
+        playerHandler     = new PlayerHandler(stateManager, parser);
+        entityHandler     = new EntityHandler(stateManager, parser);
+        utilityHandler    = new UtilityHandler(stateManager, parser);
+        logicHandler      = new LogicHandler(stateManager, parser);
     }
     
     //Takes the current line from the script and executes the proper command
@@ -41,9 +42,8 @@ public class CommandParser {
         Player  player  = gm.getEntityManager().getPlayerManager().getPlayer();
         
         //Start with assuming there is no condition to run the script
-        boolean go      = true;
-        boolean met     = false;
-        
+        logicHandler.setGo(true);
+        logicHandler.setMet(false);
         
         for (int i = 0; i < commands.size(); i++) {
             
@@ -53,502 +53,35 @@ public class CommandParser {
             String[] args     = ((String) commands.get(i)).split(" ");
             String   command  = args[0];
             
-            //Starts an if logic statement
-            if (command.equals("if")) {
-                
-                //If the condition returns true then go
-                if (ifCheck(entity, args)) {
-                    go  = true;
-                    met = true;
-                }
-                
-                //If not the condition is not met and the commands should not go
-                else {
-                    go  = false;
-                    met = false;
-                }
-                
+            //Logic Handler Determines Go Check
+            if (logicHandler.handle((String) commands.get(i), entity))
                 continue;
-                
-            }       
-            
-            
-            //If the elseif command is run there may be a change in condition
-            else if (command.equals("elseif")) {
-                
-                //If previous condition was not met else if comes into action
-                if (!met) {
-                    
-                    //Check the condiition if true the script can go
-                    if (ifCheck(entity, args)) {
-                        
-                        go  = true;
-                        met = true;
-                        
-                    }
-                    
-                }
-                
-                //If the previous condition was met else if does not come into play
-                else {
-                
-                    go  = false;
-                    
-                }
-                
-                continue;
-            
-            }
-            
-            //Else simple flips the met condition
-            else if (command.equals("else")) {
-
-                if(met)
-                    go = false;
-                else
-                    go = true;
-                
-                continue;
-            
-            }
-            
-            //End of the if statement makes all future commands good to go
-            else if (command.equals("end")) {
-                
-                go = true;
-                continue;
-            
-            }
             
             //If not able to go continue onto the next command
-            else if(!go) {
+            if(!logicHandler.isGo()) {
                 continue;
             }
             
-            //Check For A Symbol Declaration
+            //If Commands Go Unhandled They are Unknown
             if (symbolHandler.handle((String) commands.get(i), entity))
                 continue;
-            
-            //Debug command prints a message to the console
-            if (command.equals("debug")) {
-                
-                String[] a     = ((String) commands.get(i)).split(" ", 2);
-                String debugMessage = a[1];
-                System.out.println(debugMessage);
-                
-            }
-            
-            //Debugs a tag
-            else if (command.equals("debugtag")) {
-            
-                String[] a     = ((String) commands.get(i)).split(" ", 2);
-                System.out.println(parser.parseTag(stateManager, a[1], entity));
-            
-            }
-            
-            //End the game if the command is finish
-            else if (command.equals("finish")) {
-            
-                ((SimpleApplication) stateManager.getApplication()).getRootNode().detachAllChildren();
-                player.getHud().addAlert("Finish", "Thanks for playing");
-                
-            }
-            
-            //Fail command causes the player to die
-            else if (command.equals("fail")) {
-            
-                player.die();
 
-            }
-            
-            //Changes the scene and possibly teleports player
-            else if (command.equals("changescene")) {
-                
-                //File Path for scene and boolean for teleporting
-                String  scenePath;
-                boolean teleport = false;
-                
-                //If args are 4 both Directory and Teleport Location
-                switch (args.length) {
-                    case 4:
-                        scenePath = "Scenes/" + args[1] + "/" + args[2] + ".j3o";
-                        teleport = true;
-                        break;
-                    case 3:
-                        //If last arg contains .location it cannot be a location tag
-                        if (!args[args.length -1 ].contains(".location")) {
-                            scenePath = "Scenes/" + args[1] + "/" + args[2] + ".j3o";
-                        }
-                        
-                        //The final args must be location
-                        else {
-                            scenePath = "Scenes/" + args[1] + ".j3o";
-                            teleport = true;
-                        }   break;
-                    default:
-                        scenePath = "Scenes/" + args[1] + ".j3o";
-                        break;
-                }
-                
-                gm.getSceneManager().initScene(scenePath);
-                
-                //If teleport is true the player will warp to the final tag
-                if (teleport)
-                    player.getPhys().warp((Vector3f) (parser.parseTag(stateManager, args[args.length-1], entity)));
-                    
-            }
-            
-            //Sets the player's or the entity's model
-            else if (command.equals("setmodel")) {
-            
-                if (args[1].toLowerCase().equals("player")) {
-                    player.getModel().removeFromParent();
-                    player.setModel(args[2], stateManager);
-                }
-                
-                else {
-                    ((Entity) entity).getModel().removeFromParent();
-                    ((Entity) entity).setModel(args[1], stateManager);
-                }
-            
-            }
-            
-            //Sets the entities look direction to the player
-            else if (command.equals("look")) {
-                
-                ((Entity) entity).lookAt(player.getModel().getWorldTranslation().add(0,.3f,0), new Vector3f(0,1,0));
-                
-            }
-            
-            //Sets the rotation of an entity
-            else if (command.equals("setrotation")) {
-                
-                float xRot = Float.valueOf(args[1]);
-                float yRot = Float.valueOf(args[2]);
-                float zRot = Float.valueOf(args[3]);
-                ((Entity) entity).setLocalRotation(new Quaternion(0,0,0,1));
-                ((Entity) entity).rotate(xRot,yRot,zRot);
-                
-            }            
-            
-            //Clears the rotation of the entity
-            else if (command.equals("clearrotation")) {
-                
-                ((Entity) entity).setLocalRotation(new Quaternion(0,0,0,1));
-                
-            }
-            
-            //Changes the scale of an entity
-            else if (command.equals("scale")) {
-                float scale = Float.valueOf(args[1]);
-                entity.scale(scale);
-            }
-            
-            //Drops the item in the players hand
-            else if (command.equals("drop")) {
-            
-                player.dropItem();
-            
-            }
-            
-            //Puts a string into the players inventory
-            else if (command.equals("give")) {
-                
-                try {
-                    int amount = Integer.valueOf(args[2]);
-                    player.getInventory().put(args[1], amount);
-                }
-                
-                catch(Exception e) {
-                    player.getInventory().put(args[1], 1);
-                }
-            
-            }
-            
-            //Takes a string from the players inventory
-            else if (command.equals("take")) {
-                
-                try {
-                    int amount    = Integer.valueOf(args[2]);
-                    int newAmount = ((Integer) player.getInventory().get(args[1])) - amount;
-                    player.getInventory().put(args[1], newAmount);
-                }
-              
-                catch(Exception e) {
-                    player.getInventory().remove(args[1]);
-                }
-            
-            }
-            
-            //Sends a message to the players Alert Box
-            else if (command.equals("chat")) {
-            
-                String[] a     = ((String) commands.get(i)).split(" ", 2);
-                player.getHud().addAlert(((Entity) entity).getName(), a[1]);
-            
-            }
-            
-            //Sends a delayed message to the players alert box
-            else if (command.equals("delaychat")) {
-            
-                String[] a     = ((String) commands.get(i)).split(" ", 2);
-                player.getHud().addAlert(((Entity) entity).getName(), a[1]);
-            
-            }
-            
-            //Moves the player or an entity
-            else if (command.equals("move")) {
-            
-                if (args[1].toLowerCase().equals("player")) {
-                    Vector3f spot = (Vector3f) parser.parseTag(stateManager, args[2], entity);
-                    player.getPhys().warp(spot);
-                }
-                
-                else
-                    
-                try {
-                    
-                    Node node     = (Node) parser.parseTag(stateManager, args[1], entity);
-                    Vector3f spot = (Vector3f) parser.parseTag(stateManager, args[2], entity);
-                    node.setLocalTranslation(spot);
-                
-                }
-                
-                catch (Exception e) {
-                    
-                    Vector3f spot = (Vector3f) parser.parseTag(stateManager, args[1], entity);
-                    ((Entity) entity).setLocalTranslation(spot);
-                    //stateManager.getState(SceneManager.class).addPhys();
-                    
-                }
-            
-            }
-            
-            //Hides an entity or entities by moving them below ground
-            else if (command.equals("hide")) {
-            
-                try {
-                    
-                    if (args[1].contains("entities")) {
-                        
-                        for (int j = 0; j < ((Entity) entity).getParent().getQuantity(); j++) {
-                        
-                            String entName = ((Entity) parser.parseTag(stateManager, args[1], entity)).getName();
-                            
-                            if (((Entity) entity).getParent().getChild(i).getName().equals(entName)) {
-                                
-                                ((Entity)((Entity) entity).getParent().getChild(i)).hide();
-                                
-                            }
-                        
-                        }
-                        
-                    }
-                    
-                    else {
-                        Entity ent = (Entity) parser.parseTag(stateManager, args[1], entity);
-                        ent.hide();
-                        //stateManager.getState(SceneManager.class).addPhys();
-                    }
-                    
-                }    
-               
-                catch (Exception e) {
-                    entity.setIsHid(true);
-                    entity.getChild(0).setLocalTranslation(0,-15,0);
-                }      
-                
-            }              
-            
-            //removes an enitty from the map
-            else if (command.equals("remove")) {
-                
-                entity.setLocalTranslation(0,-15,0);
-                entity.removeFromParent();
-                
-                if(entity instanceof Torch)
-                    ((Torch) entity).extinguish();
-                
-            }
-            
-            //Equips an entity to the left side of the player
-            else if (command.equals("equipleft")) {
-                
-                Item item = (Item) entity;
-                player.setLeftEquip(item);
-                //player.attachChild(entity);
-                //entity.setLocalTranslation(.25f,.6f,.1f);
-            }
-            
-            //Equips an entity to the right side of a player
-            else if (command.equals("equipright")) {
-                
-                Item item = (Item) entity;
-                player.setRightEquip(item);
-                item.equip(player, false);
-
-            }
-            
-            //Shows an entity or entities by moving them to their original location
-            else if (command.equals("show")) {
-            
-                try {
-                    
-                    Entity ent = (Entity) parser.parseTag(stateManager, args[1], entity);
-                    ent.show();
-                    //stateManager.getState(SceneManager.class).addPhys();
-                    
-                }    
-               
-                catch (Exception e) {
-                    
-                    ((Entity) entity).show();
-                    //gm.getUtilityManager().getPhysicsManager().addPhys();
-                
-                }  
-                
-            }
-            
-            if (animationHandler.handle(command, entity))
+            if (utilityHandler.handle((String) commands.get(i), entity))
                 continue;
             
-            //If not on the list the command is unknown
-            else {
+            if (entityHandler.handle((String) commands.get(i), entity))
+                continue;
             
-                System.out.println("Unknown comand: " + command);
+            if (playerHandler.handle((String) commands.get(i), entity))
+                continue;
             
-            }
+            if (animationHandler.handle((String) commands.get(i), entity))
+                continue;
+            
+            System.out.println("Unknown comand: " + command);
             
         }
         
     }
-  
-    //Determines the truth value of a tag
-    private boolean ifCheck(Scriptable entity, String[] args) {
-      
-        Object comp1 = null;
-        Object comp2 = null;
-        String comp  = null;
-      
-        try {
-            comp1      = parser.parseTag(stateManager, args[1], entity);
-            comp2      = parser.parseTag(stateManager, args[3], entity);
-            comp       = args[2];
-        }
-        
-        catch (Exception e) {
-        }
-      
-        boolean truthVal  = false;
-      
-        if (comp == null) {
-            
-            if (comp1 instanceof Boolean) {
-              truthVal = (Boolean) comp1;
-            }
-            
-            else {
-              truthVal = false;
-            }
-            
-            return truthVal;
-            
-        }
-      
-        if (!comp1.getClass().getSimpleName().equals(comp2.getClass().getSimpleName())) {
-            System.out.println("Warning: Attempted to Compare Unlike Classes");
-            truthVal = false;      
-        }      
-      
-        switch (comp) {
-            
-            case "&&":
-                if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
-                    
-                    Boolean a = (Boolean) comp1;
-                    Boolean b = (Boolean) comp2;
-                    
-                    if (a&&b) {
-                        truthVal = true;
-                    }
-                    
-                    else{
-                        truthVal = false;
-                    }
-                    
-                }
-                
-                else {
-                    
-                    truthVal = false;
-                    
-                }
-                
-                return truthVal;
-                
-            case "!!":
-                if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
-                    
-                    Boolean a = (Boolean) comp1;
-                    Boolean b = (Boolean) comp2;
-                    
-                    if (!a && !b) {
-                        truthVal = true;
-                    }
-                    else{
-                        truthVal = false;
-                    }
-                    
-                }
-                
-                else {
-                    
-                    truthVal = false;
-                    
-                }
-                
-                return truthVal;
-                
-            case "!&":
-                if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
-                    
-                    Boolean a = (Boolean) comp1;
-                    Boolean b = (Boolean) comp2;
-                    
-                    if (a && !b) {
-                        truthVal = false;
-                    }
-                    else{
-                        truthVal = true;
-                    }
-                    
-                    return truthVal;
-                    
-                }
-                
-                else {  
-                    truthVal = true;
-                }
-                
-                return truthVal;
-                
-            case "==":
-                if (comp1.equals(comp2)) {
-                    truthVal = true;
-                }
-                else {
-                    truthVal = false;
-                }     
-                break;
-                
-            default:
-                System.out.println("Unknown Operator: " + comp);
-                break;
-                
-        }
-      
-    return truthVal;
     
-    }
-        
-  }
+}

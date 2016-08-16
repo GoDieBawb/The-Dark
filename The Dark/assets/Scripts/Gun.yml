@@ -16,7 +16,6 @@ Interact:
     - chat "You pick up the gun"
     - equipright
     - clearrotation
-    - setrotation 0 179 0
     - scale 1
     - give Gun
 

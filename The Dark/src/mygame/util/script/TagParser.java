@@ -57,7 +57,13 @@ public class TagParser {
                 if (args[i].contains("#")) {
                 
                     String[] strAr = args[i].split("#");
-                    obj            = gm.getSceneManager().getScene().getChild(strAr[1]);
+                    
+                    if (strAr[1].equals("model"))
+                        obj = ((Entity) entity).getModel();
+                    
+                    else
+                        obj            = gm.getSceneManager().getScene().getChild(strAr[1]);
+                    
                     
                 }
                 
