@@ -46,6 +46,11 @@ public class SymbolHandler extends Handler {
                 entity.getScript().getSymTab().put(args[1], stringSym);
                 break;
 
+            case "Object":
+                Object obj = parser.parseTag(stateManager, args[2], entity);
+                entity.getScript().getSymTab().put(args[1], obj);
+                break;
+                
             default:
                 handled = false;
                 break;

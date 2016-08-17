@@ -17,42 +17,41 @@ import mygame.entity.player.Player;
  *
  * @author Bawb
  */
-public class Torch extends Item implements Lamp {
+public class Candle extends Item implements Lamp {
     
-    private final TorchControl torchControl;
-    private final FireLight    torchLight;
+    private final CandleControl candleControl;
+    private final FireLight     fireLight;
     
-    //Constructs the Torch Entity
-    public Torch(AppStateManager stateManager) {
+    //Constructs the Candle Entity
+    public Candle(AppStateManager stateManager) {
         super(stateManager);
-        torchControl = new TorchControl(stateManager, this);
-        torchLight   = new FireLight(stateManager);
-        Node scene   = stateManager.getState(GameManager.class).getSceneManager().getScene();
-        addControl(torchControl);
-        torchLight.setPosition(getWorldTranslation());
-        scene.addLight(torchLight);
-        torchLight.setIsLit(true);
-        torchControl.setFirstLit();
-        System.out.println("Constructing Torch");
+        candleControl = new CandleControl();
+        fireLight     = new FireLight(stateManager);
+        Node scene    = stateManager.getState(GameManager.class).getSceneManager().getScene();
+        fireLight.setMinRadius(2);
+        fireLight.setMaxRadius(8);
+        addControl(candleControl);
+        fireLight.setPosition(getWorldTranslation());
+        scene.addLight(fireLight);
+        fireLight.setIsLit(true);
+        System.out.println("Constructing Candle");
     }
     
-    //Lights the torch
+    //Lights the flame
     @Override
     public void light() {
         ((ParticleEmitter) getModel().getChild("Flame")).setEnabled(true);
-        torchLight.setIsLit(true);
-        torchControl.setFirstLit();
+        fireLight.setIsLit(true);
     }
     
-    //Extinguishes the torch
+    //Extinguishes the flame
     @Override
     public void extinguish() {
         ((ParticleEmitter) getModel().getChild("Flame")).setEnabled(false);
         ((ParticleEmitter) getModel().getChild("Flame")).killAllParticles();
-        torchLight.setIsLit(false);
-        torchLight.setRadius(0);
-        torchLight.setColor(ColorRGBA.Black);
-        torchControl.stopLight();
+        fireLight.setIsLit(false);
+        fireLight.setRadius(0);
+        fireLight.setColor(ColorRGBA.Black);
     }
     
     //Returns the torches particle emitter
@@ -63,12 +62,12 @@ public class Torch extends Item implements Lamp {
     //Returns the torch light
     @Override
     public Light getLight() {
-        return torchLight;
+        return fireLight;
     }
     
     //Returns whether the torch is lit
     public boolean isLit() {
-        return torchLight.isLit();
+        return fireLight.isLit();
     }
     
     @Override
@@ -110,7 +109,7 @@ public class Torch extends Item implements Lamp {
                 if(newMatches == 1)
                     matchInfo = "You are down to your last match";
                     
-                //Light the Torch and Inform players of matches left
+                //Light the Candle and Inform players of matches left
                 player.getHud().addAlert("Light", "You light the torch..." + matchInfo);
                 light();
                 player.getInventory().put("Matches", newMatches);

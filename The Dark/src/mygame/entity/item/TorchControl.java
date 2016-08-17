@@ -30,7 +30,7 @@ public class TorchControl extends AbstractControl {
     public TorchControl(AppStateManager stateManager, Torch torch) {
         this.stateManager = stateManager;
         player            = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer();
-        this.torch        = torch;
+        this.torch        =  (Torch) torch;
     }
     
     //Checks what time the torch was lit. This should probably be scripted
@@ -164,8 +164,9 @@ public class TorchControl extends AbstractControl {
         
         //checkLitTime();
         Torch t = ((Torch) spatial);
-        t.getTorchLight().update(tpf);
-        t.getTorchLight().setPosition(((Torch) spatial).getFlame().getWorldTranslation());
+        FireLight f = (FireLight) t.getLight();
+        f.update(tpf);
+        f.setPosition(((Torch) spatial).getFlame().getWorldTranslation());
         
     }
 

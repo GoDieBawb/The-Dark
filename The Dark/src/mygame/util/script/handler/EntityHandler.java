@@ -6,12 +6,13 @@
 package mygame.util.script.handler;
 
 import com.jme3.app.state.AppStateManager;
+import com.jme3.light.Light;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import mygame.GameManager;
 import mygame.entity.Entity;
-import mygame.entity.item.Torch;
+import mygame.entity.item.Lamp;
 import mygame.entity.player.Player;
 import mygame.util.script.TagParser;
 
@@ -35,6 +36,24 @@ public class EntityHandler extends Handler {
         
         //Sets the player's or the entity's model
         switch (command) {
+            
+            case "on":
+            {
+                Light l = ((Light) parser.parseTag(stateManager, args[1], entity));
+                l.setEnabled(true);
+                gm.getSceneManager().getScene().addLight(l);
+                break;
+            }
+            
+            case "off":
+            {
+                Light l = ((Light) parser.parseTag(stateManager, args[1], entity));
+                l.setEnabled(false);
+                gm.getSceneManager().getScene().removeLight(l);
+                ((Light) parser.parseTag(stateManager, args[1], entity)).setEnabled(false);
+                break;
+            }  
+            
             case "setmodel":
                 if (args[1].toLowerCase().equals("player")) {
                     player.getModel().removeFromParent();
@@ -69,12 +88,13 @@ public class EntityHandler extends Handler {
                 break;
                 
             case "move":
+                
                 if (args[1].toLowerCase().equals("player")) {
                     Vector3f spot = (Vector3f) parser.parseTag(stateManager, args[2], entity);
                     player.getPhys().warp(spot);
                 }
                 
-                else
+                else {
                     
                     try {
                         
@@ -91,8 +111,9 @@ public class EntityHandler extends Handler {
                         //stateManager.getState(SceneManager.class).addPhys();
                         
                     }
+                }
                 
-                    break;
+                break;
                     
             case "hide":
                 try {
@@ -131,8 +152,8 @@ public class EntityHandler extends Handler {
             case "remove":
                 entity.setLocalTranslation(0,-15,0);
                 entity.removeFromParent();
-                if(entity instanceof Torch)
-                    ((Torch) entity).extinguish();
+                if(entity instanceof Lamp)
+                    ((Lamp) entity).extinguish();
                 break;
                 
             case "show":

@@ -76,7 +76,7 @@ public class Hud {
             
         };
        
-        infoText.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        infoText.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/AlertBox.j3m"));
         infoText.getButtonOk().setFont("Interface/Impact.fnt");
         infoText.setWindowTitle("Welcome");
         infoText.setMsg("Welcome to Townyville.");

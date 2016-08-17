@@ -12,7 +12,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.scene.Node;
 import mygame.GameManager;
-import mygame.entity.item.Torch;
+import mygame.entity.item.Lamp;
 import mygame.entity.player.PlayerManager;
 import mygame.util.PhysicsManager;
 
@@ -73,6 +73,13 @@ public class SceneManager {
         physicsManager.clearPhysics(app.getStateManager(), scene);
         app.getViewPort().removeProcessor(fog);
         
+        if (scene == null)
+            return;
+        
+        for (int i = 0; i < scene.getLocalLightList().size(); i++) {
+            //scene;
+        }
+        
         if(scene != null)
             scene.detachAllChildren();
         
@@ -92,17 +99,34 @@ public class SceneManager {
         PlayerManager pm   = app.getStateManager().getState(GameManager.class).getEntityManager().getPlayerManager();
         
         if(pm.getPlayer().hasLeft()) {
-            scene.addLight(((Torch) pm.getPlayer().getLeftEquip()).getTorchLight());
+            
+            if (pm.getPlayer().getLeftEquip() instanceof Lamp) {
+                scene.addLight(((Lamp) pm.getPlayer().getLeftEquip()).getLight());
+                System.out.println("Adding Left Lamp");
+            }
+            
         }        
+        
+        if (pm.getPlayer().hasRight()) {
+            
+            if (pm.getPlayer().getRightEquip() instanceof Lamp) {
+                System.out.println("Adding Right Lamp");
+                scene.addLight(((Lamp) pm.getPlayer().getRightEquip()).getLight());
+            }
+            
+        }
         
         AmbientLight al = new AmbientLight();
         al.setColor(ColorRGBA.White.mult(.05f));
-        //scene.addLight(al);
         
         Node lightNode = (Node) scene.getChild("Lights");
         
+        System.out.println(scene.getLocalLightList().size());
+        
         if(lightNode == null)
             return;
+        
+        System.out.println("Light Node Not Null");
         
         for (int i = 0; i < lightNode.getQuantity(); i++) {
         

@@ -1,8 +1,33 @@
+Fields:
+  - boolean isOn false
+  - Object light entity.child#LightSwitch.light
+
 Proximity:
   Distance: 2
   Enter:
-    - chat "Anything"
-        
+    - if sym#isOn
+    - chat "Turn Off the Lights"
+    - else
+    - chat "Turn On the Lights"
+
 Interact:
   Script:
-    - debugtag entity.child#LightSwitch.child#Switch.location.add#0,1,0
+    - if sym#isOn
+    - off sym#light
+    - chat "You Turn Off the Lights"
+    - boolean isOn false
+    - move entity.child#LightSwitch.child#Switch entity.child#LightSwitch.child#Switch.location.add#0,-1,0
+
+    - else
+    - on sym#light
+    - chat "You Turn On The Lights"
+    - boolean isOn true
+    - move entity.child#LightSwitch.child#Switch entity.child#LightSwitch.child#Switch.location.add#0,1,0
+    
+Start:
+  Script:
+    - if sym#isOn
+    - on sym#light
+
+    - else
+    - off sym#light

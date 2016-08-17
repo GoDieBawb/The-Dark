@@ -36,6 +36,10 @@ public class CommandParser {
         logicHandler      = new LogicHandler(stateManager, parser);
     }
     
+    public TagParser getTagParser() {
+        return parser;
+    }
+    
     //Takes the current line from the script and executes the proper command
     public void parse(ArrayList commands, Entity entity) {
         

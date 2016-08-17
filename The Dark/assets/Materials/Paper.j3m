@@ -1,6 +1,7 @@
-Material Paper : tonegod/gui/shaders/Unshaded.j3md {
+Material Paper : Common/MatDefs/Light/Lighting.j3md {
      MaterialParameters {
-        ColorMap : 3d_objects/structures/textures/rezpa_stained_walls/D.png
+        DiffuseMap : 3d_objects/structures/textures/rezpa_stained_walls/D.png
+        NormalMap : 3d_objects/structures/textures/rezpa_stained_walls/N.png
      }
     AdditionalRenderState {
     }

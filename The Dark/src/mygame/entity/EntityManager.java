@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import mygame.GameManager;
 import mygame.entity.item.Bottle;
+import mygame.entity.item.Candle;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.entity.monster.MonsterManager;
@@ -101,6 +102,9 @@ public class EntityManager {
                     
                     else if (type.equals("Bottle"))
                         entity = new Bottle(app.getStateManager());
+                    
+                    else if (type.equals("Candle"))
+                        entity = new Candle(app.getStateManager());
                     
                     else
                         System.out.println("Unknown Entity Type: " + type);

@@ -51,7 +51,6 @@ public class Script {
         
         ArrayList fm = (ArrayList) map.get("Fields");
         scriptManager.getScriptParser().parse(fm, entity);
-        System.out.println("Symbol Table: " + symTab);
         
     }
     

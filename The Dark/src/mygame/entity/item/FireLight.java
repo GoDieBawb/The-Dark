@@ -15,17 +15,29 @@ import java.util.Random;
  *
  * @author Bawb
  */
-public class TorchLight extends PointLight {
+public class FireLight extends PointLight {
     
     private Long    lastFlicker;
     private int     flickerDelay;
     private boolean isLit;
+    private int     minRadius;
+    private int     maxRadius;
     private FilterPostProcessor shadowFilter;
 
     //Constructs the time of last flicker and creates the shadow filer
-    public TorchLight(AppStateManager stateManager) {
+    public FireLight(AppStateManager stateManager) {
         lastFlicker = 0L;
         createShadow(stateManager);
+        minRadius = 5;
+        maxRadius = 15;
+    }
+    
+    public void setMaxRadius(int newMax) {
+        maxRadius = newMax;
+    }
+    
+    public void setMinRadius(int newMin) {
+        minRadius = newMin;
     }
     
     //Construct the shadow filter. Currently not working
@@ -59,7 +71,7 @@ public class TorchLight extends PointLight {
     
         lastFlicker = System.currentTimeMillis();
         setColor(ColorRGBA.Orange.mult(randInt(1,2)));
-        setRadius(randInt(5,15));
+        setRadius(randInt(minRadius,maxRadius));
         flickerDelay = randInt(20,100);
         
     }

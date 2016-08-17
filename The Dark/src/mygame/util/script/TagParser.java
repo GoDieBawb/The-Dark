@@ -4,15 +4,16 @@
  */
 package mygame.util.script;
 
-import mygame.util.script.handler.SymbolHandler;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.light.Light;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
 import mygame.entity.Entity;
 import mygame.entity.Scriptable;
-import mygame.entity.item.Torch;
+import mygame.entity.item.FireLight;
+import mygame.entity.item.Lamp;
 import mygame.entity.player.Player;
 
 /**
@@ -80,6 +81,10 @@ public class TagParser {
                 String[] strAr = args[i].split("#");
                 obj            = (Node) ((Node) obj).getChild(strAr[1]);
             
+            }
+            
+            else if (args[i].contains("light")) {
+                obj = (Light) ((Node) obj).getLocalLightList().get(0);
             }
             
             //Returns if the player isDead
@@ -216,8 +221,9 @@ public class TagParser {
                 if (obj == null)
                     obj = false;
                 
-                else
-                    obj = (boolean) ((Torch) obj).getTorchLight().isLit();
+                else {
+                    obj = (boolean) ((FireLight)((Lamp) obj).getLight()).isLit();
+                }
                 
             }
             

@@ -14,7 +14,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import mygame.GameManager;
-import mygame.entity.item.TorchLight;
+import mygame.entity.item.FireLight;
 
 /**
  *
@@ -26,7 +26,7 @@ public class MenuManager {
     private GameManager         gm;
     private Node                menuScene;
     private boolean             enabled;
-    private TorchLight          fire;
+    private FireLight          fire;
     private Node                start, help, quit, helpScreen;
     private boolean             slidingIn;
     private boolean             slidingOut;
@@ -41,7 +41,7 @@ public class MenuManager {
         this.app  = app;
         this.gm   = gm;
         menuScene = (Node) app.getAssetManager().loadModel("Scenes/Menu.j3o");
-        fire      = new TorchLight(app.getStateManager());
+        fire      = new FireLight(app.getStateManager());
         start     = (Node) menuScene.getChild("Start");
         help      = (Node) menuScene.getChild("Help");
         quit      = (Node) menuScene.getChild("Quit");

@@ -4,7 +4,7 @@
  */
 package mygame.scene;
 
-import mygame.entity.item.TorchLight;
+import mygame.entity.item.FireLight;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class SceneComposer extends AbstractAppState {
     
     private SimpleApplication app;
-    private ArrayList<TorchLight> lights;
+    private ArrayList<FireLight> lights;
     
     //On initialize init lights
     @Override
@@ -65,7 +65,7 @@ public class SceneComposer extends AbstractAppState {
             //If the name of the node is torch add a torch light
             else if (lightNode.getChild(i).getName().equals("Torch")) {
             
-                TorchLight tl = new TorchLight(app.getStateManager());
+                FireLight tl = new FireLight(app.getStateManager());
                 scene.addLight(tl);
                 tl.setColor(ColorRGBA.White.mult(1f));
                 tl.setRadius(5);
