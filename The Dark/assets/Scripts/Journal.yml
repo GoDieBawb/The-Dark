@@ -14,4 +14,4 @@ Interact:
     - chat "Page Three - The screams, the creaking of the door, the footsteps... In the basement.  I have locked shut the door..."
     - chat "Page Four - It comes... The door remains locked but it comes out. I hear it from my bed. I see it crawl across the floor. If I live another night, I'm throwing the key down the well and leaving like the rest. It's beter than living in the dark."
     - chat "The journal ends there... You close the book"
-    - give Journal
+    - flag Journal

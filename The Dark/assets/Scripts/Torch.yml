@@ -13,14 +13,14 @@ Interact:
     - chat "This Table is Empty"
 
     - else
-    - equipleft
-    - give Torch
     - chat "You remove the torch from the table"
+    - equip
+    - give Torch
 
 Start:
   Script:
-    - if player.inventory.contains#Start.!
-    - give Start
+    - if player.flags.contains#Start.!
+    - flag Start
     - chat "You've left the torch burning... How could you have forgotten?"
 
     - elseif player.inventory.contains#Torch

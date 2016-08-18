@@ -181,18 +181,32 @@ public class TagParser {
             
             }
             
-            //Casts to the players inventory
-            else if(args[i].equals("inventory")) {
+            //Casts to the players flag list
+            else if(args[i].equals("flags")) {
             
-                obj = ((Player) obj).getInventory();
+                obj = ((Player) obj).getFlagList();
                 
             }
+            
+            else if (args[i].equals("inventory")) {
+                obj = ((Player) obj).getInventory();
+            }
+            
+            //Casts to boolean whether player is holding object in left hand
+            else if (args[i].equals("hasleft")) {
+                obj = ((Player) obj).hasLeft();
+            }
+            
+            //Casts to boolean determining whther player is holding object in right hand
+            else if (args[i].equals("hasright")) {
+                obj = ((Player) obj).hasRight();
+            }            
             
             //Casts to a boolean that states if a hashmap contains a string
             else if(args[i].contains("contains")) {
                 
                 String[] strAr = args[i].split("#");
-                obj = ((HashMap<String, Integer>)obj).get(strAr[1]);
+                obj = ((HashMap<Object, Integer>)obj).get(strAr[1]);
                 
                 if (obj == null)
                     obj = false;

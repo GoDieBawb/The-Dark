@@ -21,22 +21,23 @@ import mygame.entity.item.Item;
  */
 public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     
-    private float               speedMult;
-    private float               strafeMult;
-    private CameraManager       cameraManager;
-    private ControlListener     controlListener;
-    private AppStateManager     stateManager;
-    private boolean             isDead;
-    private int                 maxHealth;
-    private int                 currentHealth;
-    private Hud                 hud;
-    private boolean             hasChecked;
-    private Item                leftEquip;
-    private Item                rightEquip;
-    private BetterCharacterControl   phys;
-    private HashMap<Object, Object>  inventory;
-    private boolean hasLeft;
-    private boolean hasRight;
+    private float                   speedMult;
+    private float                   strafeMult;
+    private CameraManager           cameraManager;
+    private ControlListener         controlListener;
+    private AppStateManager         stateManager;
+    private boolean                 isDead;
+    private int                     maxHealth;
+    private int                     currentHealth;
+    private Hud                     hud;
+    private boolean                 hasChecked;
+    private Item                    leftEquip;
+    private Item                    rightEquip;
+    private BetterCharacterControl  phys;
+    private HashMap<Object, Object> flagList;
+    private HashMap<String, Item>   inventory;   
+    private boolean                 hasLeft;
+    private boolean                 hasRight;
     
     //Construct the player
     public Player(AppStateManager stateManager) {
@@ -48,6 +49,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         strafeMult = .5f;
         name       = "Player";
         createInventory();
+        createFlagList();
         createControlListener();
     }
     
@@ -114,8 +116,16 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         inventory = new HashMap();
     }
     
-    public HashMap<Object, Object> getInventory() {
+    public HashMap<String, Item> getInventory() {
         return inventory;
+    }
+    
+    private void createFlagList() {
+        flagList = new HashMap();
+    }
+    
+    public HashMap<Object, Object> getFlagList() {
+        return flagList;
     }
     
     public void dropItem() {
@@ -204,7 +214,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         cameraManager.getCameraNode().detachAllChildren();
         hud.detachCrossHair();
         detachAllChildren();
-        inventory  = new HashMap();
+        flagList   = new HashMap();
         rightEquip = null;
         leftEquip  = null;
         hasLeft    = false;

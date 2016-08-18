@@ -14,13 +14,13 @@ import mygame.util.script.TagParser;
  *
  * @author root
  */
-public abstract class Handler {
+public abstract class CommandHandler {
     
     protected final AppStateManager stateManager;
     protected final GameManager     gm;
     protected final TagParser       parser;
     
-    public Handler(AppStateManager stateManager, TagParser parser) {
+    public CommandHandler(AppStateManager stateManager, TagParser parser) {
         this.stateManager = stateManager;
         this.parser       = parser;
         gm                = stateManager.getState(GameManager.class);

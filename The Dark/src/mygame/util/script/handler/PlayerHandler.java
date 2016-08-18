@@ -5,6 +5,7 @@ import com.jme3.app.state.AppStateManager;
 import mygame.GameManager;
 import mygame.entity.Entity;
 import mygame.entity.item.Item;
+import mygame.entity.item.Lamp;
 import mygame.entity.player.Player;
 import mygame.util.script.TagParser;
 
@@ -12,7 +13,7 @@ import mygame.util.script.TagParser;
  *
  * @author root
  */
-public class PlayerHandler extends Handler {
+public class PlayerHandler extends CommandHandler {
     
     
     public PlayerHandler(AppStateManager stateManager, TagParser parser) {
@@ -29,6 +30,31 @@ public class PlayerHandler extends Handler {
         
         //Equips an entity to the left side of the player
         switch (command) {
+            
+            case "equip":
+                {
+                    Item item = (Item) entity;
+                    if (!player.hasLeft()) {
+                        item.equip(player, true);
+                    }
+                    
+                    else if (!player.hasRight()) {
+                        item.equip(player, false);
+                    }
+                    
+                    else {
+                        
+                        entity.setLocalTranslation(0,-15,0);
+                        entity.removeFromParent();
+                        player.getHud().addAlert(item.getName(), "Could not equip. Item " + item.getName() + " was placed in your inventory");
+                        if(entity instanceof Lamp) {
+                            ((Lamp) entity).extinguish();
+                        }
+                        
+                    }
+                    
+                    break;
+                }
             
             case "equipleft":
                 {
@@ -49,26 +75,40 @@ public class PlayerHandler extends Handler {
                 player.dropItem();
                 break;
                 
-            case "give":
+            case "flag":
                 try {
                     int amount = Integer.valueOf(args[2]);
-                    player.getInventory().put(args[1], amount);
+                    player.getFlagList().put(args[1], amount);
                 }
                 
                 catch(Exception e) {
-                    player.getInventory().put(args[1], 1);
+                    player.getFlagList().put(args[1], 1);
+                }   break;
+            
+            case "give":
+                try {
+                    Item item = (Item) entity;
+                    int amount = Integer.valueOf(args[2]);
+                    item.setAmount(amount);
+                    player.getInventory().put(args[1], item);
+                }
+                
+                catch(Exception e) {
+                    Item item = (Item) entity;
+                    item.setAmount(1);
+                    player.getInventory().put(args[1], item);
                 }   break;
                 
             case "take":
                 
                 try {
                     int amount    = Integer.valueOf(args[2]);
-                    int newAmount = ((Integer) player.getInventory().get(args[1])) - amount;
-                    player.getInventory().put(args[1], newAmount);
+                    int newAmount = ((Integer) player.getFlagList().get(args[1])) - amount;
+                    player.getFlagList().put(args[1], newAmount);
                 }
                 
                 catch(Exception e) {
-                    player.getInventory().remove(args[1]);
+                    player.getFlagList().remove(args[1]);
                 }   break;
                 
             case "chat":

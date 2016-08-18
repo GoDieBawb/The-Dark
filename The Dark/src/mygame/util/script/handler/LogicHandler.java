@@ -14,7 +14,7 @@ import mygame.util.script.TagParser;
  *
  * @author root
  */
-public class LogicHandler extends Handler {
+public class LogicHandler extends CommandHandler {
     
     private boolean go;
     private boolean met;
@@ -72,7 +72,12 @@ public class LogicHandler extends Handler {
                 break;
                 
             case "else":
-                go = !go;
+                if (!met && !go)
+                    go = true;
+                
+                if (met)
+                    go = false;
+                
                 break;
                 
             case "end":

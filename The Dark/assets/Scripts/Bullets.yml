@@ -9,9 +9,9 @@ Interact:
     - if player.inventory.contains#Bullets.!
     - chat "You pick up the bullets from the table"
     - give Bullets 6
-    - hide
-    
+    - remove
+
 Start:
   Script:
     - if player.inventory.contains#Bullets
-    - hide
+    - remove

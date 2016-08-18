@@ -1,7 +1,7 @@
 Proximity:
   Distance: 2
   Enter:
-    - if player.inventory.contains#Finish
+    - if player.flags.contains#Finish
     - chat "The body of the creature lies here on the floor."
 
     - else
@@ -9,7 +9,7 @@ Proximity:
     
 Interact:
   Script:
-    - if player.inventory.contains#Finish.!
+    - if player.flags.contains#Finish.!
     - chat "You wake it up and it kills you immeidiately"
     - fail
 
@@ -22,17 +22,17 @@ Interact:
     
 Hit:
   Script:
-    - if player.inventory.contains#Finish
+    - if player.flags.contains#Finish
     - chat "You shoot the creatures body."
     - else
     - die
-    - give Finish
+    - flag Finish
     - chat "As the shot rings out in the darkness... It strikes it's target and death overcomes it"
       
     
 While:
   Script:
-    - if player.inventory.contains#Finish
+    - if player.flags.contains#Finish
     
     - elseif player.torch.islit
     - chat "The light of the torch illuminating it's den enrages it and it kills you..."
@@ -40,5 +40,5 @@ While:
     
 Start:
   Script:
-    - if player.inventory.contains#Finish
+    - if player.flags.contains#Finish
     - die

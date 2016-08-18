@@ -34,7 +34,6 @@ public class Candle extends Item implements Lamp {
         fireLight.setPosition(getWorldTranslation());
         scene.addLight(fireLight);
         fireLight.setIsLit(true);
-        System.out.println("Constructing Candle");
     }
     
     //Lights the flame
@@ -100,10 +99,10 @@ public class Candle extends Item implements Lamp {
             }
                 
             //If the player has more than one match light the torch
-            else if (((Integer)player.getInventory().get("Matches")) > 0) {
+            else if (((Integer)player.getInventory().get("Matches").getAmount()) > 0) {
                     
                 //Construct match information string
-                int newMatches = ((Integer)player.getInventory().get("Matches"))-1;
+                int newMatches = ((Integer)player.getInventory().get("Matches").getAmount())-1;
                 String matchInfo = "You have " + newMatches + " matches left";
                     
                 if(newMatches == 1)
@@ -112,7 +111,7 @@ public class Candle extends Item implements Lamp {
                 //Light the Candle and Inform players of matches left
                 player.getHud().addAlert("Light", "You light the torch..." + matchInfo);
                 light();
-                player.getInventory().put("Matches", newMatches);
+                player.getInventory().get("Matches").setAmount(newMatches);
                     
             }
              

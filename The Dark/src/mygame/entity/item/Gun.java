@@ -64,7 +64,7 @@ public class Gun extends Item {
     }
     
     //Fires the Gun
-    public void fire() {
+    private void fire() {
     
         //If the player has not shot play a gun shot and shoot the gun
         if(!gunControl.hasShot()) {
@@ -77,6 +77,9 @@ public class Gun extends Item {
     @Override
     public void equip(Player player, boolean isLeft) {    
         super.equip(player, isLeft);
+        if (isLeft) {
+            getModel().rotate(0,179.25f,0);
+        }    
         player.getHud().attachCrossHair();
         setEquipped(true);
     }
@@ -89,7 +92,7 @@ public class Gun extends Item {
     @Override
     public void use() {
          
-        Player player = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer(); 
+        player = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer(); 
         
         //If the player is still reloading don't do anything
         if (getGunControl().hasShot())
@@ -103,10 +106,10 @@ public class Gun extends Item {
         else {
          
             //If the player has more than one bullet
-            if (((Integer)player.getInventory().get("Bullets")) > 0) {
+            if (((Integer)player.getInventory().get("Bullets").getAmount()) > 0) {
             
                 //Saves the new amount of bullets
-                int newBullets           = ((Integer)player.getInventory().get("Bullets"))-1;
+                int newBullets           = ((Integer)player.getInventory().get("Bullets").getAmount())-1;
                 
                 //Gets Collision
                 CollisionResults results = new CollisionResults();
@@ -140,12 +143,12 @@ public class Gun extends Item {
                      
                 }
                  
-                //Fire the guns
+                //Fire the gun
                 fire();
                 
                 //Update the players inventory
                 player.getHud().addAlert("Gun", bulletInfo);
-                player.getInventory().put("Bullets", newBullets);
+                player.getInventory().get("Bullets").setAmount(newBullets);
                          
             }
            

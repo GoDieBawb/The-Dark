@@ -137,7 +137,7 @@ public class Script {
             //If in prox but has not yet run. Run Proximity Action
             if (inProx && !enteredProx) {
 
-                enteredProx           = true;
+                enteredProx          = true;
                 
                 if (pm.get("Enter") == null)
                     return;
@@ -150,7 +150,7 @@ public class Script {
             //If left prox but has not run. Run leave proximity action
             if (!inProx && enteredProx) {
 
-                player.getHud().getInfoText().hide();
+                //player.getHud().getInfoText().hide();
                 enteredProx          = false;
                 
                 if (pm.get("Exit") == null)

@@ -1,21 +1,23 @@
 Proximity:
   Distance: 1
   Enter:
-    - if player.inventory.contains#Candle
+    - if player.flags.contains#Candle
     - chat "An Empty Table"
 
     - else
-    - chat "A single candle lights the world"
+    - chat "A lit candle..."
 
 Interact:
   Script:
-    - if player.inventory.contains#Candle
+    - if player.flags.contains#Candle
     - chat "This Table is Empty"
 
     - else
-    - equipleft
+    - equip
+    - chat "How far this little candle throws its beams!"
     - give Candle
-    - chat "You remove the candle from the table"
+    - clearrotation
+    - setrotation 0 179 0
 
 Start:
   Script:

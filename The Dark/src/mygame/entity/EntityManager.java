@@ -13,6 +13,7 @@ import mygame.entity.item.Bottle;
 import mygame.entity.item.Candle;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
+import mygame.entity.item.Usable;
 import mygame.entity.monster.MonsterManager;
 import mygame.entity.npc.It;
 import mygame.entity.npc.Jimmy;
@@ -105,6 +106,9 @@ public class EntityManager {
                     
                     else if (type.equals("Candle"))
                         entity = new Candle(app.getStateManager());
+                    
+                    else if (type.equals("Item"))
+                        entity = new Usable(app.getStateManager());
                     
                     else
                         System.out.println("Unknown Entity Type: " + type);

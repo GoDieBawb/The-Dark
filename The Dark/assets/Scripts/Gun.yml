@@ -14,8 +14,8 @@ Interact:
     
     - else
     - chat "You pick up the gun"
-    - equipright
     - clearrotation
+    - equip
     - scale 1
     - give Gun
 

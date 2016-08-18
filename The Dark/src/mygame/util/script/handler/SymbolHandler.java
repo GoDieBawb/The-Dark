@@ -8,7 +8,7 @@ import mygame.util.script.TagParser;
  *
  * @author root
  */
-public class SymbolHandler extends Handler {
+public class SymbolHandler extends CommandHandler {
     
     public SymbolHandler(AppStateManager stateManager, TagParser parser) {
         super(stateManager, parser);

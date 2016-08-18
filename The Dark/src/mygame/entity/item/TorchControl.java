@@ -42,7 +42,7 @@ public class TorchControl extends AbstractControl {
         }
         
         //If the player is finished stop the monster finding 
-        if (player.getInventory().get("Finish") != null) {
+        if (player.getFlagList().get("Finish") != null) {
             return;
         }
         

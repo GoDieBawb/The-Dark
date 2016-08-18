@@ -20,7 +20,7 @@ import mygame.util.script.TagParser;
  *
  * @author root
  */
-public class EntityHandler extends Handler {
+public class EntityHandler extends CommandHandler {
     
     public EntityHandler(AppStateManager stateManager, TagParser parser) {
         super(stateManager, parser);
@@ -73,7 +73,6 @@ public class EntityHandler extends Handler {
                 float xRot = Float.valueOf(args[1]);
                 float yRot = Float.valueOf(args[2]);
                 float zRot = Float.valueOf(args[3]);
-                System.out.println(xRot + " " + yRot + " " + zRot);
                 ((Entity) entity).getModel().setLocalRotation(new Quaternion(0,0,0,1));
                 ((Entity) entity).getModel().rotate(xRot,yRot,zRot);
                 break;

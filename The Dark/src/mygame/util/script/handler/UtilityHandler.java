@@ -16,7 +16,7 @@ import mygame.util.script.TagParser;
  *
  * @author root
  */
-public class UtilityHandler extends Handler {
+public class UtilityHandler extends CommandHandler {
     
     public UtilityHandler(AppStateManager stateManager, TagParser parser) {
         super(stateManager, parser);

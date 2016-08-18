@@ -1,17 +1,17 @@
 Proximity:
   Distance: 2
   Enter:
-    - if player.inventory.contains#Dank.!
+    - if player.flags.contains#Dank.!
     - chat "To Hall of Dank"
 
 Interact:
   Script:
-    - if player.inventory.contains#Dank.!
+    - if player.flags.contains#Dank.!
     - changescene DankHall
     - else
     - chat "Fuck you"
 
 Start:
   Script:
-    - if player.inventory.contains#Dank
+    - if player.flags.contains#Dank
     - hide

@@ -2,7 +2,7 @@ Proximity:
   Distance: 1
   Enter:
     - chat " A box of matches sits here on the table"
-    
+
 Interact:
   Script:
     - give Matches 6
@@ -13,4 +13,4 @@ Interact:
 Start:
   Script:
     - if player.inventory.contains#Matches
-    - hide
+    - remove

@@ -18,6 +18,7 @@ public abstract class Item extends Entity {
     
     protected AppStateManager stateManager;
     private   boolean         isActing;
+    private   int             amount;
     protected Player          player;
     
     public Item(AppStateManager stateManager) {
@@ -33,6 +34,14 @@ public abstract class Item extends Entity {
         else
             player.setRightEquip(this);
         
+    }
+    
+    public void setAmount(int newVal) {
+        amount = newVal;
+    }
+    
+    public int getAmount() {
+        return amount;
     }
     
     public void setIsActing(boolean newVal) {

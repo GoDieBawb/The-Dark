@@ -17,7 +17,7 @@ import mygame.util.script.TagParser;
  *
  * @author root
  */
-public class AnimationHandler extends Handler {
+public class AnimationHandler extends CommandHandler {
     
     public AnimationHandler(AppStateManager stateManager, TagParser parser) {
         super(stateManager, parser);

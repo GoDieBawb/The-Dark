@@ -65,6 +65,8 @@ public class SceneManager {
         else
             app.getViewPort().removeProcessor(water);
         
+        System.out.println("Scene Initialized!");
+        
     }
     
     //Removes the Current Scene and Nulls it
@@ -121,12 +123,8 @@ public class SceneManager {
         
         Node lightNode = (Node) scene.getChild("Lights");
         
-        System.out.println(scene.getLocalLightList().size());
-        
         if(lightNode == null)
             return;
-        
-        System.out.println("Light Node Not Null");
         
         for (int i = 0; i < lightNode.getQuantity(); i++) {
         

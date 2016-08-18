@@ -5,7 +5,7 @@ Proximity:
 
 Interact:
   Script:
-    - if player.inventory.contains#Finish
+    - if player.flags.contains#Finish
     - chat "You open the gate and leave, never to return to this town."
     - finish
     

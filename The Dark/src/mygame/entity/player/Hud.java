@@ -106,12 +106,15 @@ public class Hud {
         
         if (!infoText.getIsVisible()) {
             showAlert();
-            infoText.getButtonOk().setText("Ok");
         }
-        
-        else {
+            
+        if (messages.size() > 0) {
             infoText.getButtonOk().setText("Next");
             infoText.setWindowTitle(currentMessage[0] + " (" + messages.size() + ")" );
+        }
+
+        else {
+            infoText.getButtonOk().setText("Ok");
         }
     
     }
@@ -126,6 +129,7 @@ public class Hud {
         infoText.setMsg(text);
         infoText.show();
         messages.remove(message);
+        System.out.println("Showing Message: " + message[1]);
     }
     
     //Return the Alert Box

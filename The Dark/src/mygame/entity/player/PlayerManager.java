@@ -59,6 +59,7 @@ public class PlayerManager {
         //player.getChaseControl().update(tpf);
         player.getCameraManager().update(tpf);
         player.getControlListener().update();
+        player.getHud().update(tpf);
         
     }
     
