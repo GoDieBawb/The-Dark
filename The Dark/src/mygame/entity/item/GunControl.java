@@ -61,7 +61,10 @@ public class GunControl extends AbstractControl {
     private void recoil(float tpf) {
         
         Vector3f camDir = stateManager.getApplication().getCamera().getDirection();
-        gun.lookAt(camDir.normalize().add(0,5,0).mult(50).negate(), new Vector3f(0,1,0));
+        if (gun.isLeft())
+            gun.lookAt(camDir.normalize().add(0,5,0).mult(50), new Vector3f(0,1,0));
+        else
+            gun.lookAt(camDir.normalize().add(0,5,0).mult(50).negate(), new Vector3f(0,1,0));
 
     }
     
@@ -79,6 +82,9 @@ public class GunControl extends AbstractControl {
     //Animate the Gun Reloading
     private void animateReload(float tpf) {
         
+        float bottom = -.3f;
+        float top    = -.2f;
+        
         //If the gun is moving upward move it up
         if (up) {
             gun.move(0,.5f*tpf,0);
@@ -90,12 +96,12 @@ public class GunControl extends AbstractControl {
         }        
         
         //If too far up stop moving up
-        if (gun.getLocalTranslation().y > -.2f) {
+        if (gun.getLocalTranslation().y > top) {
             up = false;
         }
         
         //If too far down stop moving down
-        if (gun.getLocalTranslation().y < -.3f) {
+        if (gun.getLocalTranslation().y < bottom) {
             up = true;
         }
         
@@ -107,9 +113,14 @@ public class GunControl extends AbstractControl {
     }
     
     private void keepLocation() {
-        float y = gun.getLocalTranslation().getY();
+        float y    = gun.getLocalTranslation().getY();
         Camera cam = stateManager.getApplication().getCamera();
-        gun.setLocalTranslation(cam.getDirection().normalize().add(cam.getLeft().normalize().negate().mult(.3f)).add(0,-.25f,0).setY(y));
+        
+        if (gun.isLeft())
+            gun.setLocalTranslation(cam.getDirection().normalize().add(cam.getLeft().normalize().mult(.3f)).add(0,-.25f,0).setY(y));
+        else
+            gun.setLocalTranslation(cam.getDirection().normalize().add(cam.getLeft().normalize().negate().mult(.3f)).add(0,-.25f,0).setY(y));
+        
     }
     
     //The Update Loop

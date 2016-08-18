@@ -40,7 +40,7 @@ public class MenuManager {
     public MenuManager(SimpleApplication app, GameManager gm) {
         this.app  = app;
         this.gm   = gm;
-        menuScene = (Node) app.getAssetManager().loadModel("Scenes/Menu.j3o");
+        menuScene = (Node) app.getAssetManager().loadModel("Scenes/Menu/Menu.j3o");
         fire      = new FireLight(app.getStateManager());
         start     = (Node) menuScene.getChild("Start");
         help      = (Node) menuScene.getChild("Help");

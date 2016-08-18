@@ -15,6 +15,7 @@ import mygame.GameManager;
 import mygame.entity.item.Lamp;
 import mygame.entity.player.PlayerManager;
 import mygame.util.PhysicsManager;
+import mygame.util.FileWalker;
 
 /**
  *
@@ -27,11 +28,13 @@ public class SceneManager {
     private final PhysicsManager         physicsManager;
     private FilterPostProcessor          fog;
     private FilterPostProcessor          water;
+    private FileWalker                   fw;
     
     //Inits Scene 
     public SceneManager(SimpleApplication app, GameManager gm) {
         this.app       = app;
         physicsManager = gm.getUtilityManager().getPhysicsManager();
+        fw             = new FileWalker();
         initEffects();
     }
     
@@ -41,6 +44,14 @@ public class SceneManager {
         System.out.println("Initializing Scene...");
         
         removeScene();
+        
+        String[] p = path.split("/");
+        path       = p[p.length-1];
+        path       = path.split("\\.")[0];
+        path       = fw.walk("assets/Scenes", path);
+        path       = path.split("assets/")[1];
+        path       = path.replace("data", "");
+        System.out.println(path);
         
         scene                 = (Node) app.getAssetManager().loadModel(path);
         RigidBodyControl rbc  = new RigidBodyControl(0f);

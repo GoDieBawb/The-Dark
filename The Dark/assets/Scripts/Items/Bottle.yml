@@ -1,0 +1,15 @@
+Proximity:
+  Distance: 1
+  Enter:
+    - chat "A bottle sits here on the table"
+
+Interact:
+  Script:
+    - chat "You pick up the bottle"
+    - equip
+    - give Bottle
+
+Start:
+  Script:
+    - if player.inventory.contains#Bottle
+    - remove

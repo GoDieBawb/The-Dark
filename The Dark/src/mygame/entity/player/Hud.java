@@ -129,7 +129,6 @@ public class Hud {
         infoText.setMsg(text);
         infoText.show();
         messages.remove(message);
-        System.out.println("Showing Message: " + message[1]);
     }
     
     //Return the Alert Box

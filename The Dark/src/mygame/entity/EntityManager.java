@@ -19,6 +19,7 @@ import mygame.entity.npc.It;
 import mygame.entity.npc.Jimmy;
 import mygame.entity.player.PlayerManager;
 import mygame.scene.SceneManager;
+import mygame.util.FileWalker;
 import mygame.util.script.Script;
 
 /**
@@ -32,12 +33,14 @@ public class EntityManager {
     private Node              entityNode;
     private SimpleApplication app;
     private ArrayList<Entity> sceneEntities;
+    private FileWalker        fileWalker;
     
     //Create the Player and Monster Manager
     public EntityManager(SimpleApplication app) {
         this.app = app;
         createPlayerManager();
         createMonsterManager();
+        fileWalker = new FileWalker();
     }
     
     private void createPlayerManager() {
@@ -89,29 +92,41 @@ public class EntityManager {
                     
                     String type = model.getUserData("Type");
                     
-                    if (type.equals("Torch"))
-                        entity = new Torch(app.getStateManager());
-                    
-                    else if (type.equals("Gun"))
-                        entity = new Gun(app.getStateManager());
-                    
-                    else if (type.equals("It"))
-                        entity = new It();
-                    
-                    else if (type.equals("Jimmy"))
-                        entity = new Jimmy();
-                    
-                    else if (type.equals("Bottle"))
-                        entity = new Bottle(app.getStateManager());
-                    
-                    else if (type.equals("Candle"))
-                        entity = new Candle(app.getStateManager());
-                    
-                    else if (type.equals("Item"))
-                        entity = new Usable(app.getStateManager());
-                    
-                    else
-                        System.out.println("Unknown Entity Type: " + type);
+                    switch (type) {
+                        
+                        case "Torch":
+                            entity = new Torch(app.getStateManager());
+                            break;
+                            
+                        case "Gun":
+                            entity = new Gun(app.getStateManager());
+                            break;
+                            
+                        case "It":
+                            entity = new It();
+                            break;
+                            
+                        case "Jimmy":
+                            entity = new Jimmy();
+                            break;
+                            
+                        case "Bottle":
+                            entity = new Bottle(app.getStateManager());
+                            break;
+                            
+                        case "Candle":
+                            entity = new Candle(app.getStateManager());
+                            break;
+                            
+                        case "Item":
+                            entity = new Usable(app.getStateManager());
+                            break;
+                            
+                        default:
+                            System.out.println("Unknown Entity Type: " + type);
+                            break;
+                            
+                    }
                     
                 }
                 
@@ -123,10 +138,10 @@ public class EntityManager {
                 //Without this Scene Will Crash
                 if (model.getUserData("Script") != null) {
 
-                    //The Script Data is the name of the script in the folder
-                    String filePath = "Scripts/" + model
-                                        .getUserData("Script") + ".yml";
-                    
+                    String fileName = model.getUserData("Script");
+                    String filePath = fileWalker.walk("assets/Scripts", fileName);
+                           filePath = filePath.split("assets/")[1];
+
                     //Script are Linked Hashmaps of Strings
                     LinkedHashMap map   = (LinkedHashMap) app.getStateManager()
                                         .getState(GameManager.class)

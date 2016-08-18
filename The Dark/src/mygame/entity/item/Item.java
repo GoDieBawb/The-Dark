@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.entity.item;
 
 import com.jme3.app.state.AppStateManager;
@@ -18,7 +13,9 @@ public abstract class Item extends Entity {
     
     protected AppStateManager stateManager;
     private   boolean         isActing;
+    private   boolean         isEquipped;
     private   int             amount;
+    private   boolean         isLeft;
     protected Player          player;
     
     public Item(AppStateManager stateManager) {
@@ -28,12 +25,23 @@ public abstract class Item extends Entity {
     
     public void equip(Player player, boolean isLeft) {
         
+        isEquipped  = true;
+        this.isLeft = isLeft;
+        
         if (isLeft)
             player.setLeftEquip(this);
         
         else
             player.setRightEquip(this);
         
+    }
+    
+    public boolean isEquipped() {
+        return isEquipped;
+    }
+    
+    public boolean isLeft() {
+        return isLeft;
     }
     
     public void setAmount(int newVal) {
@@ -53,7 +61,7 @@ public abstract class Item extends Entity {
     }
     
     public void unequip(Player player) {
-    
+        isEquipped = false;
     }
     
     public abstract void use();

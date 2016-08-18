@@ -8,8 +8,9 @@ Interact:
   Script:
     - if player.inventory.contains#Key.!
     - chat "You reach into the water and grab the key"
+    - equip
+    - setrotation 90 90 0
     - give Key
-    - hide
 
 Start:
   Script:
