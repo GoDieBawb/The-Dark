@@ -106,8 +106,9 @@ public class GameManager extends AbstractAppState {
     @Override
     public void update(float tpf) {
         
-        if (app.getInputManager().isCursorVisible())
-            app.getInputManager().setCursorVisible(false);
+        if (app.getInputManager().isCursorVisible() && !entityManager.getPlayerManager().getPlayer().getInventoryInterface().isVisible()) {
+            //app.getInputManager().setCursorVisible(false);
+        }
         
         //Update the Menu if Enabled
         if (menuManager.isEnabled()) {

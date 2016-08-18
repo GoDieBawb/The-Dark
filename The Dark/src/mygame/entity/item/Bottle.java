@@ -6,6 +6,7 @@
 package mygame.entity.item;
 
 import com.jme3.app.state.AppStateManager;
+import mygame.entity.player.Player;
 
 /**
  *
@@ -20,6 +21,16 @@ public class Bottle extends Item {
     @Override
     public void use() {
         player.getHud().addAlert("Bottle", "You use the Bottle");
+    }
+    
+    @Override
+    public void equip(Player player, boolean isLeft) {
+        super.equip(player, isLeft);
+    }
+    
+    @Override
+    public void unequip(Player player) {
+        super.unequip(player);
     }
     
 }

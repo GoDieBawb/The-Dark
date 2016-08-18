@@ -22,7 +22,7 @@ public class InteractionManager implements ActionListener {
     private final InputManager      inputManager;
     private final SimpleApplication app;
     private boolean           up = false, down = false, left = false, right = false, click = false, interact = false, cursor = false;
-    private boolean           up1 = false, down1 = false, left1 = false, right1 = false, torch = false, debugLight;
+    private boolean           up1 = false, down1 = false, left1 = false, right1 = false, torch = false, debugLight, inventory = false;
     private Vector2f          touchSpot;
     
     //Constructor
@@ -40,6 +40,7 @@ public class InteractionManager implements ActionListener {
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Cursor", new KeyTrigger(KeyInput.KEY_E));
+        inputManager.addMapping("Inventory", new KeyTrigger(KeyInput.KEY_I));
         inputManager.addMapping("Interact", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(this, "Up");
@@ -55,6 +56,7 @@ public class InteractionManager implements ActionListener {
         inputManager.addMapping("Right1", new KeyTrigger(KeyInput.KEY_RIGHT));
         inputManager.addMapping("Torch", new KeyTrigger(KeyInput.KEY_F));
         inputManager.addMapping("DebugLight", new KeyTrigger(KeyInput.KEY_L));
+        inputManager.addListener(this, "Inventory");
         inputManager.addListener(this, "Up1");
         inputManager.addListener(this, "Down1");
         inputManager.addListener(this, "Left1");
@@ -64,59 +66,55 @@ public class InteractionManager implements ActionListener {
         
     }
     
+    @Override
     public void onAction(String binding, boolean isPressed, float tpf) {
         
-        if (binding.equals("Up")) {
-            up = isPressed;
+        switch (binding) {
+            case "Up":
+                up = isPressed;
+                break;
+            case "Down":
+                down = isPressed;
+                break;
+            case "Left":
+                left = isPressed;
+                break;
+            case "Right":
+                right = isPressed;
+                break;
+            case "Inventory":
+                inventory = isPressed;
+                break;
+            case "Cursor":
+                cursor = isPressed;
+                break;
+            case "Interact":
+                interact = isPressed;
+                break;
+            case "Click":
+                click = isPressed;
+                break;
+            case "Up1":
+                up1 = isPressed;
+                break;
+            case "Down1":
+                down1 = isPressed;
+                break;
+            case "Left1":
+                left1 = isPressed;
+                break;
+            case "Right1":
+                right1 = isPressed;
+                break;
+            case "Torch":
+                torch = isPressed;
+                break;
+            case "DebugLight":
+                debugLight = isPressed;
+                break;
+            default:
+                break;
         }
-        
-        else if (binding.equals("Down")) {
-            down = isPressed;
-        }
-        
-        else if (binding.equals("Left")) {
-            left = isPressed;
-        }
-        
-        else if (binding.equals("Right")) {
-            right = isPressed;
-        }
-        
-        else if (binding.equals("Cursor")) {
-            cursor = isPressed;
-        }        
-        
-        else if (binding.equals("Interact")) {
-            interact = isPressed;
-        }
-        
-        else if (binding.equals("Click")) {
-            click = isPressed;
-        }
-        
-        else if (binding.equals("Up1")) {
-            up1 = isPressed;
-        }
-        
-        else if (binding.equals("Down1")) {
-            down1 = isPressed;
-        }
-        
-        else if (binding.equals("Left1")) {
-            left1 = isPressed;
-        }
-        
-        else if (binding .equals("Right1")) {
-            right1 = isPressed;
-        }        
-        
-        else if (binding .equals("Torch")) {
-            torch = isPressed;
-        }      
-        
-        else if (binding .equals("DebugLight")) {
-            debugLight = isPressed;
-        }     
         
     }
     
@@ -167,47 +165,38 @@ public class InteractionManager implements ActionListener {
     //Ability to Check Buttons Pressed This is For the Camera Manager
     public boolean getIsPressed(String triggerName) {
         
-        if (triggerName.equals("Left"))
-            return left;
-        
-        else if (triggerName.equals("Right"))
-            return right;
-        
-        else if (triggerName.equals("Up"))
-            return up;
-        
-        else if (triggerName.equals("Down"))
-            return down;
-        
-        else if (triggerName.equals("Click"))
-            return click;
-        
-        else if (triggerName.equals("Interact"))
-            return interact;
-        
-        else if (triggerName.equals("Cursor"))
-            return cursor;
-        
-        else if (triggerName.equals("Left1"))
-            return left1;
-        
-        else if (triggerName.equals("Right1"))
-            return right1;
-        
-        else if (triggerName.equals("Up1"))
-            return up1;
-        
-        else if (triggerName.equals("Down1"))
-            return down1;   
-        
-        else if (triggerName.equals("Torch"))
-            return torch;
-        
-        else if (triggerName.equals("DebugLight"))
-            return debugLight;
-        
-        else
-            return false;
+        switch (triggerName) {
+            case "Left":
+                return left;
+            case "Right":
+                return right;
+            case "Up":
+                return up;
+            case "Down":
+                return down;
+            case "Click":
+                return click;
+            case "Interact":
+                return interact;
+            case "Inventory":
+                return inventory;
+            case "Cursor":
+                return cursor;
+            case "Left1":
+                return left1;
+            case "Right1":
+                return right1;
+            case "Up1":
+                return up1;
+            case "Down1":
+                return down1;
+            case "Torch":
+                return torch;
+            case "DebugLight":
+                return debugLight;
+            default:
+                return false;
+        }
         
     }
     

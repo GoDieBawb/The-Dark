@@ -38,6 +38,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
     private HashMap<String, Item>   inventory;   
     private boolean                 hasLeft;
     private boolean                 hasRight;
+    private InventoryInterface      invInt;
     
     //Construct the player
     public Player(AppStateManager stateManager) {
@@ -48,6 +49,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         speedMult  = 2f;
         strafeMult = .5f;
         name       = "Player";
+        invInt     = new InventoryInterface(stateManager, this);
         createInventory();
         createFlagList();
         createControlListener();
@@ -116,6 +118,10 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         inventory = new HashMap();
     }
     
+    public InventoryInterface getInventoryInterface() {
+        return invInt;
+    }
+    
     public HashMap<String, Item> getInventory() {
         return inventory;
     }
@@ -169,6 +175,18 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         cameraManager.getCameraNode().attachChild(item);
     }
     
+    public void unEquipLeft(Item item) {
+        leftEquip = null;
+        hasLeft   = false;
+        cameraManager.getCameraNode().detachChild(item);
+    }
+    
+    public void unEquipRight(Item item) {
+        rightEquip = null;
+        hasRight   = false;
+        cameraManager.getCameraNode().detachChild(item);
+    }
+        
     public Item getLeftEquip() {
         return leftEquip;
     }

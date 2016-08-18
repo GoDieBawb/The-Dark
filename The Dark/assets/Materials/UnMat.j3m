@@ -1,0 +1,7 @@
+Material My Material : tonegod/gui/shaders/Unshaded.j3md {
+     MaterialParameters {
+        ColorMap : Flip Models/well/Rusted Metal.png
+     }
+    AdditionalRenderState {
+    }
+}

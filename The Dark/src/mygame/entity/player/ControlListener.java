@@ -16,7 +16,7 @@ public class ControlListener {
     
     private final InteractionManager im;
     private final Player             player;
-    private boolean                  interact, leftItemPressed, rightItemPressed, debugLight;
+    private boolean                  interact, leftItemPressed, rightItemPressed, debugLight, inventory;
     private final AmbientLight       light;
     private boolean                  isLit;
     private final AppStateManager    stateManager;
@@ -57,6 +57,14 @@ public class ControlListener {
         else if (rightItemPressed) {
             rightPress();
         }
+       
+        if (im.getIsPressed("Inventory")) {
+            inventory = true;
+        }
+        
+        else if (inventory) {
+            inventoryPress();
+        }
         
         if (im.getIsPressed("DebugLight")) {
             debugLight = true;
@@ -66,6 +74,21 @@ public class ControlListener {
             debugLightPress();
         }
             
+    }
+    
+    private void inventoryPress() {
+        
+        inventory = false;
+        
+        if (player.getInventoryInterface().isVisible()) {
+            stateManager.getApplication().getInputManager().setCursorVisible(false);
+            player.getInventoryInterface().hide();
+        }
+        else {
+            stateManager.getApplication().getInputManager().setCursorVisible(true);
+            player.getInventoryInterface().show();
+        }
+        
     }
     
     //Handles the Player pressing interact

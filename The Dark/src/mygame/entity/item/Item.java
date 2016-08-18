@@ -28,6 +28,9 @@ public abstract class Item extends Entity {
         isEquipped  = true;
         this.isLeft = isLeft;
         
+        if (this instanceof Lamp)
+            stateManager.getState(GameManager.class).getSceneManager().getScene().addLight(((Lamp)this).getLight());
+        
         if (isLeft)
             player.setLeftEquip(this);
         
@@ -61,7 +64,21 @@ public abstract class Item extends Entity {
     }
     
     public void unequip(Player player) {
+        
         isEquipped = false;
+        
+        if (this instanceof Lamp)
+            ((Lamp)this).extinguish();
+        
+        if (this.equals(player.getLeftEquip()))
+            player.unEquipLeft(this);
+        
+        else if (this.equals(player.getRightEquip()))
+            player.unEquipRight(this);
+        
+        else
+            System.out.println("Warning: UnEquip Ran on Non Equipped Item!");
+        
     }
     
     public abstract void use();

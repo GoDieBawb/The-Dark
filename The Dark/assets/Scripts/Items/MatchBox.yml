@@ -7,7 +7,6 @@ Interact:
   Script:
     - give Matches 6
     - chat "You take the matches from the table"
-    - hide
     - remove
 
 Start:

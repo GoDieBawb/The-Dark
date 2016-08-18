@@ -24,7 +24,6 @@ public class Gun extends Item {
     private final GunControl gunControl;
     private final AudioNode  gunShot;
     private final AudioNode  reload;
-    private boolean          equipped;
     
     
     //Load the proper sounds from the audiomanager
@@ -35,16 +34,6 @@ public class Gun extends Item {
         reload          = am.getSound("Reloading");
         gunControl      = new GunControl(this, stateManager);
         addControl(gunControl);
-    }
-    
-    //Determines whether the gun is equipped
-    public void setEquipped(boolean newVal) {
-        equipped = newVal;
-    }
-    
-    //Returns whether the gun is equipped
-    public boolean isEquipped() {
-        return equipped;
     }
     
     //Initiates the Smoke Particles
@@ -81,12 +70,14 @@ public class Gun extends Item {
             getModel().rotate(0,179.25f,0);
         }    
         player.getHud().attachCrossHair();
-        setEquipped(true);
+        
     }
     
     @Override
     public void unequip(Player player) {
         super.unequip(player);
+        player.getHud().detachCrossHair();
+        
     }
 
     @Override
