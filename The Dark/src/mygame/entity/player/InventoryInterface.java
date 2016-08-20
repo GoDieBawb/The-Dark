@@ -5,8 +5,8 @@
  */
 package mygame.entity.player;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.asset.TextureKey;
 import com.jme3.font.BitmapFont;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.material.Material;
@@ -50,13 +50,17 @@ public class InventoryInterface {
     
     public void show() {
         isVisible = true;
+        player.getCameraManager().setEnabled(false);
+        ((SimpleApplication) stateManager.getApplication()).getFlyByCamera().setDragToRotate(true);
         initElements();
         inventoryWindow.showWindow();
     }
     
     public void hide() {
         isVisible = false;
+        player.getCameraManager().setEnabled(true);
         inventoryWindow.hideWindow();
+        ((SimpleApplication) stateManager.getApplication()).getFlyByCamera().setDragToRotate(false);
     }
     
     private void initElements() {

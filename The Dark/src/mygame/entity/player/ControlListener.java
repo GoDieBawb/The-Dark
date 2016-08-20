@@ -94,7 +94,12 @@ public class ControlListener {
     //Handles the Player pressing interact
     private void interactPress() {
         
+        //Before Inventory Check to Ensure No Check is Waiting for Exit
         interact  = false;
+        
+        //If Inventory is Visible Don't Interact
+        if (player.getInventoryInterface().isVisible())
+            return;
         
         //Restart the game if the player is dead
         if (player.isDead()) {
@@ -115,19 +120,6 @@ public class ControlListener {
         
     }
     
-    //Done when the player Uses the Right Item
-    private void rightPress() {
-        
-        //Sets the shoot Interact To False
-        rightItemPressed  = false;
-        
-        //Dont do anything if the hand is empty
-        if (player.hasRight())
-            player.getRightEquip().use();        
-
-            
-    }
-    
     //Toggles the Debug Light on and Off
     private void debugLightPress() {
         
@@ -146,15 +138,38 @@ public class ControlListener {
     }
     
     //Handles Player Toggling the Left Held Item
-    private void leftPress() {
+    private void leftPress() {       
         
+        //Before Inventory Check to Ensure No Action is Waiting
         leftItemPressed = false;
+        
+        //If Inventory is Visible Don't Interact
+        if (player.getInventoryInterface().isVisible())
+            return;        
         
         if (player.hasLeft())
             player.getLeftEquip().use();
 
             
     }
+    
+    
+    //Done when the player Uses the Right Item
+    private void rightPress() {
+             
+        //Before Inventory Check to Ensure No Action is Waiting
+        rightItemPressed  = false;
+        
+        //
+        if (player.getInventoryInterface().isVisible())
+            return;           
+        
+        //Dont do anything if the hand is empty
+        if (player.hasRight())
+            player.getRightEquip().use();        
+
+            
+    }    
     
     //Update Loop
     public void update() {

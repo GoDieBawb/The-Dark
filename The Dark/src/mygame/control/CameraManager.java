@@ -28,6 +28,7 @@ public class CameraManager {
     private final AppStateManager   stateManager;   
     private final Camera            cam;
     private final Node              camNode;
+    private       boolean           isEnabled;
     
     public CameraManager(SimpleApplication app, Player player) {
         this.app        = app;
@@ -35,7 +36,12 @@ public class CameraManager {
         this.player     = player;
         cam             = app.getCamera();
         camNode         = new Node();
+        isEnabled       = true;
         initCamera();
+    }
+    
+    public void setEnabled(boolean newVal) {
+        isEnabled = newVal;
     }
     
     public Node getCameraNode() {
@@ -105,6 +111,9 @@ public class CameraManager {
     }    
     
     public void update(float tpf) {
+        
+        if (!isEnabled)
+            return;
         
         updateKeys();
         movePlayer(tpf);
