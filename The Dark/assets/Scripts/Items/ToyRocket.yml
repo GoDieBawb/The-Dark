@@ -1,0 +1,19 @@
+Proximity:
+  Distance: 1
+  Enter:
+    - chat "A small toy rocket ship."
+
+Interact:
+  Script:
+    - equip
+    - give ToyRocket
+    - chat "You pick up the toy rocket"
+
+Start:
+  Script:
+    - if player.inventory.contains#ToyRocket
+    - remove
+
+Use:
+  Script:
+    - chat "You play with the toy rocket. You feel much more entertained."

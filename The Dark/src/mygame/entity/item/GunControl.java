@@ -23,11 +23,11 @@ public class GunControl extends AbstractControl {
 
     private Long     lastShot;
     private boolean  hasShot;
-    private Gun      gun;
     private boolean  reloading;
     private boolean  up;
     private boolean  recoiling;
     private ParticleEmitter smoke;
+    private final Gun       gun;
     private final AppStateManager stateManager;
     
     //When constructed make sure it can be shot right away

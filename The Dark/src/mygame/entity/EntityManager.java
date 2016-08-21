@@ -9,7 +9,6 @@ import com.jme3.scene.Node;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import mygame.GameManager;
-import mygame.entity.item.Bottle;
 import mygame.entity.item.Candle;
 import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
@@ -108,10 +107,6 @@ public class EntityManager {
                             
                         case "Jimmy":
                             entity = new Jimmy();
-                            break;
-                            
-                        case "Bottle":
-                            entity = new Bottle(app.getStateManager());
                             break;
                             
                         case "Candle":

@@ -1,0 +1,9 @@
+Material My Material : Common/MatDefs/Light/Lighting.j3md {
+     MaterialParameters {
+        DiffuseMap : Flip Models/Alien/baked textures.jpg
+        NormalMap : Flip Models/Alien/Alien normal map.jpg
+        SpecularMap : Flip Models/Alien/Alien specular.jpg
+     }
+    AdditionalRenderState {
+    }
+}

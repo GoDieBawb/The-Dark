@@ -220,6 +220,27 @@ public class Script {
         
     }    
     
+    //If there is a start action do it on initialize
+    public void useAction() {
+        
+        ArrayList useScript;
+        
+        if (map.get("Use") == null)
+            return;
+            
+        try {
+            Map<Object, Object> um = (Map<Object, Object>)  map.get("Use");
+            useScript              = (ArrayList)  um.get("Script");
+            scriptManager.getScriptParser().parse(useScript, entity);
+        }
+        
+        catch (Exception e) {
+            System.out.println("Start Error For Entity: " + entity.getName());
+            e.printStackTrace();
+        }
+
+    }    
+    
     //Run on loop and checks for player interaction and distance from entity
     public void checkForTriggers() {
         

@@ -142,25 +142,28 @@ public class InventoryInterface {
                 
             }
                 
-            if (!met)
+            if (!met) {
                 a.setMaterial(unMat);
+            }
             
             float x = w*xMult;
             float y = h*yMult;
-
-            //TextureKey key = new TextureKey("Textures/Thumbnails/Candle.png", false);
             
             String labelText = currentItem;
             
-            if (item.getAmount() > 1)
+            if (item.getAmount() > 1) {
                 labelText = currentItem + " x" + item.getAmount();
+            }    
             
             a.setText(labelText);
             a.setTextAlign(BitmapFont.Align.Center);
             
             a.setDimensions(w, h);
+            a.setIsResizable(false);   
+            
+            inventoryWindow.getContentArea().addChild(a);
+            
             a.setPosition(x, y);
-            a.setIsResizable(false);
             
             if (xMult%4 == 0 && x != 0) {
                 xMult = 0;
@@ -170,8 +173,6 @@ public class InventoryInterface {
             else {
                 xMult++;
             }
-            
-            inventoryWindow.getContentArea().addChild(a);
             
         }
         
