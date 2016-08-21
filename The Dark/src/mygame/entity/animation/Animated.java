@@ -19,4 +19,8 @@ public interface Animated {
     //All animated entities have an idle animation at least
     public void idle();
     
+    public void setAnimation(String animName);
+    
+    public void setAnimation(String animName, boolean loop);
+    
 }

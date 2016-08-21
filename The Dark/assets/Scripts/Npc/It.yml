@@ -25,7 +25,7 @@ Hit:
     - if player.flags.contains#Finish
     - chat "You shoot the creatures body."
     - else
-    - die
+    - animate Die noloop
     - flag Finish
     - chat "As the shot rings out in the darkness... It strikes it's target and death overcomes it"
       
@@ -41,4 +41,4 @@ While:
 Start:
   Script:
     - if player.flags.contains#Finish
-    - die
+    - animate Die noloop

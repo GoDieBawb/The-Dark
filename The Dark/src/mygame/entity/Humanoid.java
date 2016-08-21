@@ -34,6 +34,16 @@ public abstract class Humanoid extends Entity implements Living {
     }
     
     @Override
+    public void setAnimation(String animName) {
+        
+    }    
+    
+    @Override
+    public void setAnimation(String animName, boolean loop) {
+        
+    }     
+    
+    @Override
     public void setModel(String path, AppStateManager stateManager) {
         path = "Models/Person/Person.j3o";
         super.setModel(path, stateManager);

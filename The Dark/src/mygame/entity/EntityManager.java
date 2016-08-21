@@ -15,7 +15,7 @@ import mygame.entity.item.Torch;
 import mygame.entity.item.Usable;
 import mygame.entity.monster.MonsterManager;
 import mygame.entity.npc.It;
-import mygame.entity.npc.Jimmy;
+import mygame.entity.npc.Npc;
 import mygame.entity.player.PlayerManager;
 import mygame.scene.SceneManager;
 import mygame.util.FileWalker;
@@ -101,12 +101,8 @@ public class EntityManager {
                             entity = new Gun(app.getStateManager());
                             break;
                             
-                        case "It":
-                            entity = new It();
-                            break;
-                            
-                        case "Jimmy":
-                            entity = new Jimmy();
+                        case "Npc":
+                            entity = new Npc();
                             break;
                             
                         case "Candle":

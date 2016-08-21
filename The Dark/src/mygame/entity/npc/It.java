@@ -16,10 +16,22 @@ import mygame.entity.animation.Animated;
 public class It extends Entity implements Animated {
 
     //Returns It's animation control
+    @Override
     public AnimControl getAnimControl() {
         return getModel().getChild("Model").getControl(AnimControl.class);
     }
 
+    @Override
+    public void setAnimation(String animName) {
+        
+    }    
+    
+    @Override
+    public void setAnimation(String animName, boolean loop) {
+        
+    }        
+    
+    @Override
     public void idle() {
 
     }

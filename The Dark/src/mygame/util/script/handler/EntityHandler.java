@@ -12,6 +12,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import mygame.GameManager;
 import mygame.entity.Entity;
+import mygame.entity.animation.Animated;
 import mygame.entity.item.Lamp;
 import mygame.entity.player.Player;
 import mygame.util.script.TagParser;
@@ -171,6 +172,24 @@ public class EntityHandler extends CommandHandler {
                     //gm.getUtilityManager().getPhysicsManager().addPhys();
                     
                 }   
+                
+                break;
+            
+            case "animate":
+                
+                if (args[2] == null) {
+                    ((Animated) entity).setAnimation(args[1]);
+                }
+                
+                else {
+                    
+                    if (!args[2].equals("noloop"))
+                        System.out.println("Unknown Animate Argument: " + args[2]);
+                    
+                    else
+                        ((Animated) entity).setAnimation(args[1], false);      
+                    
+                }
                 
                 break;
                 

@@ -1,0 +1,6 @@
+Fields:
+  - String idleName idle
+
+Start:
+  Script:
+    - idle
