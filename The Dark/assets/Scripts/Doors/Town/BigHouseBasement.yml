@@ -5,7 +5,7 @@ Proximity:
     
 Interact:
   Script:
-    - if player.flags.contains#Key
+    - if <player.flags.contains#Key>
     - changescene Basement
     
     - else 

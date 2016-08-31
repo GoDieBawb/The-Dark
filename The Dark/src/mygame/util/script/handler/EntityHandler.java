@@ -177,7 +177,7 @@ public class EntityHandler extends CommandHandler {
             
             case "animate":
                 
-                if (args[2] == null) {
+                if (args.length == 2) {
                     ((Animated) entity).setAnimation(args[1]);
                 }
                 

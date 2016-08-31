@@ -22,7 +22,7 @@ public class InteractionManager implements ActionListener {
     private final InputManager      inputManager;
     private final SimpleApplication app;
     private boolean           up = false, down = false, left = false, right = false, click = false, interact = false, cursor = false;
-    private boolean           up1 = false, down1 = false, left1 = false, right1 = false, torch = false, debugLight, inventory = false;
+    private boolean           up1 = false, down1 = false, left1 = false, right1 = false, rightClick = false, debugLight, inventory = false;
     private Vector2f          touchSpot;
     
     //Constructor
@@ -35,34 +35,36 @@ public class InteractionManager implements ActionListener {
     
     //Set up the Keys
     private void setUpKeys() {
-        inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
-        inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
-        inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
-        inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
-        inputManager.addMapping("Cursor", new KeyTrigger(KeyInput.KEY_E));
-        inputManager.addMapping("Inventory", new KeyTrigger(KeyInput.KEY_I));
-        inputManager.addMapping("Interact", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        
+        inputManager.addMapping("Up",         new KeyTrigger(KeyInput.KEY_W));
+        inputManager.addMapping("Down",       new KeyTrigger(KeyInput.KEY_S));
+        inputManager.addMapping("Left",       new KeyTrigger(KeyInput.KEY_A));
+        inputManager.addMapping("Right",      new KeyTrigger(KeyInput.KEY_D));
+        inputManager.addMapping("Cursor",     new KeyTrigger(KeyInput.KEY_E));
+        inputManager.addMapping("Inventory",  new KeyTrigger(KeyInput.KEY_I));
+        inputManager.addMapping("Interact",   new KeyTrigger(KeyInput.KEY_SPACE));
+        inputManager.addMapping("Click",      new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        inputManager.addMapping("RightClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+        inputManager.addMapping("Up1",        new KeyTrigger(KeyInput.KEY_UP));
+        inputManager.addMapping("Down1",      new KeyTrigger(KeyInput.KEY_DOWN));
+        inputManager.addMapping("Left1",      new KeyTrigger(KeyInput.KEY_LEFT));
+        inputManager.addMapping("Right1",     new KeyTrigger(KeyInput.KEY_RIGHT));
+        inputManager.addMapping("DebugLight", new KeyTrigger(KeyInput.KEY_L));
+        
+        inputManager.addListener(this, "Inventory");
+        inputManager.addListener(this, "Up1");
+        inputManager.addListener(this, "Down1");
+        inputManager.addListener(this, "Left1");
+        inputManager.addListener(this, "Right1");
+        inputManager.addListener(this, "RightClick");
+        inputManager.addListener(this, "DebugLight");
         inputManager.addListener(this, "Up");
         inputManager.addListener(this, "Down");
         inputManager.addListener(this, "Left");
         inputManager.addListener(this, "Right");
         inputManager.addListener(this, "Cursor");
         inputManager.addListener(this, "Interact");
-        inputManager.addListener(this, "Click");
-        inputManager.addMapping("Up1", new KeyTrigger(KeyInput.KEY_UP));
-        inputManager.addMapping("Down1", new KeyTrigger(KeyInput.KEY_DOWN));
-        inputManager.addMapping("Left1", new KeyTrigger(KeyInput.KEY_LEFT));
-        inputManager.addMapping("Right1", new KeyTrigger(KeyInput.KEY_RIGHT));
-        inputManager.addMapping("Torch", new KeyTrigger(KeyInput.KEY_F));
-        inputManager.addMapping("DebugLight", new KeyTrigger(KeyInput.KEY_L));
-        inputManager.addListener(this, "Inventory");
-        inputManager.addListener(this, "Up1");
-        inputManager.addListener(this, "Down1");
-        inputManager.addListener(this, "Left1");
-        inputManager.addListener(this, "Right1");
-        inputManager.addListener(this, "Torch");
-        inputManager.addListener(this, "DebugLight");
+        inputManager.addListener(this, "Click");        
         
     }
     
@@ -106,8 +108,8 @@ public class InteractionManager implements ActionListener {
             case "Right1":
                 right1 = isPressed;
                 break;
-            case "Torch":
-                torch = isPressed;
+            case "RightClick":
+                rightClick = isPressed;
                 break;
             case "DebugLight":
                 debugLight = isPressed;
@@ -190,8 +192,8 @@ public class InteractionManager implements ActionListener {
                 return up1;
             case "Down1":
                 return down1;
-            case "Torch":
-                return torch;
+            case "RightClick":
+                return rightClick;
             case "DebugLight":
                 return debugLight;
             default:

@@ -11,5 +11,5 @@ Interact:
 
 Start:
   Script:
-    - if player.inventory.contains#Matches
+    - if <player.inventory.contains#Matches>
     - remove

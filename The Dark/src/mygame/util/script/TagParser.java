@@ -25,7 +25,9 @@ public class TagParser {
     //This method returns on object based on the tag string
     public Object parseTag(AppStateManager stateManager, String tag, Scriptable entity) {
         
-        //Split the tag on . character
+        //Split the tag on . character and remove <>
+        tag            = tag.replace("<", "");
+        tag            = tag.replace(">", "");
         String[] args  = tag.split("\\.");
         GameManager gm = stateManager.getState(GameManager.class);
         Object obj     = entity;
@@ -63,7 +65,7 @@ public class TagParser {
                         obj = ((Entity) entity).getModel();
                     
                     else
-                        obj            = gm.getSceneManager().getScene().getChild(strAr[1]);
+                        obj = gm.getSceneManager().getScene().getChild(strAr[1]);
                     
                     
                 }
@@ -239,6 +241,16 @@ public class TagParser {
                     obj = (boolean) ((FireLight)((Lamp) obj).getLight()).isLit();
                 }
                 
+            }
+            
+            else if (args[i].contains("sym")) {
+                String[] strAr = args[i].split("#");
+                obj = ((Entity) obj).getScript().getSymTab().get(strAr[1]);
+            }
+            
+            else if (args[i].contains("global")) {
+                String[] strAr = args[i].split("#");
+                obj = Script.GLOBAL_SYM_TAB.get(strAr[1]);
             }
             
             //If not on the list above it is an unknown tag argument

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.entity.player;
 
 import com.jme3.app.SimpleApplication;
@@ -69,7 +64,7 @@ public class InventoryInterface {
         
         final Material eqMat = stateManager.getApplication().getAssetManager().loadMaterial("Materials/AlertBox.j3m");
         final Material unMat = stateManager.getApplication().getAssetManager().loadMaterial("Materials/UnMat.j3m");
-        float          yMult = 2;
+        float          yMult = 4;
         float          xMult = 0;
         float          w     = inventoryWindow.getWidth()/5;
         float          h     = inventoryWindow.getHeight()/5;

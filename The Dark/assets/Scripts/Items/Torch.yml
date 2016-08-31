@@ -1,7 +1,7 @@
 Proximity:
   Distance: 1
   Enter:
-    - if player.inventory.contains#Torch
+    - if <player.inventory.contains#Torch>
     - chat "An Empty Table"
 
     - else
@@ -9,7 +9,7 @@ Proximity:
 
 Interact:
   Script:
-    - if player.inventory.contains#Torch
+    - if <player.inventory.contains#Torch>
     - chat "This Table is Empty"
 
     - else
@@ -19,10 +19,10 @@ Interact:
 
 Start:
   Script:
-    - if player.flags.contains#Start.!
+    - if <player.flags.contains#Start.!>
     - flag Start
     - chat "You've left the torch burning... How could you have forgotten?"
 
-    - elseif player.inventory.contains#Torch
+    - elseif <player.inventory.contains#Torch>
     - remove
     - end

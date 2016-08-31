@@ -24,25 +24,58 @@ public class SymbolHandler extends CommandHandler {
         switch (command) {
 
             case "boolean":
+                
                 boolean boolSym = false;
-                if (args[2].contains("true"))
+                
+                if (args[2].contains("<") && args[2].contains(">")) {
+                    boolSym = (Boolean) parser.parseTag(stateManager, args[2], entity);
+                }
+                else if (args[2].contains("true")) {
                     boolSym = true;
+                }
+                      
                 entity.getScript().getSymTab().put(args[1], boolSym);
+                
                 break;
 
             case "int":
-
-                int intSym = Integer.valueOf(args[2]);
+                
+                int intSym;
+                
+                if (args[2].contains("<") && args[2].contains(">")) {
+                    intSym = (Integer) parser.parseTag(stateManager, args[2], entity);
+                }
+                else {
+                    intSym = Integer.valueOf(args[2]);
+                }
+                
                 entity.getScript().getSymTab().put(args[1], intSym);
                 break;
 
             case "float":
-                float floatSym = Float.valueOf(args[2]);
+                
+                float floatSym;
+                
+                if (args[2].contains("<") && args[2].contains(">")) {
+                    floatSym = (Float) parser.parseTag(stateManager, args[2], entity);
+                }                
+                else {
+                    floatSym = Float.valueOf(args[2]);
+                }
                 entity.getScript().getSymTab().put(args[1], floatSym);
                 break;
 
             case "String":
-                String stringSym = args[2];
+                
+                String stringSym;
+                
+                if (args[2].contains("<") && args[2].contains(">")) {
+                    stringSym = (String) parser.parseTag(stateManager, args[2], entity);
+                }
+                else {
+                    stringSym = args[2];
+                }
+                
                 entity.getScript().getSymTab().put(args[1], stringSym);
                 break;
 

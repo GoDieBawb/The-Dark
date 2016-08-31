@@ -125,13 +125,12 @@ public class Gun extends Item {
                 //Inform them of how many bullets the have left
                 String bulletInfo = "You have " + newBullets + " bullets left";
                  
-                if(newBullets == 1) 
+                if(newBullets == 1) {
                     bulletInfo = "You are down to your last bullet...";
-                 
+                }
+                
                 else if (newBullets == 0) {
-                     
-                    bulletInfo = "You have fired your last shot..";
-                     
+                    bulletInfo = "You have fired your last shot..";                     
                 }
                  
                 //Fire the gun

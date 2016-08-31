@@ -1,12 +1,12 @@
 Proximity:
   Distance: 1
   Enter:
-    - if player.inventory.contains#Key.!
+    - if <player.inventory.contains#Key.!>
     - chat "A shines in the water..."
 
 Interact:
   Script:
-    - if player.inventory.contains#Key.!
+    - if <player.inventory.contains#Key.!>
     - chat "You reach into the water and grab the key"
     - equip
     - setrotation 90 90 0
@@ -14,5 +14,5 @@ Interact:
 
 Start:
   Script:
-    - if player.inventory.contains#Key
+    - if <player.inventory.contains#Key>
     - remove

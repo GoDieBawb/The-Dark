@@ -11,5 +11,5 @@ Interact:
 
 Start:
   Script:
-    - if player.inventory.contains#Bottle
+    - if <player.inventory.contains#Bottle>
     - remove

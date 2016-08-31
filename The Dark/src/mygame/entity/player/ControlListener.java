@@ -42,20 +42,20 @@ public class ControlListener {
             interactPress();
         }
         
-        if (im.getIsPressed("Torch")) {
+        if (im.getIsPressed("Click")) {
             leftItemPressed = true;
         }
         
         else if (leftItemPressed) {
-            leftPress();  
+            leftPressRelease();  
         }
         
-        if (im.getIsPressed("Click")) {
+        if (im.getIsPressed("RightClick")) {
             rightItemPressed = true;
         }
         
         else if (rightItemPressed) {
-            rightPress();
+            rightPressRelease();
         }
        
         if (im.getIsPressed("Inventory")) {
@@ -138,7 +138,7 @@ public class ControlListener {
     }
     
     //Handles Player Toggling the Left Held Item
-    private void leftPress() {       
+    private void leftPressRelease() {       
         
         //Before Inventory Check to Ensure No Action is Waiting
         leftItemPressed = false;
@@ -155,7 +155,7 @@ public class ControlListener {
     
     
     //Done when the player Uses the Right Item
-    private void rightPress() {
+    private void rightPressRelease() {
              
         //Before Inventory Check to Ensure No Action is Waiting
         rightItemPressed  = false;

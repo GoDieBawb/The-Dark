@@ -1,7 +1,7 @@
 Proximity:
   Distance: 1
   Enter:
-    - if player.flags.contains#Candle
+    - if <player.flags.contains#Candle>
     - chat "An Empty Table"
 
     - else
@@ -9,7 +9,7 @@ Proximity:
 
 Interact:
   Script:
-    - if player.flags.contains#Candle
+    - if <player.flags.contains#Candle>
     - chat "This Table is Empty"
 
     - else
@@ -21,6 +21,6 @@ Interact:
 
 Start:
   Script:
-    - if player.inventory.contains#Candle
+    - if <player.inventory.contains#Candle>
     - remove
     - end

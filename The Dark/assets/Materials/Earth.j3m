@@ -1,0 +1,9 @@
+Material My Material : Common/MatDefs/Light/Lighting.j3md {
+     MaterialParameters {
+        DiffuseMap : Flip Models/earth/4096_earth.jpg
+        NormalMap : Flip Models/earth/4096_normal.jpg
+        SpecularMap : Flip Models/earth/4096_bump.jpg
+     }
+    AdditionalRenderState {
+    }
+}

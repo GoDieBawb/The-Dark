@@ -1,7 +1,7 @@
 Proximity:
   Distance: 2
   Enter:
-    - if player.flags.contains#Finish
+    - if <player.flags.contains#Finish>
     - chat "The body of the creature lies here on the floor."
 
     - else
@@ -9,11 +9,11 @@ Proximity:
     
 Interact:
   Script:
-    - if player.flags.contains#Finish.!
+    - if <player.flags.contains#Finish.!>
     - chat "You wake it up and it kills you immeidiately"
     - fail
 
-    - elseif player.torch.islit.!
+    - elseif <player.torch.islit.!>
     - chat "The creature is obscurred by darkness."
 
     - else 
@@ -22,7 +22,7 @@ Interact:
     
 Hit:
   Script:
-    - if player.flags.contains#Finish
+    - if <player.flags.contains#Finish>
     - chat "You shoot the creatures body."
     - else
     - animate Die noloop
@@ -32,13 +32,13 @@ Hit:
     
 While:
   Script:
-    - if player.flags.contains#Finish
+    - if <player.flags.contains#Finish>
     
-    - elseif player.torch.islit
+    - elseif <player.torch.islit>
     - chat "The light of the torch illuminating it's den enrages it and it kills you..."
     - fail
     
 Start:
   Script:
-    - if player.flags.contains#Finish
+    - if <player.flags.contains#Finish>
     - animate Die noloop

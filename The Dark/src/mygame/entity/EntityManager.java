@@ -167,6 +167,7 @@ public class EntityManager {
             
            //Make sure everything in the Entity Node is an Entity
            if(sceneEntities.get(i) instanceof Entity) {
+               
                Entity e = (Entity) sceneEntities.get(i);
                //Set the entity to the models translation
                e.setLocalTranslation(e.getModel().getWorldTranslation());

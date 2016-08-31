@@ -5,7 +5,7 @@ Proximity:
 
 Interact:
   Script:
-    - if player.torch.islit.!
+    - if <player.torch.islit.!>
     - chat "A journal too dark to read"
 
     - else

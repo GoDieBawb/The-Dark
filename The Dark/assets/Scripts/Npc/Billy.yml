@@ -1,6 +1,16 @@
 Fields:
   - String idleName idle
 
+Proximity:
+  Distance: 1
+  Enter:
+    - chat "Hello I'm Billy the Alien"
+
 Start:
   Script:
-    - idle
+    - animate Dance
+    
+Hit:
+  Script:
+    - animate Die noloop
+    - chat "You've killed Billy"
