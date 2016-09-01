@@ -77,7 +77,7 @@ public class Candle extends Item implements Lamp {
     }
     
     @Override
-    public void use() {
+    public void press() {
             
         //If the torch is lit extinguish it     
         if (isLit()) {
@@ -117,6 +117,16 @@ public class Candle extends Item implements Lamp {
             }
                 
         }
+    
+    }
+    
+    @Override
+    public void hold() {
+    
+    }
+    
+    @Override
+    public void release() {
     
     }
     

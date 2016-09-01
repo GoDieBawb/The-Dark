@@ -81,6 +81,10 @@ public abstract class Item extends Entity {
         
     }
     
-    public abstract void use();
+    public abstract void press();
+    
+    public abstract void hold();
+    
+    public abstract void release();
     
 }

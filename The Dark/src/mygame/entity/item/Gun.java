@@ -81,7 +81,7 @@ public class Gun extends Item {
     }
 
     @Override
-    public void use() {
+    public void press() {
          
         player = stateManager.getState(GameManager.class).getEntityManager().getPlayerManager().getPlayer(); 
         
@@ -150,8 +150,18 @@ public class Gun extends Item {
             }
              
         }    
-    }
+    }   
 
+    @Override
+    public void hold() {
+    
+    }
+    
+    @Override
+    public void release() {
+    
+    }
+    
     //Gets the Entity out of a Node. For Shooting an Entity
     private Entity findEntity(Node node) {
     
@@ -167,6 +177,6 @@ public class Gun extends Item {
             return null;
         }
         
-    }    
+    }     
     
 }

@@ -34,6 +34,19 @@ public class ControlListener {
     //Updates the Keys
     private void updateKeys() {
     
+        //Only Listen For Inventory Prior to Visible Check
+        if (im.getIsPressed("Inventory")) {
+            inventory = true;
+        }
+        
+        else if (inventory) {
+            inventoryPress();
+        }
+        
+        //Don't Listen for Controls if Inventory is Visible
+        if (player.getInventoryInterface().isVisible())
+            return;
+        
         if (im.getIsPressed("Interact")) {
             interact = true;
         }
@@ -43,7 +56,13 @@ public class ControlListener {
         }
         
         if (im.getIsPressed("Click")) {
+            
+            if (!leftItemPressed) {
+                leftPress();
+            }
+            
             leftItemPressed = true;
+            
         }
         
         else if (leftItemPressed) {
@@ -51,19 +70,17 @@ public class ControlListener {
         }
         
         if (im.getIsPressed("RightClick")) {
+            
+            if (!rightItemPressed) {
+                rightPress();
+            }
+            
             rightItemPressed = true;
+            
         }
         
         else if (rightItemPressed) {
             rightPressRelease();
-        }
-       
-        if (im.getIsPressed("Inventory")) {
-            inventory = true;
-        }
-        
-        else if (inventory) {
-            inventoryPress();
         }
         
         if (im.getIsPressed("DebugLight")) {
@@ -94,12 +111,7 @@ public class ControlListener {
     //Handles the Player pressing interact
     private void interactPress() {
         
-        //Before Inventory Check to Ensure No Check is Waiting for Exit
         interact  = false;
-        
-        //If Inventory is Visible Don't Interact
-        if (player.getInventoryInterface().isVisible())
-            return;
         
         //Restart the game if the player is dead
         if (player.isDead()) {
@@ -137,38 +149,45 @@ public class ControlListener {
         
     }
     
+    private void leftPress() {
+        
+        if (player.hasLeft()) {
+            player.getLeftEquip().press();
+        }
+        
+    }
+    
+    private void leftHold() {
+    
+    }
+    
     //Handles Player Toggling the Left Held Item
     private void leftPressRelease() {       
         
-        //Before Inventory Check to Ensure No Action is Waiting
-        leftItemPressed = false;
-        
-        //If Inventory is Visible Don't Interact
-        if (player.getInventoryInterface().isVisible())
-            return;        
+        leftItemPressed = false;      
         
         if (player.hasLeft())
-            player.getLeftEquip().use();
-
+            player.getLeftEquip().release();
             
     }
+
+    private void rightPress() {
+        if (player.hasRight())
+            player.getRightEquip().press();  
+    }
     
+    private void rightHold() {
+    
+    }
     
     //Done when the player Uses the Right Item
     private void rightPressRelease() {
              
-        //Before Inventory Check to Ensure No Action is Waiting
-        rightItemPressed  = false;
+        rightItemPressed  = false;        
         
-        //
-        if (player.getInventoryInterface().isVisible())
-            return;           
-        
-        //Dont do anything if the hand is empty
         if (player.hasRight())
-            player.getRightEquip().use();        
+            player.getRightEquip().release();        
 
-            
     }    
     
     //Update Loop
