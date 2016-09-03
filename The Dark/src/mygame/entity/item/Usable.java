@@ -32,17 +32,17 @@ public class Usable extends Item {
     
     @Override
     public void press() {
-        getScript().useAction();
+        getScript().pressAction();
     }
     
     @Override
     public void hold() {
-    
+        getScript().holdAction();
     }
     
     @Override
     public void release() {
-    
+        getScript().releaseAction();
     }    
     
 }

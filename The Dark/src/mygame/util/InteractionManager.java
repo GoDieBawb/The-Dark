@@ -23,6 +23,7 @@ public class InteractionManager implements ActionListener {
     private final SimpleApplication app;
     private boolean           up = false, down = false, left = false, right = false, click = false, interact = false, cursor = false;
     private boolean           up1 = false, down1 = false, left1 = false, right1 = false, rightClick = false, debugLight, inventory = false;
+    private boolean           script = false;
     private Vector2f          touchSpot;
     
     //Constructor
@@ -50,6 +51,7 @@ public class InteractionManager implements ActionListener {
         inputManager.addMapping("Left1",      new KeyTrigger(KeyInput.KEY_LEFT));
         inputManager.addMapping("Right1",     new KeyTrigger(KeyInput.KEY_RIGHT));
         inputManager.addMapping("DebugLight", new KeyTrigger(KeyInput.KEY_L));
+        inputManager.addMapping("Script",     new KeyTrigger(KeyInput.KEY_F9));
         
         inputManager.addListener(this, "Inventory");
         inputManager.addListener(this, "Up1");
@@ -64,7 +66,8 @@ public class InteractionManager implements ActionListener {
         inputManager.addListener(this, "Right");
         inputManager.addListener(this, "Cursor");
         inputManager.addListener(this, "Interact");
-        inputManager.addListener(this, "Click");        
+        inputManager.addListener(this, "Click");
+        inputManager.addListener(this, "Script");         
         
     }
     
@@ -114,6 +117,8 @@ public class InteractionManager implements ActionListener {
             case "DebugLight":
                 debugLight = isPressed;
                 break;
+            case "Script":
+                script = isPressed;
             default:
                 break;
         }
@@ -196,6 +201,8 @@ public class InteractionManager implements ActionListener {
                 return rightClick;
             case "DebugLight":
                 return debugLight;
+            case "Script":
+                return script;
             default:
                 return false;
         }

@@ -32,6 +32,12 @@ public class UtilityHandler extends CommandHandler {
         
         //Debug command prints a message to the console
         switch (command) {
+            
+            case "playsound": {
+                stateManager.getState(GameManager.class).getUtilityManager().getAudioManager().getSound(args[1]).playInstance();
+                break;
+            }
+            
             case "debug":
                 {
                     String[] a     = rawCommand.split(" ", 2);
@@ -88,6 +94,7 @@ public class UtilityHandler extends CommandHandler {
             default:
                 handled = false;
                 break;
+                
         }
         
         return handled;

@@ -1,0 +1,35 @@
+Fields:
+  - int ammo <const#30>
+  - boolean isReloading false
+  - Object lastShot time
+
+Proximity:
+  Distance: 1
+  Enter:
+    - chat "An AK-47 sits here."
+
+Interact:
+  Script:
+    - chat "You pick up the AK-47"
+    - give AK47
+    - clearrotation
+    - remove
+
+Hold:
+  Script:
+    - if <time.sub#sym#lastShot> > <const#100> && <sym#ammo> > <const#0>
+    - playsound Gunshot
+    - Object lastShot time
+    - int ammo <sym#ammo.sub#const#1>
+
+    - elseif <sym#ammo> <= <const#0> && <time.sub#sym#lastShot> > <const#1000>
+    - playsound Empty
+    - Object lastShot time
+
+Equip:
+  Left:
+    - setrotation 89.9 89.9 0
+    - move entity#model entity#model.location.add#0,0,.25
+  Right:
+    - setrotation 89.9 -89.9 0
+    - move entity#model entity#model.location.add#0,0,-.25

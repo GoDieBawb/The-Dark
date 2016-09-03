@@ -35,26 +35,35 @@ public class TagParser {
         //Iterate over the list of arguments
         for(int i = 0; i < args.length; i++) {
             
-            if (args[i].contains("sym")) {
+            String strippedTag = args[i].split("#")[0];
+            
+            if (strippedTag.equals("sym")) {
                 String[] strAr = args[i].split("#");
-                         obj   = entity.getScript().getSymTab().get(strAr[1]);
+                obj            = entity.getScript().getSymTab().get(strAr[1]);
             }
             
-            else if (args[i].contains("const")) {
+            else if (strippedTag.equals("const")) {
                 String[] strAr = tag.split("#");
                 obj            = checkForConstants(strAr[1]);
-                return obj;
             }
             
+            else if (strippedTag.equals("true")) {
+                obj = true;
+            }
+            
+            else if (strippedTag.equals("false")) {
+                obj = false;
+            }            
+            
             //If the current argument is player the object must be the player
-            else if (args[i].equals("player")) {
+            else if (strippedTag.equals("player")) {
                 
                 obj = gm.getEntityManager().getPlayerManager().getPlayer();
                 
             }
             
             //If the argument is entity or entity 
-            else if (args[i].contains("entity") || args[i].contains("entities")) {
+            else if (strippedTag.equals("entity") || strippedTag.equals("entities")) {
             
                 //If it contains a # the next string is the name of the entity
                 if (args[i].contains("#")) {
@@ -77,7 +86,7 @@ public class TagParser {
             }
             
             //If the argument is child it will be a node by that name
-            else if (args[i].contains("child")) {
+            else if (strippedTag.equals("child")) {
             
                 //The object will be the Node named by the string after the #
                 String[] strAr = args[i].split("#");
@@ -85,74 +94,155 @@ public class TagParser {
             
             }
             
-            else if (args[i].contains("light")) {
+            else if (strippedTag.equals("light")) {
                 obj = (Light) ((Node) obj).getLocalLightList().get(0);
             }
             
             //Returns if the player isDead
-            else if (args[i].equals("dead")) {
+            else if (strippedTag.equals("dead")) {
             
                 obj = (Boolean) ((Player) obj).isDead();
             
             }
             
             //Returns the currently casted objects location
-            else if(args[i].equals("location")) {
+            else if(strippedTag.equals("location")) {
             
                 obj = ((Node) obj).getLocalTranslation();
                 
             }
             
             //Checks the distance between the current vector object and another
-            else if (args[i].equals("distance")) {
+            else if (strippedTag.equals("distance")) {
             
                 String[] strAr  = args[i].split("#");
                 Vector3f check  = (Vector3f) parseTag(stateManager, strAr[1], entity);
                 obj             = ((Vector3f) obj).distance(check);
             
             }
+
+            else if (strippedTag.equals("time")) {
+                obj = System.currentTimeMillis();
+            }
             
-            else if (args[i].contains("add")) {
-            
-                String[] strAr  = args[i].split("#");
-                String[] floats = strAr[1].split(",");
-                float x         = Float.valueOf(floats[0]);
-                float y         = Float.valueOf(floats[1]);
-                float z         = Float.valueOf(floats[2]);
-                obj             = ((Vector3f) obj).add(x,y,z);
+            else if (strippedTag.equals("add") || strippedTag.equals("sub")) {
+                
+                int mult = 1;
+                
+                if (args[i].contains("sub"))
+                    mult = -1;
+                
+                String[] strAr  = args[i].split("#", 2);
+                
+                if (obj instanceof Number) {
+                        
+                    Number num = (Number) parseTag(stateManager, strAr[1], entity);
+
+                    if (obj instanceof Long) {
+
+                        Long a = (Long) obj;
+
+                        if (num instanceof Long) {
+                            Long b = (long) num*mult;
+                            obj = a+b;
+                        }
+
+                        else if (num instanceof Float) {
+                            float b = (float) num*mult;
+                            obj = a+b;
+                        }
+
+                        else if (num instanceof Integer) {
+                            int b = (int) num*mult;
+                            obj = a+b;
+                        }
+
+                    }
+
+                    else if (obj instanceof Float) {
+
+                        Float a = (Float) obj;
+
+                        if (num instanceof Long) {
+                            Long b = (long) num*mult;
+                            obj = a+b;
+                        }
+
+                        else if (num instanceof Float) {
+                            float b = (float) num*mult;
+                            obj = a+b;
+                        }
+
+                        else if (num instanceof Integer) {
+                            int b = (int) num*mult;
+                            obj = a+b;
+                        }
+
+                    }
+
+                    else if (obj instanceof Integer) {
+
+                        int a = (int) obj;
+
+                        if (num instanceof Long) {
+                            Long b = (long) num*mult;
+                            obj = a+b;
+                        }
+
+                        else if (num instanceof Float) {
+                            float b = (float) num*mult;
+                            obj = a+b;
+                        }
+
+                        else if (num instanceof Integer) {
+                            int b = (int) num*mult;
+                            obj = a+b;
+                        }
+
+                    }                        
+                    
+                }
+                
+                else if (obj instanceof Vector3f) {
+                    String[] floats = tag.split(strippedTag)[1].split("#")[1].split(",");
+                    float x         = Float.valueOf(floats[0])*mult;
+                    float y         = Float.valueOf(floats[1])*mult;
+                    float z         = Float.valueOf(floats[2])*mult;
+                    obj             = ((Vector3f) obj).add(x,y,z);
+                }
                 
             }
             
             //If the object is on the north side of the map
-            else if (args[i].equals("north")) {
+            else if (strippedTag.equals("north")) {
             
                 obj = (Boolean) (((Node) obj).getLocalTranslation().x < 0);
             
             }
             
             //If the object is on the south side of the map
-            else if (args[i].equals("south")) {
+            else if (strippedTag.equals("south")) {
             
                 obj = (Boolean) (((Node) obj).getLocalTranslation().x > 0);
             
             }
             
             //If the object is on the east side of the map
-            else if (args[i].equals("east")) {
+            else if (strippedTag.equals("east")) {
             
                 obj = (Boolean) (((Node) obj).getLocalTranslation().z < 0);
             
             }
             
             //If the object is one the west sdide of the map
-            else if (args[i].equals("west")) {
+            else if (strippedTag.equals("west")) {
             
                 obj = (Boolean) (((Node) obj).getLocalTranslation().z > 0);
             
             }
             
             //Flips a boolean
-            else if (args[i].equals("!")) {
+            else if (strippedTag.equals("!")) {
             
                 if (((Boolean) obj)) {
                 
@@ -170,42 +260,42 @@ public class TagParser {
             }
             
             //Casts to a boolean whether the current entity is hid
-            else if (args[i].equals("ishid")) {
+            else if (strippedTag.equals("ishid")) {
             
                 obj = (Boolean) ((Entity) obj).isHid();
             
             }
             
             //Casts to a boolean that states whether the player is in a scriptables proximity
-            else if (args[i].equals("inprox")) {
+            else if (strippedTag.equals("inprox")) {
             
                 obj = ((Scriptable) obj).inProx();
             
             }
             
             //Casts to the players flag list
-            else if(args[i].equals("flags")) {
+            else if(strippedTag.equals("flags")) {
             
                 obj = ((Player) obj).getFlagList();
                 
             }
             
-            else if (args[i].equals("inventory")) {
+            else if (strippedTag.equals("inventory")) {
                 obj = ((Player) obj).getInventory();
             }
             
             //Casts to boolean whether player is holding object in left hand
-            else if (args[i].equals("hasleft")) {
+            else if (strippedTag.equals("hasleft")) {
                 obj = ((Player) obj).hasLeft();
             }
             
             //Casts to boolean determining whther player is holding object in right hand
-            else if (args[i].equals("hasright")) {
+            else if (strippedTag.equals("hasright")) {
                 obj = ((Player) obj).hasRight();
             }            
             
             //Casts to a boolean that states if a hashmap contains a string
-            else if(args[i].contains("contains")) {
+            else if(strippedTag.equals("contains")) {
                 
                 String[] strAr = args[i].split("#");
                 obj = ((HashMap<Object, Integer>)obj).get(strAr[1]);
@@ -219,7 +309,7 @@ public class TagParser {
             }
             
             //Casts to the players torch
-            else if(args[i].contains("torch")) {
+            else if(strippedTag.equals("torch")) {
             
                 if (((Player) obj).getCameraManager().getCameraNode().getChild("Torch") !=null) {
                     obj = ((Player) obj).getCameraManager().getCameraNode().getChild("Torch");
@@ -232,7 +322,7 @@ public class TagParser {
             }
             
             //Checks whether the current object is lit
-            else if (args[i].contains("lit")) {
+            else if (strippedTag.equals("lit")) {
                 
                 if (obj == null)
                     obj = false;
@@ -243,12 +333,12 @@ public class TagParser {
                 
             }
             
-            else if (args[i].contains("sym")) {
+            else if (strippedTag.equals("sym")) {
                 String[] strAr = args[i].split("#");
                 obj = ((Entity) obj).getScript().getSymTab().get(strAr[1]);
             }
             
-            else if (args[i].contains("global")) {
+            else if (strippedTag.equals("global")) {
                 String[] strAr = args[i].split("#");
                 obj = Script.GLOBAL_SYM_TAB.get(strAr[1]);
             }
@@ -256,14 +346,13 @@ public class TagParser {
             //If not on the list above it is an unknown tag argument
             else {
             
-                System.out.println("Unkown Tag Argument: " + args[i]);
+                System.out.println("Unkown Tag Argument: " + strippedTag);
                 
             }
             
             //If at the final tag then return the final casted object
             if (i == args.length-1) {
                 return obj;
-                
             }
         
         }

@@ -220,26 +220,90 @@ public class Script {
         
     }    
     
-    //If there is a start action do it on initialize
-    public void useAction() {
+    public void pressAction() {
         
-        ArrayList useScript;
+        ArrayList pressScript;
         
-        if (map.get("Use") == null)
+        if (map.get("Press") == null)
             return;
             
         try {
-            Map<Object, Object> um = (Map<Object, Object>)  map.get("Use");
+            Map<Object, Object> pm = (Map<Object, Object>)  map.get("Press");
+            pressScript            = (ArrayList)  pm.get("Script");
+            scriptManager.getScriptParser().parse(pressScript, entity);
+        }
+        
+        catch (Exception e) {
+            System.out.println("Hold Error For Entity: " + entity.getName());
+            e.printStackTrace();
+        }
+
+    }            
+    
+    public void holdAction() {
+        
+        ArrayList holdScript;
+        
+        if (map.get("Hold") == null)
+            return;
+            
+        try {
+            Map<Object, Object> hm = (Map<Object, Object>)  map.get("Hold");
+            holdScript              = (ArrayList)  hm.get("Script");
+            scriptManager.getScriptParser().parse(holdScript, entity);
+        }
+        
+        catch (Exception e) {
+            System.out.println("Hold Error For Entity: " + entity.getName());
+            e.printStackTrace();
+        }
+
+    }        
+    
+    //If there is a start action do it on initialize
+    public void releaseAction() {
+        
+        ArrayList useScript;
+        
+        if (map.get("Release") == null)
+            return;
+            
+        try {
+            Map<Object, Object> um = (Map<Object, Object>)  map.get("Release");
             useScript              = (ArrayList)  um.get("Script");
             scriptManager.getScriptParser().parse(useScript, entity);
         }
         
         catch (Exception e) {
-            System.out.println("Start Error For Entity: " + entity.getName());
+            System.out.println("Release Error For Entity: " + entity.getName());
             e.printStackTrace();
         }
 
     }    
+    
+    public void equipAction(boolean isLeft) {
+    
+        ArrayList equipScript;
+        String side = "Right";
+        
+        if (isLeft)
+            side = "Left";
+        
+        if (map.get("Equip") == null)
+            return;
+            
+        try {
+            Map<Object, Object> em = (Map<Object, Object>)  map.get("Equip");
+            equipScript            = (ArrayList)  em.get(side);
+            scriptManager.getScriptParser().parse(equipScript, entity);
+        }
+        
+        catch (Exception e) {
+            System.out.println("Release Error For Entity: " + entity.getName());
+            e.printStackTrace();
+        }        
+        
+    }
     
     //Run on loop and checks for player interaction and distance from entity
     public void checkForTriggers() {

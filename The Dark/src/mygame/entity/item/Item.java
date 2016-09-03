@@ -27,6 +27,8 @@ public abstract class Item extends Entity {
         
         isEquipped  = true;
         this.isLeft = isLeft;
+
+        getScript().equipAction(isLeft);
         
         if (this instanceof Lamp)
             stateManager.getState(GameManager.class).getSceneManager().getScene().addLight(((Lamp)this).getLight());

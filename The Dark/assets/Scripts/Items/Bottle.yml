@@ -1,3 +1,6 @@
+Fields:
+  - Object lastUsed time.sub#const#10000
+
 Proximity:
   Distance: 1
   Enter:
@@ -13,3 +16,12 @@ Start:
   Script:
     - if <player.inventory.contains#Bottle>
     - remove
+
+Press:
+  Script:
+    - if time.sub#sym#lastUsed > const#10000
+    - Object lastUsed time
+    - chat "Used!"
+
+    - else
+    - chat "Cooling Down!"

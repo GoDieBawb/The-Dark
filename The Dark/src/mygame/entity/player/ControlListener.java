@@ -16,7 +16,7 @@ public class ControlListener {
     
     private final InteractionManager im;
     private final Player             player;
-    private boolean                  interact, leftItemPressed, rightItemPressed, debugLight, inventory;
+    private boolean                  interact, leftItemPressed, rightItemPressed, debugLight, inventory, script;
     private final AmbientLight       light;
     private boolean                  isLit;
     private final AppStateManager    stateManager;
@@ -61,6 +61,10 @@ public class ControlListener {
                 leftPress();
             }
             
+            else {
+                leftHold();
+            }
+            
             leftItemPressed = true;
             
         }
@@ -73,6 +77,10 @@ public class ControlListener {
             
             if (!rightItemPressed) {
                 rightPress();
+            }
+            
+            else {
+                rightHold();
             }
             
             rightItemPressed = true;
@@ -89,6 +97,14 @@ public class ControlListener {
         
         else if (debugLight) {
             debugLightPress();
+        }
+        
+        if (im.getIsPressed("Script")) {
+            script = true;
+        }
+        
+        else if (script) {
+            scriptPress();
         }
             
     }
@@ -151,14 +167,16 @@ public class ControlListener {
     
     private void leftPress() {
         
-        if (player.hasLeft()) {
+        if (player.hasLeft()) 
             player.getLeftEquip().press();
-        }
         
     }
     
     private void leftHold() {
-    
+        
+        if (player.hasLeft())
+            player.getLeftEquip().hold();
+        
     }
     
     //Handles Player Toggling the Left Held Item
@@ -172,12 +190,17 @@ public class ControlListener {
     }
 
     private void rightPress() {
+        
         if (player.hasRight())
             player.getRightEquip().press();  
+        
     }
     
     private void rightHold() {
-    
+        
+        if (player.hasRight())
+            player.getRightEquip().hold();
+        
     }
     
     //Done when the player Uses the Right Item
@@ -189,6 +212,11 @@ public class ControlListener {
             player.getRightEquip().release();        
 
     }    
+    
+    private void scriptPress() {
+        script = false;
+        stateManager.getState(GameManager.class).getEntityManager().reloadScripts();
+    }
     
     //Update Loop
     public void update() {

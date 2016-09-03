@@ -6,6 +6,7 @@
 package mygame.util.script.handler;
 
 import com.jme3.app.state.AppStateManager;
+import java.math.BigDecimal;
 import mygame.entity.Entity;
 import mygame.entity.Scriptable;
 import mygame.util.script.TagParser;
@@ -108,8 +109,34 @@ public class LogicHandler extends CommandHandler {
     }
   
     //Determines the truth value of a tag
-    private boolean ifCheck(Scriptable entity, String[] args) {
+    private boolean ifCheck(Entity entity, String[] args) {
       
+        
+        //If more than 4 arguments more than one boolean statement present
+        if (args.length > 4) {
+        
+            String[] leftSide  = { "", args[1], args[2], args[3] };
+            String[] rightSide = { "", args[5], args[6], args[7] };
+            String   comp      = args[4];
+            
+            boolean a = ifCheck(entity, leftSide);
+            boolean b = ifCheck(entity, rightSide);
+            
+            String leftVal  = "const#false";
+            String rightVal = "const#false";
+            
+            if (a)
+                leftVal = "true";
+            
+            if (b)
+                rightVal = "true";
+            
+            String[] newCheck = { "", leftVal, comp, rightVal };
+            
+            return ifCheck(entity, newCheck);
+            
+        }
+        
         Object comp1 = null;
         Object comp2 = null;
         String comp  = null;
@@ -138,19 +165,15 @@ public class LogicHandler extends CommandHandler {
             return truthVal;
             
         }
-      
-        if (!comp1.getClass().getSimpleName().equals(comp2.getClass().getSimpleName())) {
-            System.out.println("Warning: Attempted to Compare Unlike Classes");
-            truthVal = false;      
-        }      
-      
+        
         switch (comp) {
             
             case "&&":
+                
                 if (comp1 instanceof Boolean && comp2 instanceof Boolean) {
                     
-                    Boolean a = (Boolean) comp1;
-                    Boolean b = (Boolean) comp2;
+                    boolean a = (Boolean) comp1;
+                    boolean b = (Boolean) comp2;
                     
                     if (a&&b) {
                         truthVal = true;
@@ -224,7 +247,55 @@ public class LogicHandler extends CommandHandler {
                     truthVal = false;
                 }     
                 break;
+                     
+            case ">": {
                 
+                Double a = ((Number) comp1).doubleValue();
+                Double b = ((Number) comp2).doubleValue();
+
+                if (a > b) {
+                    truthVal = true;
+                }
+                
+                break;                
+            }
+            
+            case "<": {
+                
+                Double a = ((Number) comp1).doubleValue();
+                Double b = ((Number) comp2).doubleValue();
+
+                if (a < b) {
+                    truthVal = true;
+                }
+                
+                break;                     
+            }
+            
+            case ">=": {
+                
+                Double a = ((Number) comp1).doubleValue();
+                Double b = ((Number) comp2).doubleValue();
+
+                if (a >= b) {
+                    truthVal = true;
+                }
+                
+                break;                
+            }
+            
+            case "<=": {
+                
+                Double a = ((Number) comp1).doubleValue();
+                Double b = ((Number) comp2).doubleValue();
+
+                if (a <= b) {
+                    truthVal = true;
+                }
+                
+                break;                     
+            }            
+            
             default:
                 System.out.println("Unknown Operator: " + comp);
                 break;

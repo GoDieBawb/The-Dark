@@ -14,7 +14,6 @@ import mygame.entity.item.Gun;
 import mygame.entity.item.Torch;
 import mygame.entity.item.Usable;
 import mygame.entity.monster.MonsterManager;
-import mygame.entity.npc.It;
 import mygame.entity.npc.Npc;
 import mygame.entity.player.PlayerManager;
 import mygame.scene.SceneManager;
@@ -33,6 +32,7 @@ public class EntityManager {
     private SimpleApplication app;
     private ArrayList<Entity> sceneEntities;
     private FileWalker        fileWalker;
+    private boolean           developing = true;
     
     //Create the Player and Monster Manager
     public EntityManager(SimpleApplication app) {
@@ -129,16 +129,35 @@ public class EntityManager {
                 //Without this Scene Will Crash
                 if (model.getUserData("Script") != null) {
 
-                    String fileName = model.getUserData("Script");
-                    String filePath = fileWalker.walk("assets/Scripts", fileName);
-                           filePath = filePath.split("assets/")[1];
+
 
                     //Script are Linked Hashmaps of Strings
-                    LinkedHashMap map   = (LinkedHashMap) app.getStateManager()
-                                        .getState(GameManager.class)
-                                            .getUtilityManager().getYamlManager()
-                                                .loadYamlAsset(filePath, app.getStateManager());
+                    LinkedHashMap map;
                     
+                    if (developing) {
+                        
+                        String fileName = model.getUserData("Script");
+                        String filePath = fileWalker.walk("assets/Scripts", fileName);
+                        
+                        map   = (LinkedHashMap) app.getStateManager()
+                                            .getState(GameManager.class)
+                                                .getUtilityManager().getYamlManager()
+                                                    .loadYaml(filePath);
+                        
+                    }
+                    
+                    else {
+                        
+                        String fileName = model.getUserData("Script");
+                        String filePath = fileWalker.walk("assets/Scripts", fileName);
+                               filePath = filePath.split("assets/")[1];
+                        
+                        map   = (LinkedHashMap) app.getStateManager()
+                                            .getState(GameManager.class)
+                                                .getUtilityManager().getYamlManager()
+                                                    .loadYamlAsset(filePath, app.getStateManager());
+                        
+                    }
                     //Create the Script with the current entity and its map
                     Script script = new Script(entity, app.getStateManager(), map);
                     
@@ -196,6 +215,32 @@ public class EntityManager {
         
         sceneEntities = null;
     
+    }
+    
+    public void reloadScripts() {
+    
+        if (!developing)
+            return;
+        
+        for (int i = 0; i < entityNode.getChildren().size(); i++) {
+        
+            Entity entity     = (Entity) entityNode.getChild(i);
+            String fileName   = entity.getModel().getUserData("Script");
+            String filePath   = fileWalker.walk("assets/Scripts", fileName);
+            LinkedHashMap map = (LinkedHashMap) app.getStateManager()
+                                .getState(GameManager.class)
+                                    .getUtilityManager().getYamlManager()
+                                        .loadYaml(filePath);
+            
+            Script script = new Script(entity, app.getStateManager(), map);
+            
+            entity.setScript(script);
+            entity.getScript().initialize();
+        
+        }
+        
+        System.out.println("Scripts Reloaded!");
+        
     }
     
     //Return the Entity Node
