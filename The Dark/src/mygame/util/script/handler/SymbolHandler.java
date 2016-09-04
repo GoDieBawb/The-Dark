@@ -18,7 +18,7 @@ public class SymbolHandler extends CommandHandler {
     public boolean handle(String rawCommand, Entity entity) {
         
         boolean  handled = true;
-        String[] args    =  rawCommand.split(" ");
+        String[] args    = rawCommand.split(" ");
         String   command = args[0];
             
         switch (command) {

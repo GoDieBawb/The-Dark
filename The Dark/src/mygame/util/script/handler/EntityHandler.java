@@ -5,9 +5,12 @@
  */
 package mygame.util.script.handler;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.collision.CollisionResults;
 import com.jme3.light.Light;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import mygame.GameManager;
@@ -108,13 +111,27 @@ public class EntityHandler extends CommandHandler {
                         
                         Vector3f spot = (Vector3f) parser.parseTag(stateManager, args[1], entity);
                         ((Entity) entity).setLocalTranslation(spot);
-                        //stateManager.getState(SceneManager.class).addPhys();
                         
                     }
                 }
                 
                 break;
-                    
+                
+            case "clearlocation": {
+
+                if (args.length == 1) {
+                    entity.setLocalTranslation(0, 0, 0);
+                }
+                
+                else {
+                    Node node = (Node) parser.parseTag(stateManager, args[1], entity);
+                    node.setLocalTranslation(0, 0, 0);
+                }
+                
+                break;
+                
+            }
+                
             case "hide":
                 try {
                     
@@ -193,6 +210,46 @@ public class EntityHandler extends CommandHandler {
                 
                 break;
                 
+            case "strike": {
+            
+                //Gets Collision
+                CollisionResults results = new CollisionResults();
+                Ray              ray     = new Ray(stateManager.getApplication().getCamera().getLocation(), stateManager.getApplication().getCamera().getDirection());
+                Node          entityNode = stateManager.getState(GameManager.class).getEntityManager().getEntityNode();
+                 
+                //Check to see if it colided with the entity node
+                entityNode.collideWith(ray, results);
+                 
+                if (results.size() > 0) {
+                    
+                    //Find the Entity Hit
+                    Entity hitEntity = findEntity(results.getCollision(1).getGeometry().getParent());
+                    
+                    float strikeDistance;
+                    
+                    if (args[1].contains("<") && args[1].contains(">"))
+                        strikeDistance = (Float) parser.parseTag(stateManager, args[1], entity);
+                    
+                    else
+                        strikeDistance = Float.valueOf(args[1]);
+                    
+                    //Run the hit script on the hit entity
+                    if (hitEntity != null) {
+                        
+                        if (results.getClosestCollision().getDistance() < strikeDistance) {
+                            hitEntity.getScript().hitAction();
+                            hitEntity.setStriker(entity);
+                            
+                        }
+                        
+                    }
+                    
+                }
+            
+                break;
+                
+            }
+                
             default:
                 handled = false;
                 break;
@@ -202,5 +259,18 @@ public class EntityHandler extends CommandHandler {
         return handled;
     
     }
+    
+    //Gets the Entity out of a Node. For Shooting an Entity
+    private Entity findEntity(Node node) {
+    
+        if (node instanceof Entity) { return (Entity) node; }
+        
+        else if (node != ((SimpleApplication) stateManager.getApplication()).getRootNode()){
+            return findEntity(node.getParent());
+        }
+
+        else { return null; }
+        
+    }         
     
 }

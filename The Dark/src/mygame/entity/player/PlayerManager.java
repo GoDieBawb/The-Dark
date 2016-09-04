@@ -56,10 +56,24 @@ public class PlayerManager {
     
     //Updates The Camera and Control Listeners
     public void update(float tpf) {
+        
         //player.getChaseControl().update(tpf);
         player.getCameraManager().update(tpf);
         player.getControlListener().update();
-        player.getHud().update(tpf);
+        
+        if (!player.hasLeft() && !player.hasRight()) {
+            
+            if (player.getHud().getCrossHairVisible()) {
+                player.getHud().detachCrossHair();
+            }
+            
+        }
+        
+        else if (!player.getHud().getCrossHairVisible()) {
+            
+             player.getHud().attachCrossHair();
+        
+        }
         
     }
     

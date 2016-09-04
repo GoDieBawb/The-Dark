@@ -13,10 +13,19 @@ public class Entity extends Node implements Scriptable {
     private Node    model;
     private boolean isHid;
     private Script  script;
+    private Entity  striker;
     
     public void setModel(String path, AppStateManager stateManager) {
         model = (Node) stateManager.getApplication().getAssetManager().loadModel(path);
         attachChild(model);
+    }
+    
+    public void setStriker(Entity striker) {
+        this.striker = striker;
+    }
+    
+    public Entity getStriker() {
+        return striker;
     }
     
     public void setModel(Node model) {

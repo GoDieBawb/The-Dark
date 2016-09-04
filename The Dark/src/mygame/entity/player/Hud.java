@@ -28,12 +28,14 @@ public class Hud {
     private String[]                  currentMessage;
     private final ArrayList<String[]> messages;
     private BitmapText                crossHair;
+    private boolean                   crossHairVisible;
     
     //Constructs the Heads Up Display
     public Hud(AppStateManager stateManager) {
         this.stateManager = stateManager;
         screen            = stateManager.getState(GameManager.class).getUtilityManager().getGuiManager().getScreen();
         messages          = new ArrayList();
+        crossHairVisible  = false;
         createInfoText();
         createCrossHair();
     }
@@ -44,17 +46,23 @@ public class Hud {
         crossHair          = new BitmapText(guiFont, false);
         crossHair.setName("CrossHair");
         crossHair.setSize(guiFont.getCharSet().getRenderedSize() * 2);
-        crossHair.setLocalTranslation(Display.getWidth() / 2 - crossHair.getLineWidth()/2, Display.getHeight() / 2 + crossHair.getLineHeight()/2, 0);
         crossHair.setText("+");
+        crossHair.setLocalTranslation(Display.getWidth() / 2 - crossHair.getLineWidth()/2, Display.getHeight() / 2 + crossHair.getLineHeight()/2, 0);
+    }
+    
+    public boolean getCrossHairVisible() {
+        return crossHairVisible;
     }
     
     //Attach the Crosshair
     public void attachCrossHair() {
+        crossHairVisible = true;
         ((SimpleApplication) stateManager.getApplication()).getGuiNode().attachChild(crossHair);
     }
     
     //Detach the CrossHair
     public void detachCrossHair() {
+        crossHairVisible = false;
         ((SimpleApplication) stateManager.getApplication()).getGuiNode().detachChild(crossHair);
     }
     
@@ -134,10 +142,6 @@ public class Hud {
     //Return the Alert Box
     public AlertBox getInfoText() {
         return infoText;
-    }
-    
-    public void update(float tpf) {
-        
     }
     
 }

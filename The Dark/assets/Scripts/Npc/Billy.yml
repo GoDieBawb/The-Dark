@@ -1,16 +1,23 @@
 Fields:
-  - String idleName idle
+  - int health <const#15>
+  - boolean isDead false
 
 Proximity:
   Distance: 1
   Enter:
+    - if <sym#isDead.!>
     - chat "Hello I'm Billy the Alien"
 
 Start:
   Script:
-    - animate Dance
+    - animate Idle
     
 Hit:
   Script:
+    - if <sym#health> > <const#0>
+    - int health <sym#health.sub#const#1>
+    - animate Hit noloop
+
+    - else
     - animate Die noloop
     - chat "You've killed Billy"

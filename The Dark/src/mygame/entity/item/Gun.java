@@ -68,8 +68,7 @@ public class Gun extends Item {
         super.equip(player, isLeft);
         if (isLeft) {
             getModel().rotate(0,179.25f,0);
-        }    
-        player.getHud().attachCrossHair();
+        }
         
     }
     

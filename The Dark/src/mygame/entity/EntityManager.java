@@ -11,10 +11,12 @@ import java.util.LinkedHashMap;
 import mygame.GameManager;
 import mygame.entity.item.Candle;
 import mygame.entity.item.Gun;
+import mygame.entity.item.Item;
 import mygame.entity.item.Torch;
 import mygame.entity.item.Usable;
 import mygame.entity.monster.MonsterManager;
 import mygame.entity.npc.Npc;
+import mygame.entity.player.Player;
 import mygame.entity.player.PlayerManager;
 import mygame.scene.SceneManager;
 import mygame.util.FileWalker;
@@ -237,6 +239,28 @@ public class EntityManager {
             entity.setScript(script);
             entity.getScript().initialize();
         
+        }
+        
+        Player player = playerManager.getPlayer();
+        
+        for (int  i = 0; i < player.getInventory().size(); i++) {
+            
+            final String currentItem = (String) player.getInventory().keySet().toArray()[i];
+            final Item item          = player.getInventory().get(currentItem);
+            String fileName          = item.getModel().getUserData("Script");
+            String filePath          = fileWalker.walk("assets/Scripts", fileName);
+            
+            LinkedHashMap map = (LinkedHashMap) app.getStateManager()
+                                .getState(GameManager.class)
+                                    .getUtilityManager().getYamlManager()
+                                        .loadYaml(filePath);
+            
+            Script script = new Script(item, app.getStateManager(), map);
+            
+            item.setScript(script);
+            item.getScript().initialize();
+            
+            
         }
         
         System.out.println("Scripts Reloaded!");
