@@ -66,10 +66,6 @@ public class Gun extends Item {
     @Override
     public void equip(Player player, boolean isLeft) {    
         super.equip(player, isLeft);
-        if (isLeft) {
-            getModel().rotate(0,179.25f,0);
-        }
-        
     }
     
     @Override

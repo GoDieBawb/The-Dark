@@ -299,7 +299,7 @@ public class Script {
         }
         
         catch (Exception e) {
-            System.out.println("Release Error For Entity: " + entity.getName());
+            System.out.println("Equip " + side  + " Error For Entity: " + entity.getName());
             e.printStackTrace();
         }        
         

@@ -1,5 +1,10 @@
 Fields:
-  - Object lastUsed time.sub#const#10000
+  - boolean boola true
+  - boolean boolb true
+  - boolean boolc true
+  - int x <const#3>
+  - int y <const#4>
+  - int z <const#5>
 
 Proximity:
   Distance: 1
@@ -19,7 +24,7 @@ Start:
 
 Press:
   Script:
-    - if time.sub#sym#lastUsed > const#10000
+    - if <sym#boola> && <const#4> > <sym#x> && <const#3> < <sym#y>
     - Object lastUsed time
     - chat "Used!"
 

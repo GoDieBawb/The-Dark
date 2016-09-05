@@ -1,0 +1,28 @@
+Fields:
+  - Object lastAttack time.sub#const#3000
+  - boolean isAttacking false
+
+Proximity:
+  Distance: 1
+  Enter:
+    - chat "Im Mean Jeff"
+
+Start:
+  Script:
+    - animate Idle
+    
+While:
+  Script:
+    - if entity.location.distance#player.location < const#1 && sym#isAttacking.!
+    - animate Attack
+    - boolean isAttacking true
+    - end
+
+    - if entity.location.distance#player.location > const#1 && sym#isAttacking
+    - boolean isAttacking false
+    - animate Idle
+    - end
+    
+    - if time.sub#sym#lastAttack > const#2000 && sym#isAttacking
+    - Object lastAttack time
+    - debug "attack"

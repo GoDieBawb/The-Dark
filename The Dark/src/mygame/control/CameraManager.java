@@ -110,15 +110,8 @@ public class CameraManager {
         
     }    
     
-    public void update(float tpf) {
+    private void shittyCameraMove() {
         
-        if (!isEnabled)
-            return;
-        
-        updateKeys();
-        movePlayer(tpf);
-        
-        Vector3f camLoc    = app.getCamera().getLocation();
         Vector3f camSpot   = player.getWorldTranslation().add(camDir.negate().normalize().multLocal(.5f,0,.5f).add(0,.85f,0));
         
         camNode.setLocalTranslation(camSpot);
@@ -145,7 +138,33 @@ public class CameraManager {
             
         }
         
-        cam.setLocation(camNode.getWorldTranslation());
+        cam.setLocation(camNode.getWorldTranslation());    
+        
+    }
+    
+    private void betterCameraMove() {
+    
+        Vector3f camOrient = app.getCamera().getDirection();
+        Vector3f camSpot   = player.getWorldTranslation().add(camDir.negate().normalize().multLocal(.5f,0,.5f).add(0,.85f,-.25f));
+        Vector3f nodeSpot  = camSpot.add(camOrient.normalize().mult(1.1f)).add(0,-.3f,0);
+        
+        camNode.setLocalTranslation(nodeSpot);
+        camNode.lookAt(camOrient.mult(500), new Vector3f(0,1,0));
+        
+        cam.setLocation(camSpot);          
+        
+    }
+    
+    public void update(float tpf) {
+        
+        if (!isEnabled)
+            return;
+        
+        updateKeys();
+        movePlayer(tpf);
+        
+        betterCameraMove();
+
         
     }
     

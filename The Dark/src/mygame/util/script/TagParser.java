@@ -114,10 +114,16 @@ public class TagParser {
             
             //Checks the distance between the current vector object and another
             else if (strippedTag.equals("distance")) {
-            
-                String[] strAr  = args[i].split("#");
+                
+                String[] strAr  = tag.split(strippedTag + "#", 2);
                 Vector3f check  = (Vector3f) parseTag(stateManager, strAr[1], entity);
                 obj             = ((Vector3f) obj).distance(check);
+                
+                //Increment i for the arguments parsed in argument tag
+                while (strAr[1].contains(".")) {
+                    strAr[1] = strAr[1].replaceFirst(".", "");
+                    i++;
+                }
             
             }
 
@@ -370,7 +376,7 @@ public class TagParser {
         else if (objString.matches("[0-9]*\\.[0-9]*")) {
             return Float.valueOf(objString);
         }
-        
+                
         return objString;
         
     }

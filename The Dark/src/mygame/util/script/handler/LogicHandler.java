@@ -6,9 +6,7 @@
 package mygame.util.script.handler;
 
 import com.jme3.app.state.AppStateManager;
-import java.math.BigDecimal;
 import mygame.entity.Entity;
-import mygame.entity.Scriptable;
 import mygame.util.script.TagParser;
 
 /**
@@ -17,6 +15,7 @@ import mygame.util.script.TagParser;
  */
 public class LogicHandler extends CommandHandler {
     
+    private String  rawCommand;
     private boolean go;
     private boolean met;
     
@@ -27,10 +26,10 @@ public class LogicHandler extends CommandHandler {
     @Override
     public boolean handle(String rawCommand, Entity entity) {
         
-        boolean handled = true;
-        
-        String[] args     = rawCommand.split(" ");
-        String   command  = args[0];        
+        boolean  handled     = true; 
+        String[] args        = rawCommand.split(" ");
+        String   command     = args[0];     
+        this.rawCommand      = rawCommand;
         
         //Starts an if logic statement
         switch (command) {
@@ -113,27 +112,20 @@ public class LogicHandler extends CommandHandler {
       
         
         //If more than 4 arguments more than one boolean statement present
-        if (args.length > 4) {
+        if (rawCommand.contains("&&")) {
         
-            String[] leftSide  = { "", args[1], args[2], args[3] };
-            String[] rightSide = { "", args[5], args[6], args[7] };
-            String   comp      = args[4];
+            String[] splitCom  = rawCommand.split("&&", 2);
+            String[] realCheck = splitCom[0].split(" ");
+            rawCommand         = splitCom[1];
             
-            boolean a = ifCheck(entity, leftSide);
-            boolean b = ifCheck(entity, rightSide);
+            if (ifCheck(entity, realCheck)) {
+                String[] newCheck = rawCommand.split(" ");
+                return ifCheck(entity, newCheck);
+            }
             
-            String leftVal  = "const#false";
-            String rightVal = "const#false";
-            
-            if (a)
-                leftVal = "true";
-            
-            if (b)
-                rightVal = "true";
-            
-            String[] newCheck = { "", leftVal, comp, rightVal };
-            
-            return ifCheck(entity, newCheck);
+            else {
+                return false;
+            }
             
         }
         

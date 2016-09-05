@@ -1,0 +1,8 @@
+Proximity:
+  Distance: 2
+  Enter:
+    - chat "Door to Arena"
+    
+Interact:
+  Script:
+    - changescene Arena

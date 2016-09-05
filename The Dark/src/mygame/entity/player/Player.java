@@ -7,6 +7,7 @@ package mygame.entity.player;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
+import com.jme3.math.Vector3f;
 import java.util.HashMap;
 import mygame.GameManager;
 import mygame.control.CameraManager;
@@ -173,6 +174,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         leftEquip = item;
         hasLeft   = true;
         cameraManager.getCameraNode().attachChild(item);
+        item.setLocalTranslation(.5f,0,0);
     }
     
     public void unEquipLeft(Item item) {
@@ -199,6 +201,7 @@ public class Player extends Humanoid implements PhysicalEntity, Vulnerable {
         rightEquip = item;
         hasRight   = true;
         cameraManager.getCameraNode().attachChild(item);
+        item.setLocalTranslation(-.5f,0,0);
     }
     
     public Item getRightEquip() {

@@ -30,12 +30,12 @@ Hold:
 Equip:
   Left:
     - clearrotation
-    - clearlocation entity#model
+    - clearlocation <entity#model>
     - setrotation 89.7 89.75 0
-    - move entity#model entity#model.location.add#0,0,.25
+    - move entity#model <entity#model.location.add#0,0,.25>
 
   Right:
     - clearrotation
     - clearlocation entity#model
-    - setrotation 89.9 -89.5 0
-    - move entity#model entity#model.location.add#0,0,-.25
+    - setrotation 89.9 89.5 0
+    - move entity#model <entity#model.location.add#0,0,.25>
