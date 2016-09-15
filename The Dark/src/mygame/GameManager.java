@@ -25,6 +25,7 @@ public class GameManager extends AbstractAppState {
     private EntityManager      entityManager;
     private SceneManager       sceneManager;
     private MenuManager        menuManager;
+    private float              tpf;
     
     //Initializes Sub Managers
     @Override
@@ -103,8 +104,14 @@ public class GameManager extends AbstractAppState {
         return menuManager;
     }
     
+    public float getTimePerFrame() {
+        return tpf;
+    }
+    
     @Override
     public void update(float tpf) {
+        
+        this.tpf = tpf;
         
         if (app.getInputManager().isCursorVisible() && !entityManager.getPlayerManager().getPlayer().getInventoryInterface().isVisible()) {
             //app.getInputManager().setCursorVisible(false);

@@ -46,7 +46,7 @@ public class SymbolHandler extends CommandHandler {
                     intSym = (Integer) parser.parseTag(stateManager, args[2], entity);
                 }
                 else {
-                    intSym = Integer.valueOf(args[2]);
+                    intSym = Integer.valueOf(args[2].split("#")[1]);
                 }
                 
                 entity.getScript().getSymTab().put(args[1], intSym);
@@ -60,7 +60,7 @@ public class SymbolHandler extends CommandHandler {
                     floatSym = (Float) parser.parseTag(stateManager, args[2], entity);
                 }                
                 else {
-                    floatSym = Float.valueOf(args[2]);
+                    floatSym = Float.valueOf(args[2].split("#")[1]);
                 }
                 entity.getScript().getSymTab().put(args[1], floatSym);
                 break;

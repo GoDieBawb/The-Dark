@@ -54,7 +54,6 @@ public class FinderControl extends AbstractControl {
         finding     = true;
         this.target = target;
         lastCalc    = System.currentTimeMillis();
-        
     }
     
     //Clears the path and finding status when run

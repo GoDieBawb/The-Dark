@@ -66,6 +66,10 @@ public class CommandParser {
                 continue;
             }
             
+            //On Go if Command is Return end Parse
+            if (command.equals("return"))
+                return;
+            
             //If Commands Go Unhandled They are Unknown
             if (symbolHandler.handle((String) commands.get(i), entity))
                 continue;

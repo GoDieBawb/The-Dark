@@ -1,6 +1,17 @@
 Fields:
   - Object lastAttack time.sub#const#3000
+  
+  - float moveSpeed const#3.0
+  - int sightRange const#10
+  - float attackRange const#1.5
+  - float attackDelay const#2000.0
+  
+  - boolean isIdling false
   - boolean isAttacking false
+  - boolean isRunning false
+  
+  - boolean inSight false
+  - boolean inRange false
 
 Proximity:
   Distance: 1
@@ -10,19 +21,53 @@ Proximity:
 Start:
   Script:
     - animate Idle
-    
+
 While:
   Script:
-    - if entity.location.distance#player.location < const#1 && sym#isAttacking.!
-    - animate Attack
-    - boolean isAttacking true
-    - end
 
-    - if entity.location.distance#player.location > const#1 && sym#isAttacking
-    - boolean isAttacking false
-    - animate Idle
+    - if entity.location.distance#player.location < sym#sightRange
+    - boolean inSight true
+    - else
+    - boolean inSight false
     - end
     
-    - if time.sub#sym#lastAttack > const#2000 && sym#isAttacking
+    - if entity.location.distance#player.location < sym#attackRange
+    - boolean inRange true
+    - else
+    - boolean inRange false
+    - end
+    
+    - if sym#inSight.! && sym#isIdling.!
+    - boolean isIdling true
+    - boolean isRunning false
+    - boolean isAttacking false
+    - animate Idle
+    - end    
+
+    - if sym#inSight.!
+    - return
+    
+    - else
+    - look
+    - end
+
+    - if sym#inRange && sym#isAttacking.!
+    - boolean isIdling false
+    - boolean isRunning false
+    - boolean isAttacking true
+    - animate Attack
+    - end
+    
+    - if sym#inSight && sym#inRange.! && sym#isRunning.!
+    - boolean isIdling false
+    - boolean isRunning true
+    - boolean isAttacking false
+    - animate Run
+    - end
+    
+    - if sym#isRunning
+    - goto player.location sym#moveSpeed
+    
+    - if time.sub#sym#lastAttack > sym#attackDelay && sym#isAttacking
     - Object lastAttack time
     - debug "attack"

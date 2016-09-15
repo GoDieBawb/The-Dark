@@ -13,6 +13,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.sun.glass.ui.Application;
 import mygame.GameManager;
 import mygame.entity.Entity;
 import mygame.entity.animation.Animated;
@@ -70,7 +71,7 @@ public class EntityHandler extends CommandHandler {
                 }   break;
                 
             case "look":
-                ((Entity) entity).lookAt(player.getModel().getWorldTranslation().add(0,.3f,0), new Vector3f(0,1,0));
+                ((Entity) entity).getModel().lookAt(player.getWorldTranslation().multLocal(1,0,1), new Vector3f(0,1,0));
                 break;
                 
             case "setrotation":
@@ -116,6 +117,20 @@ public class EntityHandler extends CommandHandler {
                 }
                 
                 break;
+            
+            case "goto": {
+            
+                Vector3f goal    = (Vector3f) parser.parseTag(stateManager, args[1], entity); 
+                Vector3f start   = entity.getWorldTranslation();
+                float    speed   = (float) parser.parseTag(stateManager, args[2], entity);
+                Vector3f moveDir = goal.subtract(start).normalize().mult(speed);
+                float    tpf     = stateManager.getState(GameManager.class).getTimePerFrame();
+                
+                entity.move(moveDir.mult(tpf));
+                
+                break;
+                
+            }    
                 
             case "clearlocation": {
 

@@ -45,6 +45,11 @@ public class TagParser {
             else if (strippedTag.equals("const")) {
                 String[] strAr = tag.split("#");
                 obj            = checkForConstants(strAr[1]);
+                
+                if (strAr[1].contains(".")) {
+                    i++;
+                }
+                
             }
             
             else if (strippedTag.equals("true")) {

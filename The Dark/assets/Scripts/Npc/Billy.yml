@@ -21,3 +21,7 @@ Hit:
     - else
     - animate Die noloop
     - chat "You've killed Billy"
+    
+While:
+  Script:
+    - look
